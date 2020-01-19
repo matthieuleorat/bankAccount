@@ -1,0 +1,65 @@
+version: "3.4"
+
+services:
+
+  mysql:
+    env_file: .env
+    image: mysql:5.7
+    ports:
+      - 60001:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ${MYSQL_HOST_VOLUME_PATH}:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql:db
+    ports:
+      - 81:80
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+  php:
+    build:
+      context: docker/php-ubuntu
+      args:
+        UID: ${HOST_USER}
+    env_file: .env
+    volumes:
+      - ${DOCKER_MOUNT_POINT}:/var/www/html:rw,delegated
+      - ./.composer:/var/www/.composer
+      # Avoid heavy I/O workloads on bind-mounted volumes
+#      - /var/www/html/var/cache
+#      - /var/www/html/var/log
+      # Custom configuration
+      #- ./docker/php/conf.d/custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+      # SSH keys
+      - ~/.ssh:/root/.ssh:ro
+    tty: true
+    environment:
+      # Keep attention to that env variable
+      PHP_IDE_CONFIG: serverName=PHPSTORM
+      HOST_USER_ID: ${HOST_USER}
+      HOST_GROUP_ID: ${HOST_GROUP}
+
+  nginx:
+    build: docker/nginx
+    env_file: .env
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - ${DOCKER_MOUNT_POINT}:/var/www/html:rw,delegated
+      - ./docker/nginx/conf.d/custom.conf:/etc/nginx/conf.d/symfony.conf:ro
+    depends_on:
+      - php
+    tty: true
+    environment:
+      FPM_HOST: php:9000
+      HOST_USER_ID:  ${HOST_USER}
+      HOST_GROUP_ID: ${HOST_GROUP}
+    links:
+      - php
