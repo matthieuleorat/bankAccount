@@ -8,7 +8,30 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
+        <div>
+                <p>Crédits: {{ credit }}</p>
+                <p>Débits: {{ debit }}</p>
+        </div>
+
 <div class="example-wrapper">
-    {{ text }}
+        <table>
+                <tr>
+                        <th>Débit</th>
+                        <th>Crédits</th>
+                </tr>
+                {% for page in pages %}
+
+
+                {% for transaction in page['transactions'] %}
+                <tr>
+                        <td>{{ transaction['debit'] }}</td>
+                        <td>{{ transaction['credit'] }}</td>
+                </tr>
+                {% endfor %}
+                        <tr>
+                                <td colspan="2" style="background-color: #222222">lala</td>
+                        </tr>
+                {% endfor %}
+        </table>
 </div>
 {% endblock %}
