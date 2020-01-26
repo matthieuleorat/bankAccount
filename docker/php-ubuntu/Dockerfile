@@ -63,7 +63,7 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 
 WORKDIR /var/www/html
 
-RUN usermod -u 17305 www-data
+RUN usermod -u 1000 www-data
 
 EXPOSE 9000
 

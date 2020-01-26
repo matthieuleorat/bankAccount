@@ -46,7 +46,8 @@ class HomController extends AbstractController
      */
     public function index()
     {
-        $filePath = '/var/www/html/public/RCE_00057002074_20200108.pdf';
+       //$filePath = '/var/www/html/public/RCE_00057002074_20200108.pdf';
+       $filePath = '/var/www/html/public/RCE_00057002074_20191207.pdf';
 
         $textVersionPath = $this->getTextVersion($filePath);
         $transactionsAsText = $this->parse($textVersionPath);
@@ -99,6 +100,7 @@ class HomController extends AbstractController
             if (false === array_key_exists($pageIndex, $pages)) {
                 $pages[$pageIndex] = [
                     'header' => '',
+                    'headerOffset' => [],
                     'transactions' => [],
                     'transactionsAsText' => [],
                     'range' => ['start'=>0, 'length' => 0],
@@ -106,20 +108,23 @@ class HomController extends AbstractController
             }
 
             // Cherche le début d'une page
-            preg_match('/Date\s+Valeur\s+Nature de l\'opération/', $row, $matches);
+            preg_match('/Date\s+Valeur\s+Nature de l\'opération/u', $row, $matches);
             if (count($matches)) {
                 $startingRow = $i + 1;
                 $pages[$pageIndex]['header'] = $row;
+                $pages[$pageIndex]['headerOffset'] = [
+                    'debit' => strpos($row, 'Débit'),
+                    'credit' => strpos($row, 'Crédit'),
+                ];
+                dump($pages[$pageIndex]['headerOffset']);
                 if ($pageIndex === 1) {
                     $startingRow++;
                 }
                 $pages[$pageIndex]['range']['start'] = $startingRow;
             }
-
             // Cherche les changements de mois
             preg_match('/\*\*\* SOLDE AU \d{1,2}\/\d{1,2}\/\d{4}.*\*\*\*/', $row, $matches);
             if (count($matches)) {
-                unset($rows[$i]);
                 continue;
             }
 
@@ -163,14 +168,22 @@ class HomController extends AbstractController
             $positions = $this->guessPosition($page['header']);
 
             foreach ($page['transactionsAsText'] as $i => $transactionAsText) {
+
                 if ($transactionAsText == "") {
                     continue;
                 }
+
+                // Cherche les changements de mois
+                preg_match('/\*\*\* SOLDE AU \d{1,2}\/\d{1,2}\/\d{4}.*\*\*\*/', $transactionAsText, $matches);
+                if (count($matches)) {
+                    continue;
+                }
+
                 $date = static::getValue($transactionAsText, $positions['date']['start'], $positions['date']['length']);
                 $details = static::getValue($transactionAsText, $positions['detail']['start'], $positions['detail']['length']);
 
                 if (empty(trim($date))) {
-                    $pages[$pageIndex]['transactions'][sizeof($pages[$pageIndex]['transactions']) - 1]['detail'] .= PHP_EOL . $details;
+                    $pages[$pageIndex]['transactions'][count($pages[$pageIndex]['transactions']) - 1]['detail'] .= PHP_EOL . $details;
                     continue;
                 }
 
@@ -209,6 +222,8 @@ class HomController extends AbstractController
                     continue;
                 }
             }
+
+            dump($offsets);
 
             foreach ($pages[$pageIndex]['transactions'] as $transactionIndex => $transaction) {
                 if ($transaction['offset'] <= $smallest + 10) {
