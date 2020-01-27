@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\BankStatementParser;
 
 use App\BankStatementParser\Model\BankStatement;
+use App\BankStatementParser\Model\Operation;
 
 final class BankStatementParser
 {
@@ -38,15 +39,42 @@ final class BankStatementParser
 
         $bankStatementAsArray = $this->pdfReader->execute(self::PATH_TO_BANK_STATEMENT.$fileToParse);
 
-        $transactionAsTextFromBankStatement = $this->filterTransaction($bankStatementAsArray);
+        $operations = $this->filterTransaction($bankStatementAsArray);
 
+        $this->bankStatement->setOperations($operations);
+
+        $this->controlTotals();
         dump($this->bankStatement);exit;
         return $bankStatement;
+    }
+
+    private function controlTotals()
+    {
+        $totalDebit = 0;
+        $totalCredit = 0;
+        /** @var Operation $operation */
+        foreach ($this->bankStatement->getOperations() as $operation) {
+            if ($operation->isDebit()) {
+                $totalDebit += $operation->getMontant();
+            }
+            if ($operation->isCredit()) {
+                $totalCredit += $operation->getMontant();
+            }
+        }
+
+        if ((string) $this->bankStatement->getDebit() != (string) $totalDebit) {
+            throw new \Exception("Debit: ". $this->bankStatement->getDebit() . " != ".$totalDebit);
+        }
+
+        if ((string) $this->bankStatement->getCredit() != (string) $totalCredit) {
+            throw new \Exception("Credit: ". $this->bankStatement->getCredit() . " != ".$totalCredit);
+        }
     }
 
     private function filterTransaction(array $rows) : array
     {
         $transactionsAsText = [];
+        $operations = [];
 
         $addTransaction = false;
 
@@ -59,14 +87,20 @@ final class BankStatementParser
             // Cherche le début d'une page
             preg_match('/Date\s+Valeur\s+Nature de l\'opération/u', $row, $matches);
             if (count($matches)) {
-                $debitPosition = strpos($row, 'Débit');
                 $creditPosition = strpos($row, 'Crédit');
+                $header = $row;
                 $addTransaction = true;
                 continue;
             }
 
             // Cherche les changements de mois
             preg_match('/\*\*\* SOLDE AU \d{1,2}\/\d{1,2}\/\d{4}.*\*\*\*/', $row, $matches);
+            if (count($matches)) {
+                continue;
+            }
+
+            // Cherche les soldes précédents
+            preg_match('/\sSOLDE PRÉCÉDENT AU \d{1,2}\/\d{1,2}\/\d{4}\s.*/', $row, $matches);
             if (count($matches)) {
                 continue;
             }
@@ -79,57 +113,26 @@ final class BankStatementParser
             }
 
             // Cherche la fin de la dernière page
-            preg_match('/\s+TOTAUX DES MOUVEMENTS/', $row, $matches);
-            if (count($matches)) {
-                // On récupère les crédits et débits totaux
-                preg_match_all('/((\d{1,3}\.)?\d{1,3},\d{2})/', $row, $totaux);
-                if (count($totaux) && count($totaux[0]) == 2) {
-                    $this->bankStatement->setTotals(
-                        static::formatAmount($totaux[0][1]),
-                        static::formatAmount($totaux[0][0])
-                    );
-                }
+            if ($this->findEndOfStatementPattern($row)) {
                 break;
             }
 
             if ($addTransaction === true) {
-                $date = static::getValue(
-                    $row,
-                    0,
-                    11
-                );
 
-                if (empty(trim($date))) {
-                    $details = static::getValue($row, 22);
+                $operation = Operation::create($header, $row);
 
-                    $transactionsAsText[count($transactionsAsText) - 1]->addDetails(PHP_EOL . $details);
+                if ($operation->isComplementaryInformations() == true) {
+                    $previousOperation = end($operations);
+                    $previousOperation->addDetails($operation->getDetails());
                     continue;
                 }
 
-                $valeur = static::getValue(
-                    $row,
-                    11,
-                    11
-                );
-
-                $trim = trim($row);
-                preg_match('/((\d{1,3}\.)?\d{1,3},\d{2}( \*)?)$/', $trim, $montants, PREG_OFFSET_CAPTURE);
-                if (count($montants)) {
-                    $debit = null;
-                    $credit = null;
-                    [$montant, $amoutPosition] = $montants[0];
-
-                    if ($amoutPosition < $creditPosition) {
-                        $debit = $montant;
-                    } else {
-                        $credit = $montant;
-                    }
-                }
+                $operations[] = $operation;
 
             }
         }
 
-        return $transactionsAsText;
+        return $operations;
     }
 
     private static function formatAmount(string $amout) : float
@@ -141,13 +144,21 @@ final class BankStatementParser
         return (float) $amout;
     }
 
-    private static function getValue(string $string, int $start, int $length = null) : string
+    private function findEndOfStatementPattern(string $row) : bool
     {
-        $value = substr($string, $start, $length);
+        preg_match('/\s+TOTAUX DES MOUVEMENTS/', $row, $matches);
+        if (count($matches)) {
+            preg_match_all('/((\d{1,3}\.)?\d{1,3},\d{2})/', $row, $totaux);
+            if (count($totaux) && count($totaux[0]) == 2) {
+                $this->bankStatement->setTotals(
+                    static::formatAmount($totaux[0][1]),
+                    static::formatAmount($totaux[0][0])
+                );
+            }
 
-        $value = trim($value);
+            return true;
+        }
 
-        return $value;
+        return false;
     }
-
 }

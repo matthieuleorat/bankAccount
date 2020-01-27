@@ -14,7 +14,7 @@ final class BankStatement
     /**
      * @var array
      */
-    private $transactions;
+    private $operations;
 
     /**
      * @var float
@@ -43,4 +43,38 @@ final class BankStatement
         $this->credit = $credit;
         $this->debit = $dedit;
     }
+
+    /**
+     * @param Operation[] $operations
+     */
+    public function setOperations(array $operations) : void
+    {
+        $this->operations = $operations;
+    }
+
+    /**
+     * @return Operation[]
+     */
+    public function getOperations() : array
+    {
+        return $this->operations;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDebit(): float
+    {
+        return $this->debit;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCredit(): float
+    {
+        return $this->credit;
+    }
+
+
 }

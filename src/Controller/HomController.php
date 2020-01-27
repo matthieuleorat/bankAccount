@@ -46,8 +46,8 @@ class HomController extends AbstractController
      */
     public function index()
     {
-       //$filePath = '/var/www/html/public/RCE_00057002074_20200108.pdf';
-       $filePath = '/var/www/html/public/RCE_00057002074_20191207.pdf';
+       $filePath = '/var/www/html/public/RCE_00057002074_20200108.pdf';
+//       $filePath = '/var/www/html/public/RCE_00057002074_20191207.pdf';
 
         $textVersionPath = $this->getTextVersion($filePath);
         $transactionsAsText = $this->parse($textVersionPath);

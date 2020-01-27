@@ -13,7 +13,7 @@ class BankStatementController extends AbstractController
      */
     public function index(BankStatementParser $bankStatementParser)
     {
-        $fileName = 'RCE_00057002074_20191207.pdf';
+        $fileName = 'RCE_00057002074_20200108.pdf';
 
         $bankStatement = $bankStatementParser->execute($fileName);
 
