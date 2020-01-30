@@ -81,5 +81,11 @@
             "allow-contrib": false,
             "require": "5.0.*"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "matleo/bank-statement-parser-bundle"
+        }
+    ]
 }

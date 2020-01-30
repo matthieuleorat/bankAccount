@@ -1,0 +1,12 @@
+{
+  "type": "symfony-bundle",
+  "description": "",
+  "name": "matleo/bank-statement-parser-bundle",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Matleo\\BankStatementParserBundle\\": ""
+    }
+  },
+  "version": "0.0.1"
+}

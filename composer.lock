@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a432bc02d8c8536574d4851886cc9388",
+    "content-hash": "2d8c961ee2262b2ad1cab126997fe610",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1287,6 +1287,24 @@
             ],
             "description": "A Symfony bundle to parse many kinds of specific PDF Files",
             "time": "2016-04-11T17:21:08+00:00"
+        },
+        {
+            "name": "matleo/bank-statement-parser-bundle",
+            "version": "0.0.1",
+            "dist": {
+                "type": "path",
+                "url": "matleo/bank-statement-parser-bundle",
+                "reference": "a44bba0232f582aa4d78b5be6bd67b6003cae09d"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Matleo\\BankStatementParserBundle\\": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "monolog/monolog",
