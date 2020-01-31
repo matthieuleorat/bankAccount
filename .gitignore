@@ -1,3 +1,7 @@
+.composer/
+.idea
+data/
+
 
 ###> symfony/framework-bundle ###
 .env
@@ -6,8 +10,8 @@
 ./.env.*.local
 ./config/secrets/prod/prod.decrypt.private.php
 ./public/bundles/
-./var/
-./vendor/
+var/
+vendor
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
@@ -15,6 +19,3 @@
 .phpunit.result.cache
 ./phpunit.xml
 ###< symfony/phpunit-bridge ###
-
-### Compoesr Cache
-./.composer
