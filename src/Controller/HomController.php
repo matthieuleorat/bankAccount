@@ -28,8 +28,6 @@ class HomController extends AbstractController
 
         $obj = $bankStatementParser->execute($filename, $path);
 
-        dump($obj);exit;
-
         return $this->render('hom/index.html.twig', [
             'text' => 'HomController',
         ]);
