@@ -97,7 +97,7 @@
         "version": "0.8.0"
     },
     "matleo/bank-statement-parser-bundle": {
-        "version": "0.0.1"
+        "version": "dev-master"
     },
     "monolog/monolog": {
         "version": "2.0.2"

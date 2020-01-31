@@ -1,5 +1,0 @@
-services:
-  matleo_bank_statement_parser.bank_statement_parser:
-    class: Matleo\BankStatementParserBundle\BankStatementParser
-
-  Matleo\BankStatementParserBundle\BankStatementParser: '@matleo_bank_statement_parser.bank_statement_parser'
