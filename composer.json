@@ -5,6 +5,7 @@
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "easycorp/easyadmin-bundle": "^2.3",
         "lucascherifi/pdf-parser-bundle": "^0.8.0",
         "matleo/bank-statement-parser-bundle": "dev-master",
         "sensio/framework-extra-bundle": "^5.1",
