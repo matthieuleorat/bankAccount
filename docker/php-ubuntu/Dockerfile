@@ -2,6 +2,8 @@ FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+ARG HOST_USER
+
 RUN apt-get update && apt-get install -yq --no-install-recommends \
     poppler-utils \
     locales \
@@ -63,7 +65,7 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 
 WORKDIR /var/www/html
 
-RUN usermod -u 17305 www-data
+RUN usermod -u ${HOST_USER} www-data
 
 EXPOSE 9000
 
