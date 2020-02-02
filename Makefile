@@ -9,3 +9,6 @@ reset:
 
 php:
 	docker-compose exec -u www-data php bash
+
+database:
+	docker-compose exec mysql mysql -u root -ppass db_name
