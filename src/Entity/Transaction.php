@@ -37,9 +37,15 @@ class Transaction
     private $credit;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\category", inversedBy="transaction")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="transaction")
      */
     private $category;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Statement", inversedBy="transactions")
+     * @ORM\JoinColumn(name="statement", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $statement;
 
     public function __toString()
     {
@@ -107,6 +113,18 @@ class Transaction
     public function setCategory(?category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getStatement(): ?Statement
+    {
+        return $this->statement;
+    }
+
+    public function setStatement(?Statement $statement): self
+    {
+        $this->statement = $statement;
 
         return $this;
     }
