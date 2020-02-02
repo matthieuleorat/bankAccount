@@ -2,3 +2,4 @@ easy_admin:
     entities:
         - App\Entity\Category
         - App\Entity\Account
+        - App\Entity\Transaction
