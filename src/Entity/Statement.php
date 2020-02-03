@@ -20,7 +20,7 @@ class Statement
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Account", inversedBy="statements")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $account;
 
