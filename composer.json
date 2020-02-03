@@ -7,7 +7,6 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "easycorp/easyadmin-bundle": "^2.3",
-        "lucascherifi/pdf-parser-bundle": "^0.8.0",
         "matleo/bank-statement-parser-bundle": "dev-master",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "5.0.*",

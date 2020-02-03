@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3418e70f87205c5327ae2bee73f58c7",
+    "content-hash": "90094e96baec19d54f203f43ba5aa840",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1339,39 +1339,6 @@
                 "sql"
             ],
             "time": "2014-01-12T16:20:24+00:00"
-        },
-        {
-            "name": "lucascherifi/pdf-parser-bundle",
-            "version": "0.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/lucascherifi/PdfParserBundle.git",
-                "reference": "e85c37ac44db306060d9b988b21a53bea51dd10c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lucascherifi/PdfParserBundle/zipball/e85c37ac44db306060d9b988b21a53bea51dd10c",
-                "reference": "e85c37ac44db306060d9b988b21a53bea51dd10c",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Kasifi\\PdfParserBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Lucas CHERIFI",
-                    "email": "lucas@cherifi.info"
-                }
-            ],
-            "description": "A Symfony bundle to parse many kinds of specific PDF Files",
-            "time": "2016-04-11T17:21:08+00:00"
         },
         {
             "name": "matleo/bank-statement-parser-bundle",
