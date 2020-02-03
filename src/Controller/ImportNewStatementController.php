@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Account;
+use App\Entity\Category;
+use App\Entity\DetailsToCategory;
 use App\Entity\Statement;
 use App\Entity\Transaction;
 use App\Form\ImportStatementType;
@@ -108,9 +110,30 @@ class ImportNewStatementController extends AbstractController
         if ($operation->isCredit()) {
             $transaction->setCredit($operation->getMontant());
         }
+
+        $category = $this->categoryGuesser($transaction->getDetails());
+        if ($category instanceof Category) {
+            $transaction->setCategory($category);
+        }
+
         $this->entityManager->persist($transaction);
 
         return $transaction;
+    }
+
+    private function categoryGuesser(string $details) : ? Category
+    {
+        $filters = $this->entityManager->getRepository(DetailsToCategory::class)->findAll();
+
+        /** @var DetailsToCategory $filter */
+        foreach ($filters as $filter) {
+            preg_match("/{$filter->getRegex()}/m", $details, $matches);
+            if (count($matches)) {
+                return $filter->getCategory();
+            }
+        }
+
+        return null;
     }
 
     private function handleAccount(string $accountNumber) : Account

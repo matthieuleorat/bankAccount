@@ -4,12 +4,14 @@ easy_admin:
         - App\Entity\Account
         - App\Entity\Transaction
         - App\Entity\Statement
+        - App\Entity\DetailsToCategory
 
     design:
         menu:
             - { label: 'Categories', entity: 'Category' }
             - { label: 'Comptes', entity: 'Account' }
             - { label: 'Transactions', entity: 'Transaction' }
+            - { label: 'Filtres', entity: 'DetailsToCategory' }
             - label: Relevés
               children:
                   - { label: 'Liste', entity: 'Statement' }

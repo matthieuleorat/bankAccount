@@ -34,9 +34,15 @@ class Category
      */
     private $transaction;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\DetailsToCategory", mappedBy="category", orphanRemoval=true)
+     */
+    private $detailsToCategories;
+
     public function __construct()
     {
         $this->transaction = new ArrayCollection();
+        $this->detailsToCategories = new ArrayCollection();
     }
 
     public function __toString()
@@ -104,6 +110,37 @@ class Category
             // set the owning side to null (unless already changed)
             if ($transaction->getCategory() === $this) {
                 $transaction->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DetailsToCategory[]
+     */
+    public function getDetailsToCategories(): Collection
+    {
+        return $this->detailsToCategories;
+    }
+
+    public function addDetailsToCategory(DetailsToCategory $detailsToCategory): self
+    {
+        if (!$this->detailsToCategories->contains($detailsToCategory)) {
+            $this->detailsToCategories[] = $detailsToCategory;
+            $detailsToCategory->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDetailsToCategory(DetailsToCategory $detailsToCategory): self
+    {
+        if ($this->detailsToCategories->contains($detailsToCategory)) {
+            $this->detailsToCategories->removeElement($detailsToCategory);
+            // set the owning side to null (unless already changed)
+            if ($detailsToCategory->getCategory() === $this) {
+                $detailsToCategory->setCategory(null);
             }
         }
 
