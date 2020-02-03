@@ -11,11 +11,18 @@ use Matleo\BankStatementParserBundle\Model\BankStatement;
 use Matleo\BankStatementParserBundle\Model\Operation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class ImportNewStatementController extends AbstractController
 {
+    /**
+     * @var \Doctrine\Persistence\ObjectManager
+     */
+    private $entityManager;
+
     /**
      * @Route("/import/new/statement", name="import_new_statement")
      * @param BankStatementParser $bankStatementParser
@@ -41,52 +48,20 @@ class ImportNewStatementController extends AbstractController
                 /** @var BankStatement $plainStatement */
                 $plainStatement = $bankStatementParser->execute($statementFile->getFilename(), $statementFile->getpath().'/');
 
-                $plainAccountNumber = $plainStatement->getAccountNumber();
+                $this->entityManager = $this->getDoctrine()->getManager();
 
-                $entityManager = $this->getDoctrine()->getManager();
+                $account = $this->handleAccount($plainStatement->getAccountNumber());
 
-                $account = $entityManager->getRepository(Account::class)->findOneBy(['number' => $plainAccountNumber]);
-                if (null === $account) {
-                    $account = new Account();
-                    $account->setName($plainAccountNumber);
-                    $account->setNumber($plainAccountNumber);
-                    $entityManager->persist($account);
+                $statement = $this->handleStatement($account, $plainStatement, $safeFilename);
+                if ($statement instanceof RedirectResponse) {
+                    return $statement;
                 }
 
-                $statement = $entityManager->getRepository(Statement::class)->findOneBy(['name' => $safeFilename]);
-                if ($statement instanceof Statement) {
-                    $this->addFlash('error', 'Un relevé de compte avec le même nom a déjà été importé');
-                    return $this->redirectToRoute('import_new_statement');
-                }
-
-                $statement = new Statement();
-                $statement->setAccount($account);
-                $statement->setName($safeFilename);
-                $statement->setTotalDebit($plainStatement->getDebit());
-                $statement->setTotalCredit($plainStatement->getCredit());
-                $statement->setStartingDate(\DateTimeImmutable::createFromFormat('d/m/Y',$plainStatement->getDateBegin()));
-                $statement->setEndingDate(\DateTimeImmutable::createFromFormat('d/m/Y',$plainStatement->getDateEnd()));
-                $statement->setStartingBalance($plainStatement->getSoldePrecedent());
-                $statement->setEndingBalance($plainStatement->getNouveauSolde());
-                $entityManager->persist($statement);
-
-                $transactions = array_map(function(Operation $operation) use ($entityManager, $statement) {
-                    $transaction = new Transaction();
-                    $transaction->setDate(\DateTimeImmutable::createFromFormat('d/m/Y',$operation->getDate()));
-                    $transaction->setDetails($operation->getDetails());
-                    $transaction->setStatement($statement);
-                    if ($operation->isDebit()) {
-                        $transaction->setDebit($operation->getMontant());
-                    }
-                    if ($operation->isCredit()) {
-                        $transaction->setCredit($operation->getMontant());
-                    }
-                    $entityManager->persist($transaction);
-
-                    return $transaction;
+                $transactions = array_map(function(Operation $operation) use ($statement) {
+                    return $this->transformOperationIntoTransaction($operation, $statement);
                 }, $plainStatement->getOperations());
 
-                $entityManager->flush();
+                $this->entityManager->flush();
 
                 $this->addFlash('success', 'Le relevé a bien été importé. '.count($transactions) .' ajoutées');
             }
@@ -96,5 +71,59 @@ class ImportNewStatementController extends AbstractController
             'controller_name' => 'ImportNewStatementController',
             'form' => $form->createView(),
         ]);
+    }
+
+    private function handleStatement(Account $account, BankStatement $bankStatement, string $filename)
+    {
+        $statement = $this->entityManager->getRepository(Statement::class)->findOneBy(['name' => $filename]);
+
+        if ($statement instanceof Statement) {
+            $this->addFlash('error', 'Un relevé de compte avec le même nom a déjà été importé');
+            return $this->redirectToRoute('import_new_statement');
+        }
+
+        $statement = new Statement();
+        $statement->setAccount($account);
+        $statement->setName($filename);
+        $statement->setTotalDebit($bankStatement->getDebit());
+        $statement->setTotalCredit($bankStatement->getCredit());
+        $statement->setStartingDate(\DateTimeImmutable::createFromFormat('d/m/Y', $bankStatement->getDateBegin()));
+        $statement->setEndingDate(\DateTimeImmutable::createFromFormat('d/m/Y', $bankStatement->getDateEnd()));
+        $statement->setStartingBalance($bankStatement->getSoldePrecedent());
+        $statement->setEndingBalance($bankStatement->getNouveauSolde());
+        $this->entityManager->persist($statement);
+
+        return $statement;
+    }
+
+    private function transformOperationIntoTransaction(Operation $operation, Statement $statement) : Transaction
+    {
+        $transaction = new Transaction();
+        $transaction->setDate(\DateTimeImmutable::createFromFormat('d/m/Y',$operation->getDate()));
+        $transaction->setDetails($operation->getDetails());
+        $transaction->setStatement($statement);
+        if ($operation->isDebit()) {
+            $transaction->setDebit($operation->getMontant());
+        }
+        if ($operation->isCredit()) {
+            $transaction->setCredit($operation->getMontant());
+        }
+        $this->entityManager->persist($transaction);
+
+        return $transaction;
+    }
+
+    private function handleAccount(string $accountNumber) : Account
+    {
+        $account = $this->entityManager->getRepository(Account::class)->findOneBy(['number' => $accountNumber]);
+
+        if (null === $account) {
+            $account = new Account();
+            $account->setName($accountNumber);
+            $account->setNumber($accountNumber);
+            $this->entityManager->persist($account);
+        }
+
+        return $account;
     }
 }
