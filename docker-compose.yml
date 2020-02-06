@@ -42,24 +42,11 @@ services:
     links:
       - php
 
-#  nuxt:
-#    build:
-#      context: docker/webapp/
-#    container_name: nuxt
-#    restart: always
-#    ports:
-#      - "3000:3000"
-#    command:
-#      "npm run start"
-#    volumes:
-#      - ./webapp:/app
-
-  frontend:
+  nuxt:
     build:
-      context: ./docker/webapp
-      target: 'develop-stage'
+      context: ./webapp
+      dockerfile: Dockerfile
     ports:
-      - '8080:8080'
+      - 3000:3000
     volumes:
-      - ./docker/webapp:/app
-    command: /bin/sh -c "yarn serve"
+      -  ./webapp:/app

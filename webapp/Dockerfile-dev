@@ -1,0 +1,15 @@
+FROM node:10.15
+
+WORKDIR /app
+COPY package*.json ./
+RUN yarn install
+COPY . .
+
+# RUN NODE_TLS_REJECT_UNAUTHORIZED=0 npm ci
+
+ENV HOST 0.0.0.0
+
+ARG NODE_ENV="development"
+ARG ENVIRONMENT="development"
+
+EXPOSE 3000
