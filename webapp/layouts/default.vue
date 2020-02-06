@@ -1,5 +1,11 @@
 <template>
   <div>
+    <ul class="navigation">
+      <li><nuxt-link to="/">Dashboard</nuxt-link></li>
+      <li><nuxt-link to="/statement/import">Importer un nouveau relevé</nuxt-link></li>
+      <li><a href="#">Products</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
     <nuxt />
   </div>
 </template>
