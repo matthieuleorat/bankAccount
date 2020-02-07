@@ -10,7 +10,7 @@ easy_admin:
                 filters: ['category']
                 fields:
                     - date
-                    - {property: 'details', template: 'transaction/list/details.html.twig'}
+                    - { property: 'details', template: 'admin/transaction/list/details.html.twig'}
                     - debit
                     - credit
                     - category
