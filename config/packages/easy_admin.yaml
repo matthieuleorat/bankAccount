@@ -14,6 +14,16 @@ easy_admin:
                     - debit
                     - credit
                     - category
+        TransactionWithoutCategory:
+            class: App\Entity\Transaction
+            list:
+                dql_filter: 'entity.category is null'
+                fields:
+                    - date
+                    - { property: 'details', template: 'admin/transaction/list/details.html.twig'}
+                    - debit
+                    - credit
+                    - category
         Category:
             class: App\Entity\Category
         Account:
@@ -30,9 +40,12 @@ easy_admin:
         menu:
             - { label: 'Categories', entity: 'Category' }
             - { label: 'Comptes', entity: 'Account' }
-            - { label: 'Transactions', entity: 'Transaction' }
+            - label: Transactions
+              children:
+                - { label: 'Liste', entity: 'Transaction' }
+                - { label: 'À classer', entity: 'TransactionWithoutCategory' }
             - { label: 'Filtres', entity: 'DetailsToCategory' }
             - label: Relevés
               children:
-                  - { label: 'Liste', entity: 'Statement' }
-                  - { label: 'Importer', route: 'import_new_statement'}
+                - { label: 'Liste', entity: 'Statement' }
+                - { label: 'Importer', route: 'import_new_statement'}

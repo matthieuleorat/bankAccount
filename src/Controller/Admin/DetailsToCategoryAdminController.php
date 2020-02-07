@@ -20,7 +20,7 @@ class DetailsToCategoryAdminController extends EasyAdminController
 
         $count = 0;
         foreach ($transactionWithoutCategories as $transaction) {
-            if (null !== $category = CategoryGuesser::execute($entity, $transaction)) {
+            if (null !== $category = CategoryGuesser::execute($entity, $transaction->getDetails())) {
                 $transaction->setCategory($category);
                 $count++;
             }

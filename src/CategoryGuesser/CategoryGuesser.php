@@ -4,7 +4,6 @@ namespace App\CategoryGuesser;
 
 use App\Entity\Category;
 use App\Entity\DetailsToCategory;
-use App\Entity\Transaction;
 
 class CategoryGuesser
 {
