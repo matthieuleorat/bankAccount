@@ -47,6 +47,11 @@ class Transaction
      */
     private $statement;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
+
     public function __toString()
     {
         return $this->details;
@@ -125,6 +130,18 @@ class Transaction
     public function setStatement(?Statement $statement): self
     {
         $this->statement = $statement;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }
