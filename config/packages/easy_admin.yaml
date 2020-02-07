@@ -1,10 +1,27 @@
 easy_admin:
+    formats:
+        date:     'd/m/Y'
+        time:     'H:i'
+        datetime: 'd/m/Y H:i:s'
     entities:
-        - App\Entity\Category
-        - App\Entity\Account
-        - App\Entity\Transaction
-        - App\Entity\Statement
-        - App\Entity\DetailsToCategory
+        Transaction:
+            class: App\Entity\Transaction
+            list:
+                filters: ['category']
+                fields:
+                    - date
+                    - {property: 'details', template: 'transaction/list/details.html.twig'}
+                    - debit
+                    - credit
+                    - category
+        Category:
+            class: App\Entity\Category
+        Account:
+            class: App\Entity\Account
+        Statement:
+            class: App\Entity\Statement
+        DetailsToCategory:
+            class: App\Entity\DetailsToCategory
 
     design:
         menu:
