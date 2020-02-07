@@ -13,6 +13,9 @@ php:
 database:
 	docker-compose exec mysql mysql -u root -ppass db_name
 
+database_backup:
+	docker-compose exec mysql mysqldump -u root -ppass db_name > backup-`date +%Y-%m-%d`.sql
+
 create_nuxtjs_project:
 	docker run --rm -it \
 		-v "${PWD}:/$(basename `pwd`)" \
@@ -20,4 +23,3 @@ create_nuxtjs_project:
 		-w "/$(basename `pwd`)" \
 		node:11.1-alpine  \
 		sh -c "yarn create nuxt-app webapp"
-	# docker run --rm -v /home/matleo/Projects/bankAccount/docker/test:/test -w /test --user 17305:10000 -it node:11.1-alpine sh -c yarn create nuxt-app lala
