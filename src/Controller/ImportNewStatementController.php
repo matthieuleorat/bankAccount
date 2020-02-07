@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\CategoryGuesser\CategoryGuesser;
 use App\Entity\Account;
 use App\Entity\Category;
 use App\Entity\DetailsToCategory;
@@ -127,9 +128,8 @@ class ImportNewStatementController extends AbstractController
 
         /** @var DetailsToCategory $filter */
         foreach ($filters as $filter) {
-            preg_match("/{$filter->getRegex()}/m", $details, $matches);
-            if (count($matches)) {
-                return $filter->getCategory();
+            if (null !== $category = CategoryGuesser::execute($filter, $details)) {
+                return $category;
             }
         }
 

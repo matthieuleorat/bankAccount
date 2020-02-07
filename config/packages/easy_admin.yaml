@@ -22,6 +22,9 @@ easy_admin:
             class: App\Entity\Statement
         DetailsToCategory:
             class: App\Entity\DetailsToCategory
+            controller: App\Controller\Admin\DetailsToCategoryAdminController
+            list:
+                actions: ['apply']
 
     design:
         menu:
