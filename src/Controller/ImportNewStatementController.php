@@ -81,8 +81,9 @@ class ImportNewStatementController extends AbstractController
         $statement = $this->entityManager->getRepository(Statement::class)->findOneBy(['name' => $filename]);
 
         if ($statement instanceof Statement) {
-            $this->addFlash('error', 'Un relevé de compte avec le même nom a déjà été importé');
-            return $this->redirectToRoute('import_new_statement');
+            return $statement;
+//            $this->addFlash('error', 'Un relevé de compte avec le même nom a déjà été importé');
+//            return $this->redirectToRoute('import_new_statement');
         }
 
         $statement = new Statement();
@@ -101,21 +102,32 @@ class ImportNewStatementController extends AbstractController
 
     private function transformOperationIntoTransaction(Operation $operation, Statement $statement) : Transaction
     {
-        $transaction = new Transaction();
-        $transaction->setDate(\DateTimeImmutable::createFromFormat('d/m/Y',$operation->getDate()));
-        $transaction->setDetails($operation->getDetails());
-        $transaction->setStatement($statement);
-        if ($operation->isDebit()) {
-            $transaction->setDebit($operation->getMontant());
-        }
-        if ($operation->isCredit()) {
-            $transaction->setCredit($operation->getMontant());
+        $transaction = $this->entityManager->getRepository(Transaction::class)->findOneBy(
+            [
+                'statement' => $statement,
+                'date' => \DateTimeImmutable::createFromFormat('d/m/Y',$operation->getDate()),
+            ]
+        );
+
+        if (false === $transaction instanceof Transaction) {
+            $transaction = new Transaction();
+            $transaction->setDate(\DateTimeImmutable::createFromFormat('d/m/Y',$operation->getDate()));
+            $transaction->setStatement($statement);
+            if ($operation->isDebit()) {
+                $transaction->setDebit($operation->getMontant());
+            }
+            if ($operation->isCredit()) {
+                $transaction->setCredit($operation->getMontant());
+            }
+
+            $category = $this->categoryGuesser($transaction->getDetails());
+
+            if ($category instanceof Category) {
+                $transaction->setCategory($category);
+            }
         }
 
-        $category = $this->categoryGuesser($transaction->getDetails());
-        if ($category instanceof Category) {
-            $transaction->setCategory($category);
-        }
+        $transaction->setDetails($operation->getDetails());
 
         $this->entityManager->persist($transaction);
 
