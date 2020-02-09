@@ -1346,12 +1346,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthieuleorat/bank-statement-parser-bundle.git",
-                "reference": "1da12e9f281ab02f3a6a4f6cc75d7aaa2755ee01"
+                "reference": "a3720e893fb21685a207dda460056217362a66b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthieuleorat/bank-statement-parser-bundle/zipball/1da12e9f281ab02f3a6a4f6cc75d7aaa2755ee01",
-                "reference": "1da12e9f281ab02f3a6a4f6cc75d7aaa2755ee01",
+                "url": "https://api.github.com/repos/matthieuleorat/bank-statement-parser-bundle/zipball/a3720e893fb21685a207dda460056217362a66b1",
+                "reference": "a3720e893fb21685a207dda460056217362a66b1",
                 "shasum": ""
             },
             "type": "symfony-bundle",
@@ -1364,7 +1364,7 @@
             "license": [
                 "MIT"
             ],
-            "time": "2020-02-02T14:13:31+00:00"
+            "time": "2020-02-07T15:46:43+00:00"
         },
         {
             "name": "monolog/monolog",
