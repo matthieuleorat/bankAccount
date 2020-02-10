@@ -10,6 +10,7 @@ easy_admin:
                 fields:
                     - date
                     - { property: 'details', template: 'admin/transaction/list/details.html.twig'}
+                    - { property: 'expenses', template: 'admin/transaction/list/expenses.html.twig', label: 'Dépenses associées'}
                     - debit
                     - credit
                     - comment

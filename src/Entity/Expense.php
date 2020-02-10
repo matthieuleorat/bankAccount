@@ -140,4 +140,17 @@ class Expense
 
         return $this;
     }
+
+    public function getAmount() : string
+    {
+        $sign = '';
+        $amout = (string) $this->credit;
+
+        if (null !== $this->debit) {
+            $sign = '-';
+            $amout = (string) $this->debit;
+        }
+
+        return $sign.$amout.'€';
+    }
 }
