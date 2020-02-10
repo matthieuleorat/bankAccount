@@ -39,10 +39,16 @@ class Category
      */
     private $detailsToCategories;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Expense", mappedBy="category")
+     */
+    private $expenses;
+
     public function __construct()
     {
         $this->transaction = new ArrayCollection();
         $this->detailsToCategories = new ArrayCollection();
+        $this->expenses = new ArrayCollection();
     }
 
     public function __toString()
@@ -141,6 +147,37 @@ class Category
             // set the owning side to null (unless already changed)
             if ($detailsToCategory->getCategory() === $this) {
                 $detailsToCategory->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Expense[]
+     */
+    public function getExpenses(): Collection
+    {
+        return $this->expenses;
+    }
+
+    public function addExpense(Expense $expense): self
+    {
+        if (!$this->expenses->contains($expense)) {
+            $this->expenses[] = $expense;
+            $expense->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpense(Expense $expense): self
+    {
+        if ($this->expenses->contains($expense)) {
+            $this->expenses->removeElement($expense);
+            // set the owning side to null (unless already changed)
+            if ($expense->getCategory() === $this) {
+                $expense->setCategory(null);
             }
         }
 
