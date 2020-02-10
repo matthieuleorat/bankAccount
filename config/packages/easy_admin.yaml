@@ -13,6 +13,16 @@ easy_admin:
                     - debit
                     - credit
                     - comment
+        TransactionWithoutExpense:
+            class: App\Entity\Transaction
+            list:
+                dql_filter: 'entity.expenses is empty'
+                fields:
+                    - date
+                    - { property: 'details', template: 'admin/transaction/list/details.html.twig'}
+                    - debit
+                    - credit
+                    - comment
         Category:
             class: App\Entity\Category
         Source:
@@ -42,6 +52,7 @@ easy_admin:
             - label: Transactions
               children:
                 - { label: 'Liste', entity: 'Transaction' }
+                - { label: 'À classer', entity: 'TransactionWithoutExpense' }
             - label: Dépenses
               children:
                   - {label: liste, entity: 'Expense'}
