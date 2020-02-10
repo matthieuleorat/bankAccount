@@ -106,6 +106,8 @@ class ImportNewStatementController extends AbstractController
             [
                 'statement' => $statement,
                 'date' => \DateTimeImmutable::createFromFormat('d/m/Y',$operation->getDate()),
+                'debit' => $operation->isDebit() === true ? $operation->getMontant() : null,
+                'credit' => $operation->isCredit() === true ? $operation->getMontant() : null
             ]
         );
 
@@ -120,7 +122,7 @@ class ImportNewStatementController extends AbstractController
                 $transaction->setCredit($operation->getMontant());
             }
 
-            $category = $this->categoryGuesser($transaction->getDetails());
+            $category = $this->categoryGuesser($operation->getDetails());
 
             if ($category instanceof Category) {
                 $transaction->setCategory($category);
