@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\CategoryGuesser\CategoryGuesser;
-use App\Entity\Account;
+use App\Entity\Source;
 use App\Entity\Category;
 use App\Entity\DetailsToCategory;
 use App\Entity\Statement;
@@ -76,7 +76,7 @@ class ImportNewStatementController extends AbstractController
         ]);
     }
 
-    private function handleStatement(Account $account, BankStatement $bankStatement, string $filename)
+    private function handleStatement(Source $account, BankStatement $bankStatement, string $filename)
     {
         $statement = $this->entityManager->getRepository(Statement::class)->findOneBy(['name' => $filename]);
 
@@ -87,7 +87,7 @@ class ImportNewStatementController extends AbstractController
         }
 
         $statement = new Statement();
-        $statement->setAccount($account);
+        $statement->setSource($account);
         $statement->setName($filename);
         $statement->setTotalDebit($bankStatement->getDebit());
         $statement->setTotalCredit($bankStatement->getCredit());
@@ -148,12 +148,12 @@ class ImportNewStatementController extends AbstractController
         return null;
     }
 
-    private function handleAccount(string $accountNumber) : Account
+    private function handleAccount(string $accountNumber) : Source
     {
-        $account = $this->entityManager->getRepository(Account::class)->findOneBy(['number' => $accountNumber]);
+        $account = $this->entityManager->getRepository(Source::class)->findOneBy(['number' => $accountNumber]);
 
         if (null === $account) {
-            $account = new Account();
+            $account = new Source();
             $account->setName($accountNumber);
             $account->setNumber($accountNumber);
             $this->entityManager->persist($account);

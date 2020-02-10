@@ -28,8 +28,8 @@ easy_admin:
                     - comment
         Category:
             class: App\Entity\Category
-        Account:
-            class: App\Entity\Account
+        Source:
+            class: App\Entity\Source
         Statement:
             class: App\Entity\Statement
         DetailsToCategory:
@@ -41,7 +41,7 @@ easy_admin:
     design:
         menu:
             - { label: 'Categories', entity: 'Category' }
-            - { label: 'Comptes', entity: 'Account' }
+            - { label: 'Sources', entity: 'Source' }
             - label: Transactions
               children:
                 - { label: 'Liste', entity: 'Transaction' }

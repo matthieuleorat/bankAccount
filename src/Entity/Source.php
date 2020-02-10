@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AccountRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\SourceRepository")
  */
-class Account
+class Source
 {
     /**
      * @ORM\Id()
@@ -29,7 +29,7 @@ class Account
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Statement", mappedBy="account", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Statement", mappedBy="source", orphanRemoval=true)
      */
     private $statements;
 
@@ -84,7 +84,7 @@ class Account
     {
         if (!$this->statements->contains($statement)) {
             $this->statements[] = $statement;
-            $statement->setAccount($this);
+            $statement->setSource($this);
         }
 
         return $this;
@@ -95,8 +95,8 @@ class Account
         if ($this->statements->contains($statement)) {
             $this->statements->removeElement($statement);
             // set the owning side to null (unless already changed)
-            if ($statement->getAccount() === $this) {
-                $statement->setAccount(null);
+            if ($statement->getSource() === $this) {
+                $statement->setSource(null);
             }
         }
 

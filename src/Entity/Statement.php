@@ -19,10 +19,10 @@ class Statement
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Account", inversedBy="statements")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Source", inversedBy="statements")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private $account;
+    private $source;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -79,14 +79,14 @@ class Statement
         return $this->id;
     }
 
-    public function getAccount(): ?Account
+    public function getSource(): ?Source
     {
-        return $this->account;
+        return $this->source;
     }
 
-    public function setAccount(?Account $account): self
+    public function setSource(?Source $source): self
     {
-        $this->account = $account;
+        $this->source = $source;
 
         return $this;
     }
