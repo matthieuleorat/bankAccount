@@ -19,6 +19,16 @@ easy_admin:
             class: App\Entity\Source
         Statement:
             class: App\Entity\Statement
+        Expense:
+            class: App\Entity\Expense
+            list:
+                fields:
+                    - date
+                    - { property: 'label', template: 'admin/transaction/list/details.html.twig'}
+                    - category
+                    - debit
+                    - credit
+                    - comment
         DetailsToCategory:
             class: App\Entity\DetailsToCategory
             controller: App\Controller\Admin\DetailsToCategoryAdminController
@@ -32,6 +42,9 @@ easy_admin:
             - label: Transactions
               children:
                 - { label: 'Liste', entity: 'Transaction' }
+            - label: Dépenses
+              children:
+                  - {label: liste, entity: 'Expense'}
             - { label: 'Filtres', entity: 'DetailsToCategory' }
             - label: Relevés
               children:

@@ -30,11 +30,6 @@ class Category
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Transaction", mappedBy="category")
-     */
-    private $transaction;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\DetailsToCategory", mappedBy="category", orphanRemoval=true)
      */
     private $detailsToCategories;
@@ -46,7 +41,6 @@ class Category
 
     public function __construct()
     {
-        $this->transaction = new ArrayCollection();
         $this->detailsToCategories = new ArrayCollection();
         $this->expenses = new ArrayCollection();
     }
@@ -88,37 +82,6 @@ class Category
     public function setParent($parent)
     {
         $this->parent = $parent;
-        return $this;
-    }
-
-    /**
-     * @return Collection|Transaction[]
-     */
-    public function getTransaction(): Collection
-    {
-        return $this->transaction;
-    }
-
-    public function addTransaction(Transaction $transaction): self
-    {
-        if (!$this->transaction->contains($transaction)) {
-            $this->transaction[] = $transaction;
-            $transaction->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTransaction(Transaction $transaction): self
-    {
-        if ($this->transaction->contains($transaction)) {
-            $this->transaction->removeElement($transaction);
-            // set the owning side to null (unless already changed)
-            if ($transaction->getCategory() === $this) {
-                $transaction->setCategory(null);
-            }
-        }
-
         return $this;
     }
 

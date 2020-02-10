@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\CategoryGuesser\CategoryGuesser;
+use App\Entity\Expense;
 use App\Entity\Source;
 use App\Entity\Category;
 use App\Entity\DetailsToCategory;
@@ -123,7 +124,14 @@ class ImportNewStatementController extends AbstractController
             $category = $this->categoryGuesser($operation->getDetails());
 
             if ($category instanceof Category) {
-
+                $expense = new Expense();
+                $expense->setDate(\DateTimeImmutable::createFromFormat('d/m/Y',$operation->getDate()));
+                $expense->setLabel($operation->getDetails());
+                $expense->setCategory($category);
+                $expense->setTransaction($transaction);
+                $expense->setCredit($transaction->getCredit());
+                $expense->setDebit($transaction->getDebit());
+                $this->entityManager->persist($expense);
             }
         }
 

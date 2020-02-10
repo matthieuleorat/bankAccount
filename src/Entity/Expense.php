@@ -41,6 +41,16 @@ class Expense
      */
     private $credit;
 
+    /**
+     * @ORM\Column(type="date_immutable")
+     */
+    private $date;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,6 +112,30 @@ class Expense
     public function setCredit(?float $credit): self
     {
         $this->credit = $credit;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeImmutable
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeImmutable $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }
