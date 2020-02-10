@@ -28,6 +28,7 @@ class Expense
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Transaction", inversedBy="expenses")
+     * @ORM\JoinColumn(name="transaction", referencedColumnName="id", onDelete="CASCADE")
      */
     private $transaction;
 
