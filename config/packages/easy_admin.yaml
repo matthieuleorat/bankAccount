@@ -7,24 +7,11 @@ easy_admin:
         Transaction:
             class: App\Entity\Transaction
             list:
-                filters: ['category']
                 fields:
                     - date
                     - { property: 'details', template: 'admin/transaction/list/details.html.twig'}
                     - debit
                     - credit
-                    - category
-                    - comment
-        TransactionWithoutCategory:
-            class: App\Entity\Transaction
-            list:
-                dql_filter: 'entity.category is null'
-                fields:
-                    - date
-                    - { property: 'details', template: 'admin/transaction/list/details.html.twig'}
-                    - debit
-                    - credit
-                    - category
                     - comment
         Category:
             class: App\Entity\Category
@@ -45,7 +32,6 @@ easy_admin:
             - label: Transactions
               children:
                 - { label: 'Liste', entity: 'Transaction' }
-                - { label: 'À classer', entity: 'TransactionWithoutCategory' }
             - { label: 'Filtres', entity: 'DetailsToCategory' }
             - label: Relevés
               children:

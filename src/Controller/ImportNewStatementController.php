@@ -82,8 +82,6 @@ class ImportNewStatementController extends AbstractController
 
         if ($statement instanceof Statement) {
             return $statement;
-//            $this->addFlash('error', 'Un relevé de compte avec le même nom a déjà été importé');
-//            return $this->redirectToRoute('import_new_statement');
         }
 
         $statement = new Statement();
@@ -125,7 +123,7 @@ class ImportNewStatementController extends AbstractController
             $category = $this->categoryGuesser($operation->getDetails());
 
             if ($category instanceof Category) {
-                $transaction->setCategory($category);
+
             }
         }
 

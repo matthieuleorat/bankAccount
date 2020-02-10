@@ -39,11 +39,6 @@ class Transaction
     private $credit;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="transaction")
-     */
-    private $category;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Statement", inversedBy="transactions")
      * @ORM\JoinColumn(name="statement", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -118,18 +113,6 @@ class Transaction
     public function setCredit(?float $credit): self
     {
         $this->credit = $credit;
-
-        return $this;
-    }
-
-    public function getCategory(): ?category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?category $category): self
-    {
-        $this->category = $category;
 
         return $this;
     }
