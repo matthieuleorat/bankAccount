@@ -7,6 +7,8 @@ easy_admin:
         Transaction:
             class: App\Entity\Transaction
             list:
+                actions:
+                    - { name: 'create_expense', template: 'admin/transaction/list/action/create_expense_from_transaction_action.html.twig' }
                 fields:
                     - date
                     - { property: 'details', template: 'admin/transaction/list/details.html.twig'}
@@ -14,9 +16,19 @@ easy_admin:
                     - debit
                     - credit
                     - comment
+            form:
+                fields:
+                    - { property: 'date', label: 'Date'}
+                    - { property: 'details', label: 'Détail'}
+                    - { property: 'debit', label: 'Débit'}
+                    - { property: 'credit', label: 'Crédit'}
+                    - { property: 'createExpense', type: 'checkbox'}
+
         TransactionWithoutExpense:
             class: App\Entity\Transaction
             list:
+                actions:
+                    - { name: 'create_expense', template: 'admin/transaction/list/action/create_expense_from_transaction_action.html.twig' }
                 dql_filter: 'entity.expenses is empty'
                 fields:
                     - date
@@ -32,6 +44,7 @@ easy_admin:
             class: App\Entity\Statement
         Expense:
             class: App\Entity\Expense
+            controller: App\Controller\Admin\ExpenseController
             list:
                 fields:
                     - date

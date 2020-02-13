@@ -54,6 +54,11 @@ class Transaction
      */
     private $expenses;
 
+    /**
+     * @var bool
+     */
+    private $createExpense = false;
+
     public function __construct()
     {
         $this->expenses = new ArrayCollection();
@@ -169,6 +174,24 @@ class Transaction
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCreateExpense(): bool
+    {
+        return $this->createExpense;
+    }
+
+    /**
+     * @param bool $createExpense
+     * @return Transaction
+     */
+    public function setCreateExpense(bool $createExpense): Transaction
+    {
+        $this->createExpense = $createExpense;
         return $this;
     }
 }
