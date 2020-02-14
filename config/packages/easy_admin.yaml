@@ -34,6 +34,15 @@ easy_admin:
                     - { property: 'montant', template: 'admin/transaction/list/montant.html.twig', label: 'Montant'}
         Category:
             class: App\Entity\Category
+            list:
+                fields:
+                    - id
+                    - name
+                    - parent
+            form:
+                fields:
+                    - name
+                    - parent
         Source:
             class: App\Entity\Source
         Statement:

@@ -3,12 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Category;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ResultatType extends AbstractType
 {
@@ -21,9 +21,8 @@ class ResultatType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->orderBy('u.username', 'ASC');
-                },
+                    return $er->getNodesHierarchyQueryBuilder();
+                }
             ])
 
             ->add('save', SubmitType::class, ['attr' => ['class' => 'btn btn-primary action-save']])
