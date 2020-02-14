@@ -1,1 +1,3 @@
-{{ value|nl2br }}
+<a href="{{ path('easyadmin', {'entity': 'Transaction', 'action':'show', 'id': item.id}) }}">
+    {{ value|nl2br }}
+</a>
