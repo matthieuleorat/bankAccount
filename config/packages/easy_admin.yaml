@@ -13,9 +13,7 @@ easy_admin:
                     - date
                     - { property: 'details', template: 'admin/transaction/list/details.html.twig'}
                     - { property: 'expenses', template: 'admin/transaction/list/expenses.html.twig', label: 'Dépenses associées'}
-                    - debit
-                    - credit
-                    - comment
+                    - { property: 'montant', template: 'admin/transaction/list/montant.html.twig', label: 'Montant'}
             form:
                 fields:
                     - { property: 'date', label: 'Date'}
@@ -33,9 +31,7 @@ easy_admin:
                 fields:
                     - date
                     - { property: 'details', template: 'admin/transaction/list/details.html.twig'}
-                    - debit
-                    - credit
-                    - comment
+                    - { property: 'montant', template: 'admin/transaction/list/montant.html.twig', label: 'Montant'}
         Category:
             class: App\Entity\Category
         Source:
