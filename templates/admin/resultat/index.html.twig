@@ -1,0 +1,36 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block head_javascript %}
+    {{ parent() }}
+    <script src="https://cdn.plot.ly/plotly-1.5.2.min.js"></script>
+{% endblock head_javascript %}
+
+{% block content_title %}
+    Résultat
+{% endblock %}
+
+{% block main %}
+    {{ form(form) }}
+    <div id="tester"></div>
+    <script>
+        var trace1 = {
+            x: ['giraffes', 'orangutans', 'monkeys'],
+            y: [20, 14, 23],
+            name: 'SF Zoo',
+            type: 'bar'
+        };
+
+        var trace2 = {
+            x: ['giraffes', 'orangutans', 'monkeys'],
+            y: [12, 18, 29],
+            name: 'LA Zoo',
+            type: 'bar'
+        };
+
+        var data = [trace1, trace2];
+
+        var layout = {barmode: 'group'};
+
+        Plotly.newPlot('tester', data, layout);
+    </script>
+{% endblock %}
