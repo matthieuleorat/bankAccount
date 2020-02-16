@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\CategoryGuesser\CategoryGuesser;
 use App\Entity\DetailsToCategory;
+use App\Entity\Expense;
 use App\Entity\Transaction;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 
@@ -21,7 +22,16 @@ class DetailsToCategoryAdminController extends EasyAdminController
         $count = 0;
         foreach ($transactionWithoutCategories as $transaction) {
             if (null !== $category = CategoryGuesser::execute($entity, $transaction->getDetails())) {
-                $transaction->setCategory($category);
+                $expense = new Expense();
+
+                $expense->setCredit( $transaction->getCredit());
+                $expense->setDebit($transaction->getDebit());
+                $expense->setLabel($transaction->getDetails());
+                $expense->setDate($transaction->getDate());
+                $expense->setTransaction($transaction);
+                $expense->setCategory($category);
+
+                $this->em->persist($expense);
                 $count++;
             }
         }

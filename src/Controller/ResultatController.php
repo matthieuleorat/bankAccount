@@ -31,6 +31,8 @@ class ResultatController extends EasyAdminController
             )
         );
 
+        
+
         $form = $this->createForm(ResultatType::class, null);
 
         $form->handleRequest($request);

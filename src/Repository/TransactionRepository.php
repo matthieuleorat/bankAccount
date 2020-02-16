@@ -25,7 +25,7 @@ class TransactionRepository extends ServiceEntityRepository
     public function findTransactionWithoutCategory()
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.category is null')
+            ->andWhere('t.expenses is empty')
             ->orderBy('t.id', 'ASC')
             ->getQuery()
             ->getResult()
