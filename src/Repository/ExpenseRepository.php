@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Expense;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -19,32 +20,19 @@ class ExpenseRepository extends ServiceEntityRepository
         parent::__construct($registry, Expense::class);
     }
 
-    // /**
-    //  * @return Expense[] Returns an array of Expense objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getTotalsForCategory($category, \DateTimeImmutable $startingDate, \DateTimeImmutable $endingDate)
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
+            ->select('SUM(e.debit) as totalDebit')
+            ->addSelect('SUM(e.credit) as totalCredit')
+            ->where('e.category = :val')
+            ->andWhere('e.date >= :startingDate')
+            ->andWhere('e.date <= :endingDate')
+            ->setParameter('val', $category)
+            ->setParameter('startingDate', $startingDate)
+            ->setParameter('endingDate', $endingDate)
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Expense
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -14,6 +14,56 @@
     {{ form_start(form) }}
         {{ form_rest(form) }}
     {{ form_end(form) }}
+
+    <table border="1" width="100%">
+        <thead>
+            <tr>
+                <th scope="col">Category</th>
+                {% for periode in p %}
+                    <th scope="col" colspan="2">
+                        {{ periode[0]|date("m/d/Y") }} au {{ periode[1]|date("m/d/Y") }}
+                    </th>
+                {% endfor %}
+
+            </tr><tr>
+                <th scope="col"></th>
+                {% for periode in p %}
+                    <th scope="col">Débit</th>
+                    <th scope="col">Crédit</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for cat in treeAsArray %}
+                <tr>
+                    <td>{{ cat['name'] }}</td>
+                    {% for data in cat['datas'] %}
+                        <td>{{ data['totalDebit'] }}</td>
+                        <td>{{ data['totalCredit'] }}</td>
+                    {% endfor %}
+                </tr>
+                {% for child in cat['__children'] %}
+                    <tr>
+                        <td>&nbsp;&nbsp;{{ child['name'] }}</td>
+                        {% for data in child['datas'] %}
+                            <td>{{ data['totalDebit'] }}</td>
+                            <td>{{ data['totalCredit'] }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% for subchild in child['__children'] %}
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ subchild['name'] }}</td>
+                            {% for data in subchild['datas'] %}
+                                <td>{{ data['totalDebit'] }}</td>
+                                <td>{{ data['totalCredit'] }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+
     <div id="tester"></div>
     <script>
         var trace1 = {
