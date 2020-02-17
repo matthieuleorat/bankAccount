@@ -10,6 +10,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ${MYSQL_HOST_VOLUME_PATH}:/var/lib/mysql
+      - ./backups:/backups
 
   php:
     build:

@@ -16,6 +16,9 @@ database:
 database_backup:
 	docker-compose exec mysql mysqldump -u root -ppass db_name > backup-`date +%Y-%m-%d`.sql
 
+load_backup:
+	docker-compose exec mysql mysql -u root -ppass db_name -e "source /backups/backup-2020-02-16.sql" 2>/dev/null; true
+
 create_nuxtjs_project:
 	docker run --rm -it \
 		-v "${PWD}:/$(basename `pwd`)" \
