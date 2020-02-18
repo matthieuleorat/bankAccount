@@ -42,48 +42,17 @@
                         <td>{{ data['totalCredit'] }}</td>
                     {% endfor %}
                 </tr>
-                {% for child in cat['__children'] %}
-                    <tr>
-                        <td>&nbsp;&nbsp;{{ child['name'] }}</td>
-                        {% for data in child['datas'] %}
-                            <td>{{ data['totalDebit'] }}</td>
-                            <td>{{ data['totalCredit'] }}</td>
-                        {% endfor %}
-                    </tr>
-                    {% for subchild in child['__children'] %}
-                        <tr>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ subchild['name'] }}</td>
-                            {% for data in subchild['datas'] %}
-                                <td>{{ data['totalDebit'] }}</td>
-                                <td>{{ data['totalCredit'] }}</td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
-                {% endfor %}
             {% endfor %}
         </tbody>
     </table>
 
     <div id="tester"></div>
+
     <script>
-        var trace1 = {
-            x: ['giraffes', 'orangutans', 'monkeys'],
-            y: [20, 14, 23],
-            name: 'SF Zoo',
-            type: 'bar'
-        };
-
-        // var trace2 = {
-        //     x: ['giraffes', 'orangutans', 'monkeys'],
-        //     y: [12, 18, 29],
-        //     name: 'LA Zoo',
-        //     type: 'bar'
-        // };
-
-        var data = [trace1];
+        var dataTest = {{ test|raw }};
 
         var layout = {barmode: 'group'};
 
-        Plotly.newPlot('tester', data, layout);
+        Plotly.newPlot('tester', dataTest, layout);
     </script>
 {% endblock %}
