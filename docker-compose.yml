@@ -5,7 +5,7 @@ services:
   mysql:
     image: mysql:5.7
     ports:
-      - 60001:3306
+      - ${DOCKER_MYSQL_PORT}:3306
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
@@ -32,8 +32,8 @@ services:
   nginx:
     build: docker/nginx
     ports:
-      - 443:443
-      - 80:80
+      - ${DOCKER_NGINX_HTTPS_PORT}:443
+     # - 80:80
     volumes:
       - ${DOCKER_MOUNT_POINT}:/var/www/html:rw,delegated
       - ./docker/nginx/conf.d/custom.conf:/etc/nginx/conf.d/symfony.conf:ro
@@ -43,11 +43,11 @@ services:
     links:
       - php
 
-  nuxt:
-    build:
-      context: ./webapp
-      dockerfile: Dockerfile
-    ports:
-      - 3000:3000
-    volumes:
-      -  ./webapp:/app
+#  nuxt:
+#    build:
+#      context: ./webapp
+#      dockerfile: Dockerfile
+#    ports:
+#      - 3000:3000
+#    volumes:
+#      -  ./webapp:/app
