@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3bcaa665d2b631634eb32c29ed6a8711",
+    "content-hash": "b743ca8b07b8ab1d454d7ea431f1b6a8",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1474,12 +1474,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthieuleorat/bank-statement-parser-bundle.git",
-                "reference": "a3720e893fb21685a207dda460056217362a66b1"
+                "reference": "2a389f26cf878f4ad6c807a6ed1e8643d38be268"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthieuleorat/bank-statement-parser-bundle/zipball/a3720e893fb21685a207dda460056217362a66b1",
-                "reference": "a3720e893fb21685a207dda460056217362a66b1",
+                "url": "https://api.github.com/repos/matthieuleorat/bank-statement-parser-bundle/zipball/2a389f26cf878f4ad6c807a6ed1e8643d38be268",
+                "reference": "2a389f26cf878f4ad6c807a6ed1e8643d38be268",
                 "shasum": ""
             },
             "type": "symfony-bundle",
@@ -1492,7 +1492,7 @@
             "license": [
                 "MIT"
             ],
-            "time": "2020-02-07T15:46:43+00:00"
+            "time": "2020-02-21T13:00:59+00:00"
         },
         {
             "name": "monolog/monolog",
