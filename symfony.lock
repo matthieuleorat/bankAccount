@@ -112,7 +112,7 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
-    "matleo/bank-statement-parser-bundle": {
+    "matleo/bank-statement-parser": {
         "version": "dev-master"
     },
     "monolog/monolog": {

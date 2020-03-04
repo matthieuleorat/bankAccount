@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b743ca8b07b8ab1d454d7ea431f1b6a8",
+    "content-hash": "0cd04327f132e45e7fc9a5845f200f6e",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1469,17 +1469,17 @@
             "time": "2014-01-12T16:20:24+00:00"
         },
         {
-            "name": "matleo/bank-statement-parser-bundle",
+            "name": "matleo/bank-statement-parser",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/matthieuleorat/bank-statement-parser-bundle.git",
-                "reference": "b96ee869554629dc2fef360f54658a2423963a99"
+                "url": "https://github.com/matthieuleorat/bank-statement-parser.git",
+                "reference": "2b9f6dc061575dedd2ea2b924e75c93ac99ef8a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthieuleorat/bank-statement-parser-bundle/zipball/b96ee869554629dc2fef360f54658a2423963a99",
-                "reference": "b96ee869554629dc2fef360f54658a2423963a99",
+                "url": "https://api.github.com/repos/matthieuleorat/bank-statement-parser/zipball/2b9f6dc061575dedd2ea2b924e75c93ac99ef8a7",
+                "reference": "2b9f6dc061575dedd2ea2b924e75c93ac99ef8a7",
                 "shasum": ""
             },
             "require": {
@@ -1487,14 +1487,12 @@
                 "symfony/process": "5.0.*"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.0",
-                "symfony/dependency-injection": "^4.4|^5.0",
-                "symfony/phpunit-bridge": "^5.0"
+                "phpunit/phpunit": "^8.0"
             },
-            "type": "symfony-bundle",
+            "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Matleo\\BankStatementParserBundle\\": ""
+                    "Matleo\\BankStatementParser\\": ""
                 },
                 "exclude-from-classmap": [
                     "/Tests/"
@@ -1504,7 +1502,7 @@
             "license": [
                 "MIT"
             ],
-            "time": "2020-02-28T15:35:42+00:00"
+            "time": "2020-03-04T12:07:13+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -6804,16 +6802,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.14.3",
+            "version": "v1.14.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "c864e7f9b8d1e1f5f60acc3beda11299f637aded"
+                "reference": "b06ebe524357945a4e7ffee42ade880bdf9e1500"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/c864e7f9b8d1e1f5f60acc3beda11299f637aded",
-                "reference": "c864e7f9b8d1e1f5f60acc3beda11299f637aded",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/b06ebe524357945a4e7ffee42ade880bdf9e1500",
+                "reference": "b06ebe524357945a4e7ffee42ade880bdf9e1500",
                 "shasum": ""
             },
             "require": {
@@ -6868,7 +6866,7 @@
                 "scaffold",
                 "scaffolding"
             ],
-            "time": "2019-11-07T00:56:03+00:00"
+            "time": "2020-03-02T15:21:16+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
@@ -7061,7 +7059,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "matleo/bank-statement-parser-bundle": 20
+        "matleo/bank-statement-parser": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

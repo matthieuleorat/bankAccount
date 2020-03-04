@@ -10,15 +10,14 @@ use App\Entity\DetailsToCategory;
 use App\Entity\Statement;
 use App\Entity\Transaction;
 use App\Form\ImportStatementType;
-use Matleo\BankStatementParserBundle\BankStatementParser;
-use Matleo\BankStatementParserBundle\Model\BankStatement;
-use Matleo\BankStatementParserBundle\Model\Operation;
+use Matleo\BankStatementParser\BankStatementParser;
+use Matleo\BankStatementParser\Model\BankStatement;
+use Matleo\BankStatementParser\Model\Operation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class ImportNewStatementController extends AbstractController
 {
@@ -32,6 +31,7 @@ class ImportNewStatementController extends AbstractController
      * @param BankStatementParser $bankStatementParser
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function index(BankStatementParser $bankStatementParser, Request $request)
     {
