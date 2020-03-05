@@ -17,8 +17,11 @@ class ResultatType extends AbstractType
     {
         $builder
             ->add('startingDate', DateType::class, [
+                'widget' => 'single_text',
             ])
-            ->add('endingDate', DateType::class)
+            ->add('endingDate', DateType::class, [
+                'widget' => 'single_text',
+            ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
