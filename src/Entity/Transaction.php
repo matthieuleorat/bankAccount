@@ -59,6 +59,11 @@ class Transaction
      */
     private $createExpense = false;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $type;
+
     public function __construct()
     {
         $this->expenses = new ArrayCollection();
@@ -192,6 +197,18 @@ class Transaction
     public function setCreateExpense(bool $createExpense): Transaction
     {
         $this->createExpense = $createExpense;
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
         return $this;
     }
 }
