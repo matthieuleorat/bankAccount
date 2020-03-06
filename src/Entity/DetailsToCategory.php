@@ -34,6 +34,11 @@ class DetailsToCategory
      */
     private $filters;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $amountField;
+
     public function __construct()
     {
         $this->filters = new ArrayCollection();
@@ -100,6 +105,18 @@ class DetailsToCategory
                 $filter->setDetailsToCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAmountField(): ?string
+    {
+        return $this->amountField;
+    }
+
+    public function setAmountField(string $amountField): self
+    {
+        $this->amountField = $amountField;
 
         return $this;
     }

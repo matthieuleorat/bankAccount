@@ -65,8 +65,9 @@ easy_admin:
             form:
                 fields:
                     - { property: 'regex', label: 'Nom'}
-                    - { property: 'category', label: 'Catégorie'}
                     - { property: 'filters', label: 'Filtres', type: 'collection', type_options: { allow_delete: true, allow_add: true, by_reference: false, entry_type: 'App\Form\FilterType'}}
+                    - { property: 'category', label: 'Catégorie'}
+                    - { property: 'amountField', label: 'Champ dans lequel prendre le montant à associer à la dépense'}
 
     design:
         menu:
