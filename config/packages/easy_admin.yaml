@@ -62,6 +62,11 @@ easy_admin:
             controller: App\Controller\Admin\DetailsToCategoryAdminController
             list:
                 actions: ['apply']
+            form:
+                fields:
+                    - { property: 'regex', label: 'Nom'}
+                    - { property: 'category', label: 'Catégorie'}
+                    - { property: 'filters', label: 'Filtres', type: 'collection', type_options: { allow_delete: true, allow_add: true, by_reference: false, entry_type: 'App\Form\FilterType'}}
 
     design:
         menu:

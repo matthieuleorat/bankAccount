@@ -1474,12 +1474,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthieuleorat/bank-statement-parser.git",
-                "reference": "6840879f4ec126ce28affd38c0ee7f2a43ac59df"
+                "reference": "840b17d6382ed0f06637bcc23fc99c0347abcca0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthieuleorat/bank-statement-parser/zipball/6840879f4ec126ce28affd38c0ee7f2a43ac59df",
-                "reference": "6840879f4ec126ce28affd38c0ee7f2a43ac59df",
+                "url": "https://api.github.com/repos/matthieuleorat/bank-statement-parser/zipball/840b17d6382ed0f06637bcc23fc99c0347abcca0",
+                "reference": "840b17d6382ed0f06637bcc23fc99c0347abcca0",
                 "shasum": ""
             },
             "require": {
@@ -1502,7 +1502,7 @@
             "license": [
                 "MIT"
             ],
-            "time": "2020-03-05T12:50:29+00:00"
+            "time": "2020-03-06T12:29:21+00:00"
         },
         {
             "name": "monolog/monolog",
