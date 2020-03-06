@@ -114,7 +114,11 @@ class ImportNewStatementController extends AbstractController
             $transaction = new Transaction();
             $transaction->setDate(\DateTimeImmutable::createFromFormat('d/m/Y',$operation->getDate()));
             $transaction->setStatement($statement);
-            $transaction->setType(get_class($operation->getType()));
+
+            if (null !== $operation->getType()) {
+                $transaction->setType(get_class($operation->getType()));
+            }
+
             if ($operation->isDebit()) {
                 $transaction->setDebit($operation->getMontant());
             }

@@ -60,7 +60,7 @@ class Transaction
     private $createExpense = false;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="object", nullable=true)
      */
     private $type;
 
@@ -200,12 +200,12 @@ class Transaction
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType()
     {
         return $this->type;
     }
 
-    public function setType(?string $type): self
+    public function setType($type): self
     {
         $this->type = $type;
 

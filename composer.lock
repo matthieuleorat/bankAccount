@@ -1474,12 +1474,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthieuleorat/bank-statement-parser.git",
-                "reference": "2b9f6dc061575dedd2ea2b924e75c93ac99ef8a7"
+                "reference": "6840879f4ec126ce28affd38c0ee7f2a43ac59df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthieuleorat/bank-statement-parser/zipball/2b9f6dc061575dedd2ea2b924e75c93ac99ef8a7",
-                "reference": "2b9f6dc061575dedd2ea2b924e75c93ac99ef8a7",
+                "url": "https://api.github.com/repos/matthieuleorat/bank-statement-parser/zipball/6840879f4ec126ce28affd38c0ee7f2a43ac59df",
+                "reference": "6840879f4ec126ce28affd38c0ee7f2a43ac59df",
                 "shasum": ""
             },
             "require": {
@@ -1502,7 +1502,7 @@
             "license": [
                 "MIT"
             ],
-            "time": "2020-03-04T12:07:13+00:00"
+            "time": "2020-03-05T12:50:29+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -6802,16 +6802,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.14.4",
+            "version": "v1.14.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "b06ebe524357945a4e7ffee42ade880bdf9e1500"
+                "reference": "bc4df88792fbaaeb275167101dc714218475db5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/b06ebe524357945a4e7ffee42ade880bdf9e1500",
-                "reference": "b06ebe524357945a4e7ffee42ade880bdf9e1500",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/bc4df88792fbaaeb275167101dc714218475db5f",
+                "reference": "bc4df88792fbaaeb275167101dc714218475db5f",
                 "shasum": ""
             },
             "require": {
@@ -6866,7 +6866,7 @@
                 "scaffold",
                 "scaffolding"
             ],
-            "time": "2020-03-02T15:21:16+00:00"
+            "time": "2020-03-04T13:57:29+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
