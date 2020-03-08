@@ -21,7 +21,7 @@
                 <th scope="col">Category</th>
                 {% for periode in p %}
                     <th scope="col" colspan="2">
-                        {{ periode[0]|date("m/d/Y") }} au {{ periode[1]|date("m/d/Y") }}
+                        {{ periode[0]|date("d/m/Y") }} au {{ periode[1]|date("d/m/Y") }}
                     </th>
                 {% endfor %}
 
