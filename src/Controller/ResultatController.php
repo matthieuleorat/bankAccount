@@ -38,7 +38,7 @@ class ResultatController extends EasyAdminController
             )
         );
 
-        $startingDate = (new \DateTime('now'))->modify('-1 month');
+        $startingDate = (new \DateTime('now'))->modify('-3 month');
         $endingDate = new \DateTimeImmutable('now');
         $interval = new \DateInterval('P1M');
 
