@@ -30,7 +30,7 @@ class DetailsToCategory
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Filter", mappedBy="detailsToCategory", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Filter", mappedBy="detailsToCategory", orphanRemoval=true, cascade={"persist"})
      */
     private $filters;
 

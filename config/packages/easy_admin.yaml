@@ -70,11 +70,11 @@ easy_admin:
                     - { property: 'filters', label: 'Filtres', type: 'collection', type_options: { allow_delete: true, allow_add: true, by_reference: false, entry_type: 'App\Form\FilterType'}}
 #                    - { type: 'section', label: 'Dépense' }
                     - { type: 'group', columns: 8, label: 'Dépense' }
-                    - { property: 'label', label: 'Champ dans lequel prendre le label à associer à la dépense'}
+                    - { property: 'label', label: 'Champ dans lequel prendre le label à associer à la dépense', type: 'App\Form\AttributeSelectionType'}
                     - { property: 'category', label: 'Catégorie'}
-                    - { property: 'debit', label: 'Champ dans lequel prendre le montant du débit à la dépense'}
-                    - { property: 'credit', label: 'Champ dans lequel prendre le montant du crédit à la dépense'}
-                    - { property: 'date', label: 'Champ dans lequel prendre le montant du crédit à la dépense'}
+                    - { property: 'debit', label: 'Champ dans lequel prendre le montant du débit à la dépense', type: 'App\Form\AttributeSelectionType'}
+                    - { property: 'credit', label: 'Champ dans lequel prendre le montant du crédit à la dépense', type: 'App\Form\AttributeSelectionType'}
+                    - { property: 'date', label: 'Champ dans lequel prendre le montant du crédit à la dépense', type: 'App\Form\AttributeSelectionType'}
                     - { property: 'comment', label: 'Commentaire'}
 
     design:

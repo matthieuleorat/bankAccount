@@ -14,6 +14,8 @@ class FilterType extends AbstractType
     const AVAILABLE_FIELD = [
         'Date dans le relevé' => 'date' ,
         'Détails dans le relevé' => 'details',
+        'Montant du débit' => 'debit',
+        'Montant du crédit' => 'credit',
         'Mensualité de prêt' => [
             'Numéro de prêt' => 'type.loanNumber',
             'Montant du capital remboursé' => 'type.depreciatedCapital',
