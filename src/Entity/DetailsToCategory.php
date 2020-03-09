@@ -37,7 +37,27 @@ class DetailsToCategory
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $amountField;
+    private $label;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $debit;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $credit;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $date;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
 
     public function __construct()
     {
@@ -109,14 +129,62 @@ class DetailsToCategory
         return $this;
     }
 
-    public function getAmountField(): ?string
+    public function getLabel(): ?string
     {
-        return $this->amountField;
+        return $this->label;
     }
 
-    public function setAmountField(string $amountField): self
+    public function setLabel(string $label): self
     {
-        $this->amountField = $amountField;
+        $this->label = $label;
+
+        return $this;
+    }
+
+    public function getDebit(): ?string
+    {
+        return $this->debit;
+    }
+
+    public function setDebit(?string $debit): self
+    {
+        $this->debit = $debit;
+
+        return $this;
+    }
+
+    public function getCredit(): ?string
+    {
+        return $this->credit;
+    }
+
+    public function setCredit(?string $credit): self
+    {
+        $this->credit = $credit;
+
+        return $this;
+    }
+
+    public function getDate(): ?string
+    {
+        return $this->date;
+    }
+
+    public function setDate(?string $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }
