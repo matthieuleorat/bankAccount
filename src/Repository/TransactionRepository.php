@@ -22,10 +22,10 @@ class TransactionRepository extends ServiceEntityRepository
     /**
      * @return Transaction[] Returns an array of Transaction objects
      */
-    public function findTransactionWithoutCategory()
+    public function findTransactionWithoutExpense()
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.expenses is empty')
+            ->where('t.expenses is empty')
             ->orderBy('t.id', 'ASC')
             ->getQuery()
             ->getResult()
