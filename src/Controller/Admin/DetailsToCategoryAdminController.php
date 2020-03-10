@@ -10,6 +10,16 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 
 class DetailsToCategoryAdminController extends EasyAdminController
 {
+    /**
+     * @var CategoryGuesser
+     */
+    private $categoryGuesser;
+
+    public function __construct(CategoryGuesser $categoryGuesser)
+    {
+        $this->categoryGuesser = $categoryGuesser;
+    }
+
     public function applyAction()
     {
         $id = $this->request->query->get('id');
@@ -17,21 +27,25 @@ class DetailsToCategoryAdminController extends EasyAdminController
         $entity = $this->em->getRepository(DetailsToCategory::class)->find($id);
 
         /** @var Transaction[] $transactionWithoutCategories */
-        $transactionWithoutCategories = $this->em->getRepository(Transaction::class)->findTransactionWithoutCategory();
+        $transactionWithoutCategories = $this->em->getRepository(Transaction::class)->findTransactionWithoutExpense();
 
         $count = 0;
+
         foreach ($transactionWithoutCategories as $transaction) {
-            if (null !== $category = CategoryGuesser::execute($entity, $transaction->getDetails())) {
+            if (true === $this->categoryGuesser->execute($entity, $transaction)) {
                 $expense = new Expense();
-
-                $expense->setCredit( $transaction->getCredit());
-                $expense->setDebit($transaction->getDebit());
-                $expense->setLabel($transaction->getDetails());
-                $expense->setDate($transaction->getDate());
+                $expense->setLabel($transaction->getTypeData($entity->getLabel()));
+                $expense->setCategory($entity->getCategory());
                 $expense->setTransaction($transaction);
-                $expense->setCategory($category);
+                $expense->setDate($this->getAttributeValue($transaction, $entity->getDate()));
+//                $expense->setCredit( $transaction->getCredit());
+//                $expense->setDebit($transaction->getDebit());
+//                dump($entity);
+//                dump($entity->getLabel());
 
-                $this->em->persist($expense);
+
+
+//                $this->em->persist($expense);
                 $count++;
             }
         }
@@ -44,5 +58,20 @@ class DetailsToCategoryAdminController extends EasyAdminController
             'action' => 'list',
             'entity' => $this->request->query->get('entity'),
         ));
+    }
+
+    private function getAttributeValue($object, string $attribute)
+    {
+        $tmp = explode('.', $attribute);
+
+        $currentLvl = $object->{'get'.ucfirst($tmp[0])}();
+
+        if (count($tmp) > 1) {
+            array_shift($tmp);
+            $testAsString = implode('.', $tmp);
+            return $this->getAttributeValue($currentLvl, $testAsString);
+        }
+
+        return $object->{'get'.ucfirst($tmp[0])}();
     }
 }

@@ -116,7 +116,7 @@ class ImportNewStatementController extends AbstractController
             $transaction->setStatement($statement);
 
             if (null !== $operation->getType()) {
-                $transaction->setType(get_class($operation->getType()));
+                $transaction->setType($operation->getType());
             }
 
             if ($operation->isDebit()) {
@@ -126,18 +126,18 @@ class ImportNewStatementController extends AbstractController
                 $transaction->setCredit($operation->getMontant());
             }
 
-            $category = $this->categoryGuesser($operation->getDetails());
-
-            if ($category instanceof Category) {
-                $expense = new Expense();
-                $expense->setDate(\DateTimeImmutable::createFromFormat('d/m/Y',$operation->getDate()));
-                $expense->setLabel($operation->getDetails());
-                $expense->setCategory($category);
-                $expense->setTransaction($transaction);
-                $expense->setCredit($transaction->getCredit());
-                $expense->setDebit($transaction->getDebit());
-                $this->entityManager->persist($expense);
-            }
+//            $detailsToCategory = $this->categoryGuesser($transaction);
+//
+//            if ($detailsToCategory instanceof Category) {
+//                $expense = new Expense();
+//                $expense->setDate(\DateTimeImmutable::createFromFormat('d/m/Y',$operation->getDate()));
+//                $expense->setLabel($operation->getDetails());
+//                $expense->setCategory($detailsToCategory->getCategory());
+//                $expense->setTransaction($transaction);
+//                $expense->setCredit($transaction->getCredit());
+//                $expense->setDebit($transaction->getDebit());
+//                $this->entityManager->persist($expense);
+//            }
         }
 
         $transaction->setDetails($operation->getDetails());
@@ -147,14 +147,14 @@ class ImportNewStatementController extends AbstractController
         return $transaction;
     }
 
-    private function categoryGuesser(string $details) : ? Category
+    private function categoryGuesser(Transaction $transaction) : ? DetailsToCategory
     {
         $filters = $this->entityManager->getRepository(DetailsToCategory::class)->findAll();
 
         /** @var DetailsToCategory $filter */
         foreach ($filters as $filter) {
-            if (null !== $category = CategoryGuesser::execute($filter, $details)) {
-                return $category;
+            if (true === CategoryGuesser::execute($filter, $transaction)) {
+                return $filter;
             }
         }
 
