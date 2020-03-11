@@ -38,20 +38,16 @@ class DetailsToCategoryAdminController extends EasyAdminController
         $count = 0;
 
         foreach ($transactionWithoutCategories as $transaction) {
-            dump($transaction);
+
             if (true === $this->categoryGuesser->execute($entity, $transaction)) {
                 $expense = new Expense();
                 $expense->setLabel($this->attributeExtractor->extract($transaction, $entity->getLabel()));
                 $expense->setCategory($entity->getCategory());
                 $expense->setTransaction($transaction);
                 $expense->setDate($this->attributeExtractor->extract($transaction, $entity->getDate()));
-//                $expense->setCredit( $transaction->getCredit());
-//                $expense->setDebit($transaction->getDebit());
-//                dump($entity->getLabel());
-
-
-
-//                $this->em->persist($expense);
+                $expense->setCredit($this->attributeExtractor->extract($transaction, $entity->getCredit()));
+                $expense->setDebit($this->attributeExtractor->extract($transaction, $entity->getDebit()));
+                $this->em->persist($expense);
                 $count++;
             }
         }

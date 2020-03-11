@@ -4,7 +4,7 @@ namespace App\Filtering;
 
 class AttributeExtractor
 {
-    public function extract($object, string $attribute, string $separator = '.') : ? string
+    public function extract($object, string $attribute, string $separator = '.')
     {
         $tmp = explode($separator, $attribute);
 
