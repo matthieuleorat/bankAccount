@@ -2,7 +2,8 @@
 
 namespace App\Controller\Admin;
 
-use App\CategoryGuesser\CategoryGuesser;
+use App\Filtering\AttributeExtractor;
+use App\Filtering\CategoryGuesser;
 use App\Entity\DetailsToCategory;
 use App\Entity\Expense;
 use App\Entity\Transaction;
@@ -14,10 +15,15 @@ class DetailsToCategoryAdminController extends EasyAdminController
      * @var CategoryGuesser
      */
     private $categoryGuesser;
+    /**
+     * @var AttributeExtractor
+     */
+    private $attributeExtractor;
 
-    public function __construct(CategoryGuesser $categoryGuesser)
+    public function __construct(CategoryGuesser $categoryGuesser, AttributeExtractor $attributeExtractor)
     {
         $this->categoryGuesser = $categoryGuesser;
+        $this->attributeExtractor = $attributeExtractor;
     }
 
     public function applyAction()
@@ -32,15 +38,15 @@ class DetailsToCategoryAdminController extends EasyAdminController
         $count = 0;
 
         foreach ($transactionWithoutCategories as $transaction) {
+            dump($transaction);
             if (true === $this->categoryGuesser->execute($entity, $transaction)) {
                 $expense = new Expense();
-                $expense->setLabel($transaction->getTypeData($entity->getLabel()));
+                $expense->setLabel($this->attributeExtractor->extract($transaction, $entity->getLabel()));
                 $expense->setCategory($entity->getCategory());
                 $expense->setTransaction($transaction);
-                $expense->setDate($this->getAttributeValue($transaction, $entity->getDate()));
+                $expense->setDate($this->attributeExtractor->extract($transaction, $entity->getDate()));
 //                $expense->setCredit( $transaction->getCredit());
 //                $expense->setDebit($transaction->getDebit());
-//                dump($entity);
 //                dump($entity->getLabel());
 
 
@@ -58,20 +64,5 @@ class DetailsToCategoryAdminController extends EasyAdminController
             'action' => 'list',
             'entity' => $this->request->query->get('entity'),
         ));
-    }
-
-    private function getAttributeValue($object, string $attribute)
-    {
-        $tmp = explode('.', $attribute);
-
-        $currentLvl = $object->{'get'.ucfirst($tmp[0])}();
-
-        if (count($tmp) > 1) {
-            array_shift($tmp);
-            $testAsString = implode('.', $tmp);
-            return $this->getAttributeValue($currentLvl, $testAsString);
-        }
-
-        return $object->{'get'.ucfirst($tmp[0])}();
     }
 }

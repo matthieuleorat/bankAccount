@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\CategoryGuesser\CategoryGuesser;
+use App\Filtering\CategoryGuesser;
 use App\Entity\Expense;
 use App\Entity\Source;
 use App\Entity\Category;
@@ -104,7 +104,7 @@ class ImportNewStatementController extends AbstractController
         $transaction = $this->entityManager->getRepository(Transaction::class)->findOneBy(
             [
                 'statement' => $statement,
-                'date' => \DateTimeImmutable::createFromFormat('d/m/Y',$operation->getDate()),
+                'date' => $operation->getDate(),
                 'debit' => $operation->isDebit() === true ? $operation->getMontant() : null,
                 'credit' => $operation->isCredit() === true ? $operation->getMontant() : null
             ]

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CategoryGuesser;
+namespace App\Filtering;
 
 use App\Entity\DetailsToCategory;
 use App\Entity\Filter;
@@ -13,13 +13,17 @@ class CategoryGuesser
      */
     private $transaction;
     /**
-     * @var DetailsToCategory
+     * @var AttributeExtractor
      */
-    private $detailToCategory;
+    private $attributeExtractor;
+
+    public function __construct(AttributeExtractor $attributeExtractor)
+    {
+        $this->attributeExtractor = $attributeExtractor;
+    }
 
     public function execute(DetailsToCategory $detailsToCategory, Transaction $transaction) : bool
     {
-        $this->detailToCategory = $detailsToCategory;
         $this->transaction = $transaction;
 
         foreach ($detailsToCategory->getFilters() as $filter) {
@@ -54,8 +58,8 @@ class CategoryGuesser
     private function equal(Filter $filter) : bool
     {
         $needle = $filter->getValue();
-        $subject = $this->transaction->getTypeData($filter->getField());
-
+        $subject = $this->attributeExtractor->extract($this->transaction, $filter->getField());
+        dump($subject, $needle);
         if ($subject == $needle) {
             return true;
         }
