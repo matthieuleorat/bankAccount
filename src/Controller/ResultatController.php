@@ -28,16 +28,6 @@ class ResultatController extends EasyAdminController
         $this->em = $this->getDoctrine()->getManager();
         $this->repo = $this->em->getRepository(Category::class);
 
-        $htmlTree = $this->repo->childrenHierarchy(
-            null, /* starting from root nodes */
-            false, /* true: load all children, false: only direct */
-            array(
-                'decorate' => true,
-                'representationField' => 'slug',
-                'html' => true
-            )
-        );
-
         $startingDate = (new \DateTime('now'))->modify('-3 month');
         $endingDate = new \DateTimeImmutable('now');
         $interval = new \DateInterval('P1M');
@@ -84,7 +74,6 @@ class ResultatController extends EasyAdminController
 
         return $this->render('admin/resultat/index.html.twig', [
             'form' => $form->createView(),
-            'htmlTree' => $htmlTree,
             'treeAsArray' => $treeAsArray,
             'p' => $p,
             'test' => json_encode($test),
