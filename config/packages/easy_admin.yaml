@@ -74,7 +74,7 @@ easy_admin:
                     - { property: 'category', label: 'Catégorie'}
                     - { property: 'debit', label: 'Champ dans lequel prendre le montant du débit à la dépense', type: 'App\Form\AttributeSelectionType'}
                     - { property: 'credit', label: 'Champ dans lequel prendre le montant du crédit à la dépense', type: 'App\Form\AttributeSelectionType'}
-                    - { property: 'date', label: 'Champ dans lequel prendre le montant du crédit à la dépense', type: 'App\Form\AttributeSelectionType'}
+                    - { property: 'date', label: 'Champ dans lequel prendre la date', type: 'App\Form\AttributeSelectionType'}
                     - { property: 'comment', label: 'Commentaire'}
 
     design:
