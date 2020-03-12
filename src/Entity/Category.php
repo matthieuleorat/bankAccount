@@ -179,4 +179,12 @@ class Category
     {
         return $this->parent;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLvl()
+    {
+        return $this->lvl;
+    }
 }
