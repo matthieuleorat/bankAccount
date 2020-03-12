@@ -10,8 +10,35 @@
 {% endblock %}
 
 {% block main %}
-    {{ htmlTree|raw }}
+    <style>
+        .category-selection {
+            display: grid;
+            grid-template-columns: 300px 300px 300px 300px;
+            justify-content: stretch;
+            grid-template-rows: auto;
+        }
+        .category-selection div {
+
+        }
+    </style>
+
     {{ form_start(form) }}
+        <div class="category-selection">
+                {% for category in form.children.category %}
+                    {% if category.vars.attr['attr_lvl'] == 0%}
+                        {% if not loop.first %}
+                            </div>
+                        {% endif %}
+                        <div><strong>
+                    {% endif %}
+
+                    {{ form_row(category) }}
+                    {% if category.vars.attr['attr_lvl'] == 0%}
+                        </strong>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
         {{ form_rest(form) }}
     {{ form_end(form) }}
 
