@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     php7.2-fpm \
     php7.2-mbstring \
     #php7-mcrypt \
-    php7.2-mysql \
+    php7.2-pgsql \
     php7.2-apcu \
     php7.2-curl \
     php7.2-intl \
