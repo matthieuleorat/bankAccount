@@ -13,7 +13,7 @@ services:
       - ./backups:/backups
 
   postgre:
-    image: postgres
+    image: postgres:12.2
     restart: always
     environment:
       POSTGRES_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -52,6 +52,19 @@ services:
     tty: true
     links:
       - php
+
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    volumes:
+      - ${POSTGRE_HOST_VOLUME_PATH}:/root/.pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
 
 #  nuxt:
 #    build:
