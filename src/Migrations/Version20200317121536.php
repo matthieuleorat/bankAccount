@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200317074215 extends AbstractMigration
+final class Version20200317121536 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -29,7 +29,7 @@ final class Version20200317074215 extends AbstractMigration
         $this->addSql('CREATE SEQUENCE transaction_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE statement_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE expense_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE user_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE public.user_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE category (id INT NOT NULL, tree_root INT DEFAULT NULL, parent_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, lft INT NOT NULL, lvl INT NOT NULL, rgt INT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_64C19C1A977936C ON category (tree_root)');
         $this->addSql('CREATE INDEX IDX_64C19C1727ACA70 ON category (parent_id)');
@@ -50,8 +50,8 @@ final class Version20200317074215 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2D3A8DA612469DE2 ON expense (category_id)');
         $this->addSql('CREATE INDEX IDX_2D3A8DA6723705D1 ON expense (transaction)');
         $this->addSql('COMMENT ON COLUMN expense.date IS \'(DC2Type:date_immutable)\'');
-        $this->addSql('CREATE TABLE "user" (id INT NOT NULL, username VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649F85E0677 ON "user" (username)');
+        $this->addSql('CREATE TABLE public."user" (id INT NOT NULL, username VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_327C5DE7F85E0677 ON public."user" (username)');
         $this->addSql('ALTER TABLE category ADD CONSTRAINT FK_64C19C1A977936C FOREIGN KEY (tree_root) REFERENCES category (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE category ADD CONSTRAINT FK_64C19C1727ACA70 FOREIGN KEY (parent_id) REFERENCES category (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE filter ADD CONSTRAINT FK_7FC45F1D5DF6C30D FOREIGN KEY (details_to_category_id) REFERENCES details_to_category (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -67,7 +67,6 @@ final class Version20200317074215 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE category DROP CONSTRAINT FK_64C19C1A977936C');
         $this->addSql('ALTER TABLE category DROP CONSTRAINT FK_64C19C1727ACA70');
         $this->addSql('ALTER TABLE details_to_category DROP CONSTRAINT FK_A06FAD9012469DE2');
@@ -83,7 +82,7 @@ final class Version20200317074215 extends AbstractMigration
         $this->addSql('DROP SEQUENCE transaction_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE statement_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE expense_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE user_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE public.user_id_seq CASCADE');
         $this->addSql('DROP TABLE category');
         $this->addSql('DROP TABLE source');
         $this->addSql('DROP TABLE filter');
@@ -91,6 +90,6 @@ final class Version20200317074215 extends AbstractMigration
         $this->addSql('DROP TABLE transaction');
         $this->addSql('DROP TABLE statement');
         $this->addSql('DROP TABLE expense');
-        $this->addSql('DROP TABLE "user"');
+        $this->addSql('DROP TABLE public."user"');
     }
 }
