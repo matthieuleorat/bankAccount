@@ -12,10 +12,10 @@
 {% block main %}
     <style>
         .category-selection {
-            display: grid;
-            grid-template-columns: 300px 300px 300px 300px;
-            justify-content: stretch;
-            grid-template-rows: auto;
+            display: inline-grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 100px 100px 100px;
+            grid-auto-flow: column;
         }
         .category-selection div {
 
