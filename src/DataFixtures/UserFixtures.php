@@ -21,7 +21,6 @@ class UserFixtures extends Fixture
         $user = new User();
         $user->setUsername('matleo');
         $user->setRoles(['ROLE_ADMIN']);
-        $user->setPassword('superStrongPassword');
 
         $user->setPassword($this->passwordEncoder->encodePassword(
             $user,
