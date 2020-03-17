@@ -48,7 +48,7 @@ class DeleteUserCommand extends Command
 
         $helper = $this->getHelper('question');
 
-        $question1 = new Question('Username');
+        $question1 = new Question('Please provide the username: ');
         $username = $helper->ask($input, $output, $question1);
 
         $user = $this->manager->getRepository(User::class)->findOneBy(['username' => $username]);

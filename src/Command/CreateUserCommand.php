@@ -48,10 +48,12 @@ class CreateUserCommand extends Command
 
         $helper = $this->getHelper('question');
 
-        $question1 = new Question('Username');
+        $question1 = new Question('Please provide the username: ');
         $username = $helper->ask($input, $output, $question1);
 
-        $question2 = new Question('password');
+        $question2 = new Question('Please provide the user password: ');
+        $question2->setHidden(true);
+        $question2->setHiddenFallback(false);
         $password = $helper->ask($input, $output, $question2);
 
         $user = new User();

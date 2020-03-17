@@ -48,13 +48,18 @@ class UpdateUserCommand extends Command
 
         $helper = $this->getHelper('question');
 
-        $question1 = new Question('Username');
+        $question1 = new Question('Please provide the username: ');
         $username = $helper->ask($input, $output, $question1);
 
         $user = $this->manager->getRepository(User::class)->findOneBy(['username' => $username]);
 
         if ($user instanceof User) {
-            $question2 = new Question('password');
+            $io->success('User found');
+
+            $question2 = new Question('Please provide the user password: ');
+            $question2->setHidden(true);
+            $question2->setHiddenFallback(false);
+
             $password = $helper->ask($input, $output, $question2);
 
             $user->setPassword($this->passwordEncoder->encodePassword(
@@ -63,9 +68,9 @@ class UpdateUserCommand extends Command
             ));
 
             $this->manager->flush();
+        } else {
+            $io->error('User '.$username.' not found');
         }
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return 0;
     }
