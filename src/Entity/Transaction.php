@@ -60,7 +60,7 @@ class Transaction
     private $createExpense = false;
 
     /**
-     * @ORM\Column(type="object", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $type;
 
@@ -202,12 +202,12 @@ class Transaction
 
     public function getType()
     {
-        return $this->type;
+        return unserialize(base64_decode($this->type));
     }
 
     public function setType($type): self
     {
-        $this->type = $type;
+        $this->type = base64_encode(serialize($type));
 
         return $this;
     }
