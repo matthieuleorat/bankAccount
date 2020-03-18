@@ -22,6 +22,13 @@ easy_admin:
                     - { property: 'credit', label: 'Crédit'}
                     - { property: 'createExpense', type: 'checkbox'}
 
+            show:
+                fields:
+                    - { property: 'date', label: 'Date'}
+                    - { property: 'details', label: 'Détail'}
+                    - { property: 'montant', template: 'admin/transaction/list/montant.html.twig', label: 'Montant'}
+                    - { property: 'type', template: 'admin/transaction/show/type.html.twig', label: 'Type'}
+
         TransactionWithoutExpense:
             class: App\Entity\Transaction
             list:
