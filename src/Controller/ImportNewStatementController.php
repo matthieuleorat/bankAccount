@@ -112,7 +112,7 @@ class ImportNewStatementController extends AbstractController
 
         if (false === $transaction instanceof Transaction) {
             $transaction = new Transaction();
-            $transaction->setDate(\DateTimeImmutable::createFromFormat('d/m/Y',$operation->getDate()));
+            $transaction->setDate($operation->getDate());
             $transaction->setStatement($statement);
 
 
