@@ -42,7 +42,14 @@ class CategoryGuesser
 
     private function startWith(Filter $filter)
     {
+        $needle = $filter->getValue();
+        $subject = $this->attributeExtractor->extract($this->transaction, $filter->getField());
 
+        if (substr($subject,0, strlen($needle)) === $needle) {
+            return true;
+        }
+
+        return false;
     }
 
     private function endWith(Filter $filter)
