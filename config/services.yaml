@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    pdftotext_binary_path: '%env(resolve:PDFTOTEXT_BINRAY_PATH)%'
 
 services:
     # default configuration for services in *this* file
@@ -36,3 +37,6 @@ services:
     Matleo\BankStatementParser\:
         resource: ../vendor/matleo/bank-statement-parser
         autowire: true
+
+    Matleo\BankStatementParser\PdfReader:
+        arguments: ["%pdftotext_binary_path%"]
