@@ -187,4 +187,12 @@ class Category
     {
         return $this->lvl;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
 }
