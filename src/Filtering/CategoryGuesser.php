@@ -59,7 +59,7 @@ class CategoryGuesser
     {
         $needle = $filter->getValue();
         $subject = $this->attributeExtractor->extract($this->transaction, $filter->getField());
-        dump($subject, $needle);
+
         if ($subject == $needle) {
             return true;
         }
