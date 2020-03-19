@@ -44,30 +44,33 @@ class ImportNewStatementController extends AbstractController
             $statementFile = $form->get('statement')->getData();
 
             if ($statementFile instanceof UploadedFile) {
+                try {
+                    $originalFilename = pathinfo($statementFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
 
-                $originalFilename = pathinfo($statementFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                    /** @var BankStatement $plainStatement */
+                    $plainStatement = $bankStatementParser->execute($statementFile->getFilename(), $statementFile->getpath().'/');
 
-                /** @var BankStatement $plainStatement */
-                $plainStatement = $bankStatementParser->execute($statementFile->getFilename(), $statementFile->getpath().'/');
+                    $this->entityManager = $this->getDoctrine()->getManager();
 
-                $this->entityManager = $this->getDoctrine()->getManager();
+                    $account = $this->handleAccount($plainStatement->getAccountNumber());
 
-                $account = $this->handleAccount($plainStatement->getAccountNumber());
+                    $statement = $this->handleStatement($account, $plainStatement, $safeFilename);
+                    if ($statement instanceof RedirectResponse) {
+                        return $statement;
+                    }
 
-                $statement = $this->handleStatement($account, $plainStatement, $safeFilename);
-                if ($statement instanceof RedirectResponse) {
-                    return $statement;
+                    $transactions = array_map(function(Operation $operation) use ($statement) {
+                        return $this->transformOperationIntoTransaction($operation, $statement);
+                    }, $plainStatement->getOperations());
+
+                    $this->entityManager->flush();
+
+                    $this->addFlash('success', 'Le relevé a bien été importé. '.count($transactions) .' ajoutées');
+                } catch (\Exception $e) {
+                    $this->addFlash('warning', $e->getMessage());
                 }
-
-                $transactions = array_map(function(Operation $operation) use ($statement) {
-                    return $this->transformOperationIntoTransaction($operation, $statement);
-                }, $plainStatement->getOperations());
-
-                $this->entityManager->flush();
-
-                $this->addFlash('success', 'Le relevé a bien été importé. '.count($transactions) .' ajoutées');
             }
         }
 
