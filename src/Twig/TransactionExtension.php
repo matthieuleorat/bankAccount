@@ -20,7 +20,12 @@ class TransactionExtension extends AbstractExtension
         $props   = $reflect->getProperties();
         $datas = [];
         foreach($props as $prop) {
-            $datas[] = ucfirst($prop->getName()).': '.$value->{'get'.ucfirst($prop->getName())}();
+            $data = $value->{'get'.ucfirst($prop->getName())}();
+            if ($data instanceof \DateTimeImmutable) {
+                $data = $data->format('d/m/Y');
+            }
+
+            $datas[] = ucfirst($prop->getName()).': '.$data;
         }
 
         return implode("\n",$datas);
