@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Expense;
 use App\Entity\Transaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -24,23 +25,25 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function findTransactionWithoutExpense()
     {
+        $qb = $this->createQueryBuilder('sdf');
+
         return $this->createQueryBuilder('t')
-            ->where('t.expenses is empty')
-            ->orderBy('t.id', 'ASC')
+            ->leftJoin(Expense::class,"e", 'with','t.id = e.transaction')
+            ->groupBy('t.id')
+            ->having(
+                $qb->expr()->orX(
+                    $qb->expr()->isNull('sum(e.credit)'),
+                    $qb->expr()->lt('sum(e.credit)', 't.credit')
+                )
+            )
+            ->andHaving(
+                $qb->expr()->orX(
+                    $qb->expr()->isNull('sum(e.debit)'),
+                    $qb->expr()->lt('sum(e.debit)', 't.debit')
+                )
+            )
             ->getQuery()
             ->getResult()
         ;
     }
-
-    /*
-    public function findOneBySomeField($value): ?Transaction
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
