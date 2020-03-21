@@ -11,13 +11,19 @@ php:
 	docker-compose exec -u www-data php bash
 
 database:
-	docker-compose exec mysql mysql -u root -ppass db_name
+	docker-compose exec postgre bash
+	#docker-compose exec mysql mysql -u root -ppass db_name
 
 database_backup:
-	docker-compose exec mysql mysqldump -u root -ppass db_name > backup-`date +%Y-%m-%d`.sql
+	# docker-compose exec mysql mysqldump -u root -ppass db_name > backup-`date +%Y-%m-%d`.sql
 
 load_backup:
-	docker-compose exec mysql mysql -u root -ppass db_name -e "source /backups/backup-2020-02-16.sql" 2>/dev/null; true
+ifdef file
+		docker-compose exec postgre pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d db_name /data/backups/$(file)
+else
+		@echo 'Missing file argument. Usage: make file=latest.dump load_backup'
+endif
+
 
 create_nuxtjs_project:
 	docker run --rm -it \

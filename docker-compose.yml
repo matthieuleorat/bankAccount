@@ -19,6 +19,7 @@ services:
       POSTGRES_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ${POSTGRE_HOST_VOLUME_PATH}:/var/lib/postgresql/data
+      - ./backups:/data/backups
     ports:
       - 5432:5432
 
