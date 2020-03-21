@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Filtering\AttributeExtractor;
 use App\Filtering\CategoryGuesser;
 use App\Entity\Expense;
 use App\Entity\Source;
@@ -25,6 +26,21 @@ class ImportNewStatementController extends AbstractController
      * @var \Doctrine\Persistence\ObjectManager
      */
     private $entityManager;
+
+    /**
+     * @var CategoryGuesser
+     */
+    private $categoryGuesser;
+    /**
+     * @var AttributeExtractor
+     */
+    private $attributeExtractor;
+
+    public function __construct(CategoryGuesser $categoryGuesser, AttributeExtractor $attributeExtractor)
+    {
+        $this->categoryGuesser = $categoryGuesser;
+        $this->attributeExtractor = $attributeExtractor;
+    }
 
     /**
      * @Route("/import/new/statement", name="import_new_statement")
@@ -125,19 +141,6 @@ class ImportNewStatementController extends AbstractController
             if ($operation->isCredit()) {
                 $transaction->setCredit($operation->getMontant());
             }
-
-//            $detailsToCategory = $this->categoryGuesser($transaction);
-//
-//            if ($detailsToCategory instanceof Category) {
-//                $expense = new Expense();
-//                $expense->setDate(\DateTimeImmutable::createFromFormat('d/m/Y',$operation->getDate()));
-//                $expense->setLabel($operation->getDetails());
-//                $expense->setCategory($detailsToCategory->getCategory());
-//                $expense->setTransaction($transaction);
-//                $expense->setCredit($transaction->getCredit());
-//                $expense->setDebit($transaction->getDebit());
-//                $this->entityManager->persist($expense);
-//            }
         }
 
         if (null !== $operation->getType()) {
@@ -146,6 +149,23 @@ class ImportNewStatementController extends AbstractController
 
 
         $transaction->setDetails($operation->getDetails());
+
+        if ($transaction->getId() === null) {
+            /** @var DetailsToCategory[] $filters */
+            $filters = $this->entityManager->getRepository(DetailsToCategory::class)->findAll();
+            foreach ($filters as $filter) {
+                if (true === $this->categoryGuesser->execute($filter, $transaction)) {
+                    $expense = new Expense();
+                    $expense->setLabel($this->attributeExtractor->extract($transaction, $filter->getLabel()));
+                    $expense->setCategory($filter->getCategory());
+                    $expense->setTransaction($transaction);
+                    $expense->setDate($this->attributeExtractor->extract($transaction, $filter->getDate()));
+                    $expense->setCredit($this->attributeExtractor->extract($transaction, $filter->getCredit()));
+                    $expense->setDebit($this->attributeExtractor->extract($transaction, $filter->getDebit()));
+                    $this->entityManager->persist($expense);
+                }
+            }
+        }
 
         $this->entityManager->persist($transaction);
 
