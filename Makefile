@@ -1,3 +1,5 @@
+include .env
+
 down:
 	docker-compose down
 
@@ -24,6 +26,10 @@ else
 		@echo 'Missing file argument. Usage: make file=latest.dump load_backup'
 endif
 
+load_last_backup_from_remote:
+	heroku pg:backups:capture --app ${HEROKU_APP_NAME}
+	heroku pg:backups:download --app ${HEROKU_APP_NAME} -o=./backups/latest.dump
+	docker-compose exec postgre pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d db_name /data/backups/latest.dump
 
 create_nuxtjs_project:
 	docker run --rm -it \
