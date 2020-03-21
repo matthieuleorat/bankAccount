@@ -28,8 +28,8 @@ class ResultatController extends EasyAdminController
         $this->em = $this->getDoctrine()->getManager();
         $this->repo = $this->em->getRepository(Category::class);
 
-        $startingDate = (new \DateTime('now'))->modify('-3 month');
-        $endingDate = new \DateTimeImmutable('now');
+        $startingDate = (new \DateTime('first day of this month'))->modify('-3 month');
+        $endingDate = new \DateTime('now');
         $interval = new \DateInterval('P1M');
 
         $form = $this->createForm(ResultatType::class, [
@@ -47,7 +47,6 @@ class ResultatController extends EasyAdminController
         $period = new \DatePeriod($startingDate, $interval, $endingDate);
         $p = [];
         foreach ($period as $key => $dt) {
-
             $p[] = [
                 $key == 0 ? $startingDate : new \DateTime('first day of ' . $dt->format('F Y')),
                 new \DateTime('last day of ' . $dt->format('F Y')) > $endingDate ? $endingDate : new \DateTime('last day of ' . $dt->format('F Y')),
