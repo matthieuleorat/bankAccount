@@ -11,18 +11,41 @@
 
 {% block main %}
     <style>
+        .date-container {
+             display: flex;
+            margin-bottom: 30px;
+         }
+        .date-container > div:first-child {
+            margin-right: 30px;
+        }
+        .date-container label{
+            display: block;
+        }
         .category-selection {
-            display: inline-grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: 100px 100px 100px;
-            grid-auto-flow: column;
+            display: flex
         }
         .category-selection div {
-
+            padding-right: 10px;
+        }
+        .category-selection div:last-child {
+            padding-right: 0px;
+        }
+        .lvl-2 {
+            margin-left: 20px;
         }
     </style>
 
     {{ form_start(form) }}
+        <div class="date-container">
+            <div>
+                {{ form_label(form.startingDate) }}
+                {{ form_widget(form.startingDate) }}
+            </div>
+            <div>
+                {{ form_label(form.startingDate) }}
+                {{ form_widget(form.endingDate) }}
+            </div>
+        </div>
         <div class="category-selection">
                 {% for category in form.children.category %}
                     {% if category.vars.attr['attr_lvl'] == 0%}
@@ -31,8 +54,10 @@
                         {% endif %}
                         <div><strong>
                     {% endif %}
-
-                    {{ form_row(category) }}
+                    <div class="lvl-{{ category.vars.attr['attr_lvl'] }}">
+                        {{ form_widget(category) }}
+                        {{ form_label(category) }}
+                    </div>
                     {% if category.vars.attr['attr_lvl'] == 0%}
                         </strong>
                     {% endif %}
