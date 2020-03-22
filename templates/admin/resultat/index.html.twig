@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="category-selection">
-                {% for category in form.children.category %}
+                {% for category in form.children.categories %}
                     {% if category.vars.attr['attr_lvl'] == 0%}
                         {% if not loop.first %}
                             </div>
@@ -67,44 +67,51 @@
         {{ form_rest(form) }}
     {{ form_end(form) }}
 
-    <table border="1" width="100%">
-        <thead>
-            <tr>
-                <th scope="col">Category</th>
-                {% for periode in p %}
-                    <th scope="col" colspan="2">
-                        {{ periode[0]|date("d/m/Y") }} au {{ periode[1]|date("d/m/Y") }}
-                    </th>
-                {% endfor %}
-
-            </tr><tr>
-                <th scope="col"></th>
-                {% for periode in p %}
-                    <th scope="col">Débit</th>
-                    <th scope="col">Crédit</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for cat in treeAsArray %}
-                <tr>
-                    <td>{{ cat['name'] }}</td>
-                    {% for data in cat['datas'] %}
-                        <td>{{ data['totalDebit'] }}</td>
-                        <td>{{ data['totalCredit'] }}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
     <div id="tester"></div>
 
     <script>
-        var dataTest = {{ test|raw }};
-
         var layout = {barmode: 'group'};
+        Plotly.newPlot('tester', {{ data|raw }}, layout);
 
-        Plotly.newPlot('tester', dataTest, layout);
+
+        // Get categories elements
+        let categories = document.querySelectorAll('[type=checkbox]');
+
+        (function() {
+
+            categories.forEach(function(category) {
+                if (category.checked === true && category.disabled === false) {
+                    toggleAllChildren(category);
+                }
+            });
+        })();
+
+        // Each time a category change, toggle its children
+        categories.forEach(function(category) {
+            category.addEventListener('change', (event) => {
+                toggleAllChildren(category);
+            })
+        });
+
+        /**
+         * Recursive function to check/uncheck categories and its children
+         *
+         * @param element
+         */
+        function toggleAllChildren(element) {
+            let children = element.getAttribute('attr_children').split(',');
+            children.forEach(id => {
+                if (id.length > 0) {
+                    let child = document.getElementById('resultat_categories_'+id);
+                    if (element.checked === true) {
+                        child.setAttribute('checked', 'checked');
+                    } else {
+                        child.toggleAttribute('checked');
+                    }
+                    child.toggleAttribute('disabled');
+                    toggleAllChildren(child)
+                }
+            });
+        }
     </script>
 {% endblock %}

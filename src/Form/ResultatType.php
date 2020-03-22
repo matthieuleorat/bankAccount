@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Category;
 use Doctrine\ORM\EntityRepository;
+use Gedmo\Tree\Entity\Repository\AbstractTreeRepository;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -25,16 +27,21 @@ class ResultatType extends AbstractType
                 'widget' => 'single_text',
                 'label' => "Date de fin",
             ])
-            ->add('category', EntityType::class, [
+            ->add('categories', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'expanded' => true,
                 'multiple' => true,
-                'query_builder' => function (EntityRepository $er) {
+                'query_builder' => static function (NestedTreeRepository $er) {
                     return $er->getNodesHierarchyQueryBuilder();
                 },
-                'choice_attr' => function($choice, $key, $value) {
-                    return ['attr_lvl' => $choice->getLvl()];
+                'choice_attr' => static function(Category $choice, $key, $value) {
+                    return [
+                        'attr_lvl' => $choice->getLvl(),
+                        'attr_children' => implode(',', array_map(static function(Category $category) {
+                            return $category->getId();
+                        }, $choice->getChildren()->toArray())),
+                    ];
                 },
             ])
 

@@ -36,7 +36,7 @@ class ExpenseRepository extends ServiceEntityRepository
             ;
     }
 
-    public function getTotalsForCategories($categories, \DateTime $startingDate, \DateTime $endingDate)
+    public function getTotalsForCategories(array $categories, \DateTime $startingDate, \DateTime $endingDate)
     {
         return $this->createQueryBuilder('e')
             ->select('SUM(e.debit) as totalDebit')
@@ -44,7 +44,7 @@ class ExpenseRepository extends ServiceEntityRepository
             ->where('e.category IN (:val)')
             ->andWhere('e.date >= :startingDate')
             ->andWhere('e.date <= :endingDate')
-            ->setParameter('val', explode(',',$categories))
+            ->setParameter('val', $categories)
             ->setParameter('startingDate', $startingDate)
             ->setParameter('endingDate', $endingDate)
             ->getQuery()
