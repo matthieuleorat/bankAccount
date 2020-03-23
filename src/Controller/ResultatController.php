@@ -33,7 +33,6 @@ class ResultatController extends EasyAdminController
 
         $startingDate = (new \DateTime('first day of this month'))->modify('-3 month');
         $endingDate = new \DateTime('now');
-        $interval = new \DateInterval('P1M');
 
         /** @var Category[] $categories */
         $categories = $this->repo->getRootNodes();
@@ -52,14 +51,7 @@ class ResultatController extends EasyAdminController
             $categories = $form->getdata()['categories'];
         }
 
-        $period = new \DatePeriod($startingDate, $interval, $endingDate);
-        $p = [];
-        foreach ($period as $key => $dt) {
-            $p[] = [
-                $key == 0 ? $startingDate : new \DateTime('first day of ' . $dt->format('F Y')),
-                new \DateTime('last day of ' . $dt->format('F Y')) > $endingDate ? $endingDate : new \DateTime('last day of ' . $dt->format('F Y')),
-            ];
-        }
+        $p = $this->generatePeriodArray($startingDate, $endingDate);
 
         $test = [];
         foreach ($p as $periode) {
@@ -84,5 +76,26 @@ class ResultatController extends EasyAdminController
             'form' => $form->createView(),
             'data' => json_encode($test),
         ]);
+    }
+
+    private function generatePeriodArray(\DateTime $startingDate, \DateTime $endingDate, $granularity = 'monthly') : array
+    {
+        switch ($granularity) {
+            default:
+                $interval = new \DateInterval('P1M');
+                break;
+        }
+
+        $period = new \DatePeriod($startingDate, $interval, $endingDate);
+
+        $p = [];
+        foreach ($period as $key => $dt) {
+            $p[] = [
+                $key == 0 ? $startingDate : new \DateTime('first day of ' . $dt->format('F Y')),
+                new \DateTime('last day of ' . $dt->format('F Y')) > $endingDate ? $endingDate : new \DateTime('last day of ' . $dt->format('F Y')),
+            ];
+        }
+
+        return $p;
     }
 }
