@@ -3,12 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Category;
-use Doctrine\ORM\EntityRepository;
 use Gedmo\Tree\Entity\Repository\AbstractTreeRepository;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
