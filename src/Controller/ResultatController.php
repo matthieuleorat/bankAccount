@@ -50,7 +50,6 @@ class ResultatController extends EasyAdminController
             $startingDate = $form->getData()['startingDate'];
             $endingDate = $form->getData()['endingDate'];
             $categories = $form->getdata()['categories'];
-            dump($categories);
         }
 
         $period = new \DatePeriod($startingDate, $interval, $endingDate);
