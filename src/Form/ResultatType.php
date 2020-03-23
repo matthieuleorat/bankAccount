@@ -43,7 +43,10 @@ class ResultatType extends AbstractType
                 },
             ])
 
-            ->add('save', SubmitType::class, ['attr' => ['class' => 'btn btn-primary action-save']])
+            ->add('save', SubmitType::class, [
+                'label' => 'Filtrer',
+                'attr' => ['class' => 'btn btn-primary action-save']
+            ])
         ;
     }
 
