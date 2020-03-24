@@ -71,7 +71,7 @@ class Statement
 
     public function __toString() : string
     {
-        return $this->name;
+        return $this->source->getName() .' '. $this->startingDate->format('d/m/y').' au '. $this->endingDate->format('d/m/y');
     }
 
     public function getId(): ?int
