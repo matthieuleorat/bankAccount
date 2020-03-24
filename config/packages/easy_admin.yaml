@@ -86,6 +86,8 @@ easy_admin:
                     - { property: 'date', label: 'Champ dans lequel prendre la date', type: 'App\Form\AttributeSelectionType'}
                     - { property: 'comment', label: 'Commentaire'}
 
+        Budget:
+            class: App\Entity\Budget
     design:
         menu:
             - { label: 'Categories', entity: 'Category' }
@@ -102,4 +104,5 @@ easy_admin:
               children:
                 - { label: 'Liste', entity: 'Statement' }
                 - { label: 'Importer', route: 'import_new_statement'}
+            - { label: 'Budgets', entity: 'Budget'}
             - { label: 'Résultats', route: 'resultat'}

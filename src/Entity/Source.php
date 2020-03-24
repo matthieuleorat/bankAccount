@@ -33,6 +33,11 @@ class Source
      */
     private $statements;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Budget")
+     */
+    private $defaultBudget;
+
     public function __construct()
     {
         $this->statements = new ArrayCollection();
@@ -99,6 +104,18 @@ class Source
                 $statement->setSource(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDefaultBudget(): ?Budget
+    {
+        return $this->defaultBudget;
+    }
+
+    public function setDefaultBudget(?Budget $defaultBudget): self
+    {
+        $this->defaultBudget = $defaultBudget;
 
         return $this;
     }

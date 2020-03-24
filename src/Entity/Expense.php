@@ -52,6 +52,12 @@ class Expense
      */
     private $comment;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Budget", inversedBy="expenses")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $budget;
+
     public function __toString()
     {
         return $this->label;
@@ -157,5 +163,17 @@ class Expense
         }
 
         return $sign.$amout.'€';
+    }
+
+    public function getBudget(): ? Budget
+    {
+        return $this->budget;
+    }
+
+    public function setBudget(? Budget $budget): self
+    {
+        $this->budget = $budget;
+
+        return $this;
     }
 }
