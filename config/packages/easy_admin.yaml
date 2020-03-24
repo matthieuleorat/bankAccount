@@ -8,6 +8,7 @@ easy_admin:
         Transaction:
             class: App\Entity\Transaction
             list:
+                filters: ['statement', 'date']
                 actions:
                     - { name: 'create_expense', template: 'admin/transaction/list/action/create_expense_from_transaction_action.html.twig' }
                 fields:
