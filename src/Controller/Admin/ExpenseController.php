@@ -40,6 +40,10 @@ class ExpenseController extends EasyAdminController
             $entity->setLabel($transaction->getDetails());
             $entity->setDate($transaction->getDate());
             $entity->setTransaction($transaction);
+
+            if (null !== $defaultBudget = $transaction->getStatement()->getSource()->getDefaultBudget()) {
+                $entity->setBudget($defaultBudget);
+            }
         }
 
         return $entity;
