@@ -1,7 +1,7 @@
 .composer/
 .idea
 data/
-
+backups
 
 ###> symfony/framework-bundle ###
 .env
