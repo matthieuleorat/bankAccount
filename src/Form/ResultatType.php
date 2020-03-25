@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Budget;
 use App\Entity\Category;
 use Gedmo\Tree\Entity\Repository\AbstractTreeRepository;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
@@ -24,6 +25,12 @@ class ResultatType extends AbstractType
             ->add('endingDate', DateType::class, [
                 'widget' => 'single_text',
                 'label' => "Date de fin",
+            ])
+            ->add('budget', EntityType::class, [
+                'class' => Budget::class,
+                'choice_label' => 'name',
+                'expanded' => false,
+                'multiple' => false,
             ])
             ->add('categories', EntityType::class, [
                 'class' => Category::class,

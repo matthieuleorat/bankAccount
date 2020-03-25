@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Category;
+use App\Entity\Budget;
 use App\Entity\Expense;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -36,7 +36,7 @@ class ExpenseRepository extends ServiceEntityRepository
             ;
     }
 
-    public function getTotalsForCategories(array $categories, \DateTime $startingDate, \DateTime $endingDate)
+    public function getTotalsForCategories(Budget $budget, array $categories, \DateTime $startingDate, \DateTime $endingDate)
     {
         return $this->createQueryBuilder('e')
             ->select('SUM(e.debit) as totalDebit')
@@ -44,9 +44,11 @@ class ExpenseRepository extends ServiceEntityRepository
             ->where('e.category IN (:val)')
             ->andWhere('e.date >= :startingDate')
             ->andWhere('e.date <= :endingDate')
+            ->andWhere('e.budget = :budget')
             ->setParameter('val', $categories)
             ->setParameter('startingDate', $startingDate)
             ->setParameter('endingDate', $endingDate)
+            ->setParameter('budget', $budget)
             ->getQuery()
             ->getResult()
             ;

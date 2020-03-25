@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Budget;
 use App\Entity\Category;
 use App\Entity\Expense;
 use App\Form\ResultatType;
@@ -37,10 +38,13 @@ class ResultatController extends EasyAdminController
         /** @var Category[] $categories */
         $categories = $this->repo->getRootNodes();
 
+        $budget = $this->em->getRepository(Budget::class)->findOneBy(['id' => 1]);
+
         $form = $this->createForm(ResultatType::class, [
             'startingDate' => $startingDate,
             'endingDate' => $endingDate,
             'categories' => $categories,
+            'budget' => $budget,
         ]);
 
         $form->handleRequest($request);
@@ -49,6 +53,7 @@ class ResultatController extends EasyAdminController
             $startingDate = $form->getData()['startingDate'];
             $endingDate = $form->getData()['endingDate'];
             $categories = $form->getdata()['categories'];
+            $budget = $form->getdata()['budget'];
         }
 
         $p = $this->generatePeriodArray($startingDate, $endingDate);
@@ -65,7 +70,7 @@ class ResultatController extends EasyAdminController
                 $obj->x[] = $category->getName();
                 $ids = $this->repo->getChildren($category);
                 $ids[] = $category;
-                $datas = $this->em->getRepository(Expense::class)->getTotalsForCategories($ids, $periode[0], $periode[1])[0];
+                $datas = $this->em->getRepository(Expense::class)->getTotalsForCategories($budget, $ids, $periode[0], $periode[1])[0];
                 $obj->y[] = $datas['totalDebit'] - $datas['totalCredit'];
             }
 
