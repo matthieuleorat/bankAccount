@@ -40,3 +40,7 @@ services:
 
     Matleo\BankStatementParser\PdfReader:
         arguments: ["%pdftotext_binary_path%"]
+
+    App\Doctrine\EventListener\FixPostgreSQLDefaultSchemaListener:
+        tags:
+            - { name: doctrine.event_listener, event: postGenerateSchema }
