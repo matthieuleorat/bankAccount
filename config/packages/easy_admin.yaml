@@ -88,6 +88,9 @@ easy_admin:
 
         Budget:
             class: App\Entity\Budget
+            list:
+                fields:
+                    - { property: 'name', template: 'admin/budget/list/name.html.twig', label: 'Nom'}
     design:
         menu:
             - { label: 'Categories', entity: 'Category' }
