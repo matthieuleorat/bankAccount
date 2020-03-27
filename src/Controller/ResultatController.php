@@ -79,7 +79,7 @@ class ResultatController extends EasyAdminController
 
         return $this->render('admin/resultat/index.html.twig', [
             'form' => $form->createView(),
-            'data' => json_encode($test),
+            'data' => $test,
         ]);
     }
 

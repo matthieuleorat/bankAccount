@@ -33,6 +33,11 @@
         .lvl-2 {
             margin-left: 20px;
         }
+
+        table {
+            width: 100%;
+        }
+
     </style>
 
     {{ form_start(form) }}
@@ -68,11 +73,38 @@
         {{ form_rest(form) }}
     {{ form_end(form) }}
 
+    <table id="resultat-table">
+        {% for month in data %}
+        {% if loop.first %}
+        <thead>
+        <tr>
+            <th></th>
+            {% for cat in month.x %}
+                <th>{{ cat }}</th>
+            {% endfor %}
+            <th>Totaux</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% endif %}
+        <tr>
+            <td>{{ month.name }}</td>
+            {% set totalByMonth = 0 %}
+            {% for categoryMonthlyTotal in month.y %}
+                {% set totalByMonth = totalByMonth + categoryMonthlyTotal %}
+                <td>{{ categoryMonthlyTotal }}</td>
+            {% endfor %}
+            <td>{{ totalByMonth }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
     <div id="tester"></div>
 
     <script>
         var layout = {barmode: 'group'};
-        Plotly.newPlot('tester', {{ data|raw }}, layout);
+        Plotly.newPlot('tester', {{ data|json_encode()|raw }}, layout);
 
 
         // Get categories elements
