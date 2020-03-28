@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,6 +39,21 @@ class Debt
      * @ORM\Column(type="text", nullable=true)
      */
     private $comment;
+
+    /**
+     * @ORM\Column(type="date_immutable")
+     */
+    private $date;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Expense", inversedBy="debts")
+     */
+    private $expense;
+
+    public function __construct()
+    {
+        $this->expense = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -87,6 +104,44 @@ class Debt
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeImmutable
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeImmutable $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Expense[]
+     */
+    public function getExpense(): Collection
+    {
+        return $this->expense;
+    }
+
+    public function addExpense(Expense $expense): self
+    {
+        if (!$this->expense->contains($expense)) {
+            $this->expense[] = $expense;
+        }
+
+        return $this;
+    }
+
+    public function removeExpense(Expense $expense): self
+    {
+        if ($this->expense->contains($expense)) {
+            $this->expense->removeElement($expense);
+        }
 
         return $this;
     }

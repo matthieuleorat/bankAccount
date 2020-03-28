@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -58,9 +60,19 @@ class Expense
      */
     private $budget;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Debt", mappedBy="expense")
+     */
+    private $debts;
+
+    public function __construct()
+    {
+        $this->debts = new ArrayCollection();
+    }
+
     public function __toString()
     {
-        return $this->label;
+        return $this->date->format('d/m/Y').' '.$this->label;
     }
 
     public function getId(): ?int
@@ -173,6 +185,34 @@ class Expense
     public function setBudget(? Budget $budget): self
     {
         $this->budget = $budget;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Debt[]
+     */
+    public function getDebts(): Collection
+    {
+        return $this->debts;
+    }
+
+    public function addDebt(Debt $debt): self
+    {
+        if (!$this->debts->contains($debt)) {
+            $this->debts[] = $debt;
+            $debt->addExpense($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDebt(Debt $debt): self
+    {
+        if ($this->debts->contains($debt)) {
+            $this->debts->removeElement($debt);
+            $debt->removeExpense($this);
+        }
 
         return $this;
     }
