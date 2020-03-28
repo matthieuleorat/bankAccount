@@ -28,6 +28,16 @@ class Debt
      */
     private $creditor;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $amount;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +63,30 @@ class Debt
     public function setCreditor(?User $creditor): self
     {
         $this->creditor = $creditor;
+
+        return $this;
+    }
+
+    public function getAmount(): ?float
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(float $amount): self
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }
