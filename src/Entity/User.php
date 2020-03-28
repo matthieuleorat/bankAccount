@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="app_user")
  */
-class User implements UserInterface
+final class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -50,6 +50,11 @@ class User implements UserInterface
     {
         $this->debts = new ArrayCollection();
         $this->credits = new ArrayCollection();
+    }
+
+    public function __toString() : string
+    {
+        return $this->username;
     }
 
     public function getId(): ?int
