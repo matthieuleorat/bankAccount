@@ -38,3 +38,9 @@ create_nuxtjs_project:
 		-w "/$(basename `pwd`)" \
 		node:11.1-alpine  \
 		sh -c "yarn create nuxt-app webapp"
+
+her_bash:
+	heroku ps:exec --app ${HEROKU_APP_NAME}
+
+her_logs:
+	heroku logs --tail --app ${HEROKU_APP_NAME}
