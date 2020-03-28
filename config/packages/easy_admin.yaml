@@ -7,6 +7,7 @@ easy_admin:
     entities:
         Debt:
             class: App\Entity\Debt
+            controller: App\Controller\Admin\DebtController
         Transaction:
             class: App\Entity\Transaction
             list:
@@ -62,6 +63,8 @@ easy_admin:
             class: App\Entity\Expense
             controller: App\Controller\Admin\ExpenseController
             list:
+                actions:
+                    - { name: 'create_debt', template: 'admin/expense/list/action/create_debt_from_expense.html.twig' }
                 fields:
                     - date
                     - { property: 'label', template: 'admin/expense/list/details.html.twig'}
