@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -33,6 +35,22 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Debt", mappedBy="debtor", orphanRemoval=true)
+     */
+    private $debts;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Debt", mappedBy="creditor", orphanRemoval=true)
+     */
+    private $credits;
+
+    public function __construct()
+    {
+        $this->debts = new ArrayCollection();
+        $this->credits = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,5 +123,67 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Debt[]
+     */
+    public function getDebts(): Collection
+    {
+        return $this->debts;
+    }
+
+    public function addDebt(Debt $debt): self
+    {
+        if (!$this->debts->contains($debt)) {
+            $this->debts[] = $debt;
+            $debt->setDebtor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDebt(Debt $debt): self
+    {
+        if ($this->debts->contains($debt)) {
+            $this->debts->removeElement($debt);
+            // set the owning side to null (unless already changed)
+            if ($debt->getDebtor() === $this) {
+                $debt->setDebtor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Debt[]
+     */
+    public function getCredits(): Collection
+    {
+        return $this->credits;
+    }
+
+    public function addCredit(Debt $credit): self
+    {
+        if (!$this->credits->contains($credit)) {
+            $this->credits[] = $credit;
+            $credit->setCreditor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCredit(Debt $credit): self
+    {
+        if ($this->credits->contains($credit)) {
+            $this->credits->removeElement($credit);
+            // set the owning side to null (unless already changed)
+            if ($credit->getCreditor() === $this) {
+                $credit->setCreditor(null);
+            }
+        }
+
+        return $this;
     }
 }
