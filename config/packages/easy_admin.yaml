@@ -57,6 +57,12 @@ easy_admin:
                     - parent
         Source:
             class: App\Entity\Source
+            list:
+                fields:
+                    - { property: 'number', label: 'source.number.label' }
+                    - { property: 'name', label: 'source.name.label' }
+                    - { property: 'statements', label: 'source.statements.label' }
+                    - { property: 'defaultBudget', label: 'source.defaultBudget.label' }
         Statement:
             class: App\Entity\Statement
         Expense:

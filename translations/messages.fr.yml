@@ -1,0 +1,4 @@
+source.name.label: Nom
+source.number.label: Numéro de compte
+source.statements.label: Nombre de relevés
+source.defaultBudget.label: Budget associé
