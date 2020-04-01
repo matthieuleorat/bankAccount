@@ -8,6 +8,21 @@ easy_admin:
         Debt:
             class: App\Entity\Debt
             controller: App\Controller\Admin\DebtController
+            list:
+                fields:
+                    - { property: 'amount', label: 'debt.amount.label' }
+                    - { property: 'date', label: 'debt.date.label' }
+                    - { property: 'debtor', label: 'debt.debtor.label' }
+                    - { property: 'creditor', label: 'debt.creditor.label' }
+                    - { property: 'expense', label: 'debt.expense.label' }
+            form:
+                fields:
+                    - { property: 'amount', label: 'debt.amount.label' }
+                    - { property: 'date', label: 'debt.date.label' }
+                    - { property: 'debtor', label: 'debt.debtor.label' }
+                    - { property: 'creditor', label: 'debt.creditor.label' }
+                    - { property: 'comment', label: 'debt.comment.label' }
+                    - { property: 'expense', label: 'debt.expense.label' }
         Transaction:
             class: App\Entity\Transaction
             list:

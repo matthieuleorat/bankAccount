@@ -1,4 +1,10 @@
+debt.amount.label: Montant
+debt.comment.label: Commentaire
+debt.creditor.label: Créditeur
+debt.date.label: Date
+debt.debtor.label: Débiteur
+debt.expense.label: Dépenses
+source.defaultBudget.label: Budget associé
 source.name.label: Nom
 source.number.label: Numéro de compte
 source.statements.label: Nombre de relevés
-source.defaultBudget.label: Budget associé
