@@ -50,6 +50,11 @@ class Debt
      */
     private $expense;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isFulfilled;
+
     public function __construct()
     {
         $this->expense = new ArrayCollection();
@@ -142,6 +147,18 @@ class Debt
         if ($this->expense->contains($expense)) {
             $this->expense->removeElement($expense);
         }
+
+        return $this;
+    }
+
+    public function isFulfilled(): ? bool
+    {
+        return $this->isFulfilled;
+    }
+
+    public function setIsFulfilled(bool $isFulfilled): self
+    {
+        $this->isFulfilled = $isFulfilled;
 
         return $this;
     }

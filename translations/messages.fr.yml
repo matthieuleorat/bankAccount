@@ -4,6 +4,7 @@ debt.creditor.label: Créditeur
 debt.date.label: Date
 debt.debtor.label: Débiteur
 debt.expense.label: Dépenses
+debt.isFulfilled.label: Est remboursée
 source.defaultBudget.label: Budget associé
 source.name.label: Nom
 source.number.label: Numéro de compte

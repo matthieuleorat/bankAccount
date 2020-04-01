@@ -15,12 +15,14 @@ easy_admin:
                     - { property: 'debtor', label: 'debt.debtor.label' }
                     - { property: 'creditor', label: 'debt.creditor.label' }
                     - { property: 'expense', label: 'debt.expense.label' }
+                    - { property: 'is_fulfilled', label: 'debt.isFulfilled.label' }
             form:
                 fields:
                     - { property: 'amount', label: 'debt.amount.label' }
                     - { property: 'date', label: 'debt.date.label', type_options: { widget: 'single_text'} }
                     - { property: 'debtor', label: 'debt.debtor.label' }
                     - { property: 'creditor', label: 'debt.creditor.label' }
+                    - { property: 'isFulfilled', label: 'debt.isFulfilled.label' }
                     - { property: 'comment', label: 'debt.comment.label' }
                     - { property: 'expense', label: 'debt.expense.label' }
         Transaction:
