@@ -18,7 +18,7 @@ easy_admin:
             form:
                 fields:
                     - { property: 'amount', label: 'debt.amount.label' }
-                    - { property: 'date', label: 'debt.date.label' }
+                    - { property: 'date', label: 'debt.date.label', type_options: { widget: 'single_text'} }
                     - { property: 'debtor', label: 'debt.debtor.label' }
                     - { property: 'creditor', label: 'debt.creditor.label' }
                     - { property: 'comment', label: 'debt.comment.label' }
