@@ -45,6 +45,8 @@ class DebtController extends EasyAdminController
         $this->em = $this->getDoctrine()->getManager();
 
         $users = $this->em->getRepository(User::class)->getUsersWithTheirDebt();
+
+        // Construct an array with the user id as key
         $peoples = [];
         foreach ($users as $user) {
             $peoples[$user->getId()] = $user;
@@ -56,8 +58,9 @@ class DebtController extends EasyAdminController
         }, []);
 
         $debts = [];
+
         /** @var User $people */
-        foreach ($peoples as $people) {
+        foreach ($users as $people) {
             $debtorKey = $people->getId();
             $debts[$debtorKey] = $assoc_arr;
             /** @var Debt $debt */
@@ -67,9 +70,20 @@ class DebtController extends EasyAdminController
             }
         }
 
+        $debtsBalance = [];
+        foreach ($debts as $debtorId => $debtsByUser) {
+            foreach ($debtsByUser as $creditorId => $amount) {
+                $total = $debts[$debtorId][$creditorId] - $debts[$creditorId][$debtorId];
+                if ($total > 0) {
+                    $debtsBalance[$debtorId][$creditorId] = $total;
+                }
+            }
+        }
+
         return $this->render('admin/debt/see_balance.html.twig', [
             'debts' => $debts,
             'peoples' => $peoples,
+            'debtsBalance' => $debtsBalance,
         ]);
     }
 }

@@ -27,4 +27,10 @@
     {% endfor %}
         </tbody>
     </table>
+
+    {% for debtorId, debts in debtsBalance %}
+        {% for creditorId, amount in debts %}
+            <p>{{ peoples[debtorId] }} doit {{ amount }} à {{ peoples[creditorId] }}</p>
+        {% endfor %}
+    {% endfor %}
 {% endblock %}
