@@ -8,6 +8,7 @@ easy_admin:
         Debt:
             class: App\Entity\Debt
             controller: App\Controller\Admin\DebtController
+            label: debt.entity.label
             list:
                 fields:
                     - { property: 'amount', label: 'debt.amount.label' }
@@ -121,20 +122,20 @@ easy_admin:
                     - { property: 'name', template: 'admin/budget/list/name.html.twig', label: 'Nom'}
     design:
         menu:
-            - { label: 'Categories', entity: 'Category' }
-            - { label: 'Sources', entity: 'Source' }
-            - label: Transactions
+            - { label: 'category.label', entity: 'Category' }
+            - { label: 'source.label', entity: 'Source' }
+            - label: 'transaction.label'
               children:
-                - { label: 'Liste', entity: 'Transaction' }
-                - { label: 'À classer', entity: 'TransactionWithoutExpense' }
-            - label: Dépenses
+                - { label: 'transaction.all.label', entity: 'Transaction' }
+                - { label: 'transaction.withoutexenses.label', entity: 'TransactionWithoutExpense' }
+            - label: 'expense.label'
               children:
-                  - {label: liste, entity: 'Expense'}
-            - { label: 'Filtres', entity: 'DetailsToCategory' }
-            - label: Relevés
+                  - {label: 'expense.all.label', entity: 'Expense'}
+            - { label: 'detailstocategory.label', entity: 'DetailsToCategory' }
+            - label: 'statement.label'
               children:
-                - { label: 'Liste', entity: 'Statement' }
-                - { label: 'Importer', route: 'import_new_statement'}
-            - { label: 'Budgets', entity: 'Budget'}
-            - { label: 'Comptes', entity: 'Debt'}
-            - { label: 'Résultats', route: 'resultat'}
+                - { label: 'statement.all.label', entity: 'Statement' }
+                - { label: 'statement.import.label', route: 'import_new_statement'}
+            - { label: 'budget.label', entity: 'Budget'}
+            - { label: 'debt.label', entity: 'Debt'}
+            - { label: 'result.label', route: 'resultat'}
