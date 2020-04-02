@@ -22,11 +22,21 @@ debt.isFulfilled.label: Est remboursée
 detailstocategory.label: Filtres
 expense.label: Dépenses
 expense.all.label: Liste
-source.defaultBudget.label: Budget associé
-source.label: Sources
-source.name.label: Nom
-source.number.label: Numéro de compte
-source.statements.label: Nombre de relevés
+Source: Source
+source:
+  statements:
+    label: Relevés
+  entity:
+    name: Source
+  defaultBudget:
+    label: Budget associé
+  label: Sources
+  name:
+    label: Nom
+  number:
+    label: Numéro de compte
+statements:
+  label: Nombre de relevés
 statement.label: Relevés
 statement.all.label: Liste
 statement.import.label: Importer un relevé

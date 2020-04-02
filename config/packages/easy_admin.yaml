@@ -76,10 +76,17 @@ easy_admin:
                     - { property: 'parent', label: 'category.parent.label' }
         Source:
             class: App\Entity\Source
+            label: 'source.entity.name'
             list:
                 fields:
-                    - { property: 'number', label: 'source.number.label' }
                     - { property: 'name', label: 'source.name.label' }
+                    - { property: 'number', label: 'source.number.label' }
+                    - { property: 'statements', label: 'source.statements.label' }
+                    - { property: 'defaultBudget', label: 'source.defaultBudget.label' }
+            form:
+                fields:
+                    - { property: 'name', label: 'source.name.label' }
+                    - { property: 'number', label: 'source.number.label' }
                     - { property: 'statements', label: 'source.statements.label' }
                     - { property: 'defaultBudget', label: 'source.defaultBudget.label' }
         Statement:
