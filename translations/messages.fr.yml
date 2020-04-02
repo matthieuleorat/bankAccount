@@ -22,6 +22,18 @@ source.statements.label: Nombre de relevés
 statement.label: Relevés
 statement.all.label: Liste
 statement.import.label: Importer un relevé
-transaction.label: Transactions
-transaction.all.label: Toutes les transactions
-transaction.withoutexenses.label: Transactions à trier
+Transaction: Transaction
+transaction:
+  menu:
+    all: Toutes les transactions
+    label: Transactions
+    withoutexpenses: Transactions à trier
+  createexpense: Créer une dépense liée
+  credit: Crédit
+  date: Date
+  debit: Débit
+  details: Détails
+  entity:
+    name: Transaction
+  expenses: Dépenses
+  amount: Montant

@@ -28,22 +28,23 @@ easy_admin:
                     - { property: 'expense', label: 'debt.expense.label' }
         Transaction:
             class: App\Entity\Transaction
+            label: transaction.entity.name
             list:
                 filters: ['statement', 'date']
                 actions:
                     - { name: 'create_expense', template: 'admin/transaction/list/action/create_expense_from_transaction_action.html.twig' }
                 fields:
-                    - date
-                    - { property: 'details', template: 'admin/transaction/list/details.html.twig'}
-                    - { property: 'expenses', template: 'admin/transaction/list/expenses.html.twig', label: 'Dépenses associées'}
-                    - { property: 'montant', template: 'admin/transaction/list/montant.html.twig', label: 'Montant'}
+                    - { property: 'date', label: 'transaction.date'}
+                    - { property: 'details', label: 'transaction.details', template: 'admin/transaction/list/details.html.twig'}
+                    - { property: 'expenses', label: 'transaction.expenses', template: 'admin/transaction/list/expenses.html.twig'}
+                    - { property: 'amount', label: 'transaction.amount', template: 'admin/transaction/list/amount.html.twig'}
             form:
                 fields:
-                    - { property: 'date', label: 'Date'}
-                    - { property: 'details', label: 'Détail'}
-                    - { property: 'debit', label: 'Débit'}
-                    - { property: 'credit', label: 'Crédit'}
-                    - { property: 'createExpense', type: 'checkbox'}
+                    - { property: 'date', label: 'transaction.date', type_options: { widget: 'single_text'}}
+                    - { property: 'details', label: 'transaction.details'}
+                    - { property: 'debit', label: 'transaction.debit'}
+                    - { property: 'credit', label: 'transaction.credit'}
+                    - { property: 'createExpense', type: 'checkbox', label: 'transaction.createexpense'}
 
             show:
                 fields:
@@ -124,10 +125,10 @@ easy_admin:
         menu:
             - { label: 'category.label', entity: 'Category' }
             - { label: 'source.label', entity: 'Source' }
-            - label: 'transaction.label'
+            - label: 'transaction.menu.label'
               children:
-                - { label: 'transaction.all.label', entity: 'Transaction' }
-                - { label: 'transaction.withoutexenses.label', entity: 'TransactionWithoutExpense' }
+                - { label: 'transaction.menu.all', entity: 'Transaction' }
+                - { label: 'transaction.menu.withoutexpenses', entity: 'TransactionWithoutExpense' }
             - label: 'expense.label'
               children:
                   - {label: 'expense.all.label', entity: 'Expense'}
