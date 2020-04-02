@@ -1,6 +1,14 @@
 budget.label: Budgets
 result.label: Résultats
+Category: Categorie
 category.label: Catégories
+category:
+  entity:
+    name: Catégorie
+  name:
+    label: Nom
+  parent:
+    label: Parent
 Debt: Dettes
 debt.entity.label: Dettes
 debt.label: Comptes

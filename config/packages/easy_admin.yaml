@@ -65,15 +65,15 @@ easy_admin:
                     - { property: 'amount', template: 'admin/transaction/list/amount.html.twig', label: 'transaction.amount'}
         Category:
             class: App\Entity\Category
+            label: 'category.entity.name'
             list:
                 fields:
-                    - id
-                    - name
-                    - parent
+                    - { property: 'name', label: 'category.name.label' }
+                    - { property: 'parent', label: 'category.parent.label' }
             form:
                 fields:
-                    - name
-                    - parent
+                    - { property: 'name', label: 'category.name.label' }
+                    - { property: 'parent', label: 'category.parent.label' }
         Source:
             class: App\Entity\Source
             list:
