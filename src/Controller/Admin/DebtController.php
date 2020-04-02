@@ -4,7 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\Debt;
 use App\Entity\Expense;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DebtController extends EasyAdminController
@@ -36,12 +38,38 @@ class DebtController extends EasyAdminController
     /**
      * @Route("/seeBalance", name="see_balance")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function seeBalanceAction()
     {
-        return $this->render('admin/debt/see_balance.html.twig', [
+        $this->em = $this->getDoctrine()->getManager();
 
+        $users = $this->em->getRepository(User::class)->getUsersWithTheirDebt();
+        $peoples = [];
+        foreach ($users as $user) {
+            $peoples[$user->getId()] = $user;
+        }
+
+        $assoc_arr = array_reduce($peoples, function ($result, User $user) {
+            $result[$user->getId()] = 0;
+            return $result;
+        }, []);
+
+        $debts = [];
+        /** @var User $people */
+        foreach ($peoples as $people) {
+            $debtorKey = $people->getId();
+            $debts[$debtorKey] = $assoc_arr;
+            /** @var Debt $debt */
+            foreach ($people->getDebts() as $debt) {
+                $creditorKey = $debt->getCreditor()->getId();
+                $debts[$debtorKey][$creditorKey] += $debt->getAmount();
+            }
+        }
+
+        return $this->render('admin/debt/see_balance.html.twig', [
+            'debts' => $debts,
+            'peoples' => $peoples,
         ]);
     }
 }

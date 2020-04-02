@@ -3,3 +3,28 @@
 {% block content_title %}
     {{ 'page.see_balance.title'|trans }}
 {% endblock %}
+
+{% block main %}
+    <table class="table datagrid">
+    {% for userId, debt in debts %}
+        {% if loop.first %}
+            <thead>
+                <tr>
+                    <td></td>
+                    {% for creditorId, d in debt %}
+                        <td>{{ peoples[creditorId] }}</td>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+        {% endif %}
+        <tr>
+            <td>{{ peoples[userId] }} doit</td>
+            {% for d in debt %}
+            <td>{{ d }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
