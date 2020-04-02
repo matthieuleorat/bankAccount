@@ -23,7 +23,9 @@ statement.label: Relevés
 statement.all.label: Liste
 statement.import.label: Importer un relevé
 Transaction: Transaction
+TransactionWithoutExpense: Transaction sans dépenses liées
 transaction:
+  amount: Montant
   menu:
     all: Toutes les transactions
     label: Transactions
@@ -36,4 +38,4 @@ transaction:
   entity:
     name: Transaction
   expenses: Dépenses
-  amount: Montant
+  type: Type

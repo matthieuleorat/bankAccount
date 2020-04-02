@@ -48,10 +48,10 @@ easy_admin:
 
             show:
                 fields:
-                    - { property: 'date', label: 'Date'}
-                    - { property: 'details', label: 'Détail'}
-                    - { property: 'montant', template: 'admin/transaction/list/montant.html.twig', label: 'Montant'}
-                    - { property: 'type', template: 'admin/transaction/show/type.html.twig', label: 'Type'}
+                    - { property: 'date', label: 'transaction.date'}
+                    - { property: 'details', label: 'transaction.details'}
+                    - { property: 'amount', template: 'admin/transaction/list/amount.html.twig', label: 'transaction.amount'}
+                    - { property: 'type', template: 'admin/transaction/show/type.html.twig', label: 'transaction.type'}
 
         TransactionWithoutExpense:
             class: App\Entity\Transaction
@@ -60,9 +60,9 @@ easy_admin:
                     - { name: 'create_expense', template: 'admin/transaction/list/action/create_expense_from_transaction_action.html.twig' }
                 dql_filter: 'entity.expenses is empty'
                 fields:
-                    - date
-                    - { property: 'details', template: 'admin/transaction/list/details.html.twig'}
-                    - { property: 'montant', template: 'admin/transaction/list/montant.html.twig', label: 'Montant'}
+                    - { property: 'date', label: 'transaction.date'}
+                    - { property: 'details', template: 'admin/transaction/list/details.html.twig', label: 'transaction.details'}
+                    - { property: 'amount', template: 'admin/transaction/list/amount.html.twig', label: 'transaction.amount'}
         Category:
             class: App\Entity\Category
             list:
