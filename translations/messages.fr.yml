@@ -10,15 +10,27 @@ category:
   parent:
     label: Parent
 Debt: Dettes
-debt.entity.label: Dettes
-debt.label: Comptes
-debt.amount.label: Montant
-debt.comment.label: Commentaire
-debt.creditor.label: Créditeur
-debt.date.label: Date
-debt.debtor.label: Débiteur
-debt.expense.label: Dépenses
-debt.isFulfilled.label: Est remboursée
+debt:
+  menu:
+    all: Voir toutes les dettes
+    seeBalance: Voir les comptes
+  amount:
+    label: Montant
+  comment:
+    label: Commentaire
+  label: Comptes
+  entity:
+    label: Dettes
+  creditor:
+    label: Créditeur
+  date:
+    label: Date
+  debtor:
+    label: Débiteur
+  expense:
+    label: Dépenses
+  isFulfilled:
+    label: Est remboursée
 detailstocategory.label: Filtres
 expense.label: Dépenses
 expense.all.label: Liste
@@ -57,3 +69,6 @@ transaction:
     name: Transaction
   expenses: Dépenses
   type: Type
+page:
+  see_balance:
+    title: Voir les comptes entre deux personnes

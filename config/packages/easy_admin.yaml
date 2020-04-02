@@ -145,5 +145,8 @@ easy_admin:
                 - { label: 'statement.all.label', entity: 'Statement' }
                 - { label: 'statement.import.label', route: 'import_new_statement'}
             - { label: 'budget.label', entity: 'Budget'}
-            - { label: 'debt.label', entity: 'Debt'}
+            - label: 'debt.label'
+              children:
+                - { label: 'debt.menu.all', entity: 'Debt'}
+                - { label: 'debt.menu.seeBalance', route: 'see_balance'}
             - { label: 'result.label', route: 'resultat'}

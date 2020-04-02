@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Debt;
 use App\Entity\Expense;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DebtController extends EasyAdminController
 {
@@ -30,5 +31,17 @@ class DebtController extends EasyAdminController
         }
 
         return $entity;
+    }
+
+    /**
+     * @Route("/seeBalance", name="see_balance")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function seeBalanceAction()
+    {
+        return $this->render('admin/debt/see_balance.html.twig', [
+
+        ]);
     }
 }
