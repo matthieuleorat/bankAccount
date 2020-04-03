@@ -33,7 +33,10 @@
     <h2>{{ 'page.see_balance.users_balances'|trans }}</h2>
     {% for debtorId, debts in debtsBalance %}
         {% for creditorId, amount in debts %}
-            <p>{% trans with {'%debtor%': peoples[debtorId], '%amount%': amount, '%creditor%': peoples[creditorId]} %}page.see_balance.debtor-own-to-creditor{% endtrans %}</p>
+            <p>
+                {% trans with {'%debtor%': peoples[debtorId], '%amount%': amount, '%creditor%': peoples[creditorId]} %}page.see_balance.debtor-own-to-creditor{% endtrans %}
+                <a href="{{ url('debt_endDebt',{'user1':debtorId, 'user2': creditorId}) }}">{% trans %}page.see_balance.end-debt{% endtrans %}</a>
+            </p>
         {% endfor %}
     {% endfor %}
 

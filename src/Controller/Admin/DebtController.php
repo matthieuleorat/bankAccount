@@ -36,6 +36,25 @@ class DebtController extends EasyAdminController
     }
 
     /**
+     * @Route("/endDebt/{user1}/{user2}", name="debt_endDebt")
+     *
+     * @param User $user1
+     * @param User $user2
+     *
+     * @return void
+     */
+    public function endDebtAction(User $user1, User $user2)
+    {
+        $this->em = $this->getDoctrine()->getManager();
+
+        $debts = $this->em->getRepository(Debt::class)->findUnfulfilledDebtBetweenTwoUser($user1, $user2);
+
+        return $this->render('admin/debt/end_debts.html.twig', [
+            'debts' => $debts,
+        ]);
+    }
+
+    /**
      * @Route("/seeBalance", name="see_balance")
      *
      * @return Response

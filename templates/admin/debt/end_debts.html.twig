@@ -1,0 +1,30 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    {{ 'page.end_debts.title'|trans }}
+{% endblock %}
+
+{% block main %}
+    <table class="table datagrid">
+        <thead>
+            <tr>
+                <td>{{ 'date'|trans }}</td>
+                <td>{{ 'debtor'|trans }}</td>
+                <td>{{ 'amount'|trans }}</td>
+                <td>{{ 'creditor'|trans }}</td>
+                <td>{{ 'comment'|trans }}</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for debt in debts %}
+                <tr>
+                    <td>{{ debt.date|date('d/m/Y') }}</td>
+                    <td>{{ debt.debtor }}</td>
+                    <td>{{ debt.amount }}</td>
+                    <td>{{ debt.creditor }}</td>
+                    <td>{{ debt.comment }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    <table>
+{% endblock %}
