@@ -5,6 +5,8 @@
 {% endblock %}
 
 {% block main %}
+
+    <h2>{{ 'page.see_balance.summary'|trans }}</h2>
     <table class="table datagrid">
     {% for userId, debt in debts %}
         {% if loop.first %}
@@ -28,9 +30,38 @@
         </tbody>
     </table>
 
+    <h2>{{ 'page.see_balance.users_balances'|trans }}</h2>
     {% for debtorId, debts in debtsBalance %}
         {% for creditorId, amount in debts %}
-            <p>{{ peoples[debtorId] }} doit {{ amount }} à {{ peoples[creditorId] }}</p>
+            <p>{% trans with {'%debtor%': peoples[debtorId], '%amount%': amount, '%creditor%': peoples[creditorId]} %}page.see_balance.debtor-own-to-creditor{% endtrans %}</p>
         {% endfor %}
     {% endfor %}
+
+    <h2>{{ 'page.see_balance.details'|trans }}</h2>
+
+        {% for people in peoples %}
+            <h3>{{ people.username }}</h3>
+            <table class="table datagrid">
+            <thead>
+                <tr>
+                    <td>{{ 'date'|trans }}</td>
+                    <td>{{ 'amount'|trans }}</td>
+                    <td>{{ 'creditor'|trans }}</td>
+                    <td>{{ 'comment'|trans }}</td>
+                </tr>
+            </thead>
+
+            {% for debt in people.debts %}
+                <tr>
+                    <td>{{ debt.date|date('d/m/Y') }}</td>
+                    <td>{{ debt.amount }}</td>
+                    <td>{{ debt.creditor }}</td>
+                    <td>{{ debt.comment }}</td>
+                </tr>
+            {% endfor %}
+
+            </table>
+        {% endfor %}
+
+
 {% endblock %}

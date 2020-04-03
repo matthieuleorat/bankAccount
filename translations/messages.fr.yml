@@ -72,3 +72,7 @@ transaction:
 page:
   see_balance:
     title: Voir les comptes entre deux personnes
+    details: Détails des dettes
+    users_balances: Qui doit quoi ?
+    summary: Récapitulatif
+    debtor-own-to-creditor: "%debtor% doit %amount%€ à %creditor%"
