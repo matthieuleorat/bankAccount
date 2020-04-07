@@ -101,7 +101,7 @@ easy_admin:
                     - date
                     - { property: 'label', template: 'admin/expense/list/details.html.twig'}
                     - category
-                    - { property: 'montant', template: 'admin/transaction/list/montant.html.twig', label: 'Montant'}
+                    - { property: 'amount', template: 'admin/transaction/list/amount.html.twig', label: 'Montant'}
                     - budget
         DetailsToCategory:
             class: App\Entity\DetailsToCategory
