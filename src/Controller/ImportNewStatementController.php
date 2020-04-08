@@ -102,6 +102,7 @@ class ImportNewStatementController extends AbstractController
         return $this->render('admin/import_new_statement/index.html.twig', [
             'controller_name' => 'ImportNewStatementController',
             'form' => $form->createView(),
+            'statement' => $statement ?? null
         ]);
     }
 
