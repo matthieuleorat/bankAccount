@@ -142,6 +142,8 @@ class Transaction
     {
         $this->statement = $statement;
 
+        $statement->addTransaction($this);
+
         return $this;
     }
 
