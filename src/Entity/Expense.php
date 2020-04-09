@@ -113,6 +113,8 @@ class Expense
     {
         $this->transaction = $transaction;
 
+        $transaction->addExpense($this);
+
         return $this;
     }
 

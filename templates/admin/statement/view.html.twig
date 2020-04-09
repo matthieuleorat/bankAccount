@@ -1,0 +1,66 @@
+<style>
+    .statement-container {
+        display: flex;
+        flex-wrap: wrap;
+        /*justify-content: space-between;*/
+    }
+    .break {
+        flex-basis: 100%;
+        height: 0;
+    }
+    .item {
+        flex-grow: 1;
+    }
+</style>
+
+<div class="statement-container">
+    <div class="item">
+        {% if statement.id is null %}Nouveau relevé{% else %}Relevé existant{% endif %}
+    </div>
+    <div class="break"></div>
+    <div class="item">
+        Compte n° {{ statement.source.number }}<br>
+        Du {{ statement.startingDate|date('d/m/Y') }} au {{ statement.endingDate|date('d/m/Y') }}<br>
+        {{ statement.transactions.count }} transactions
+    </div>
+    <div class="item">
+        Solde au {{ statement.startingDate|date('d/m/Y') }}:  {{ statement.startingBalance }} €<br>
+        Solde au {{ statement.endingDate|date('d/m/Y') }}: {{ statement.endingBalance }} €<br>
+    </div>
+    <div class="item">
+        Total des débits: {{ statement.totalDebit }} €<br>
+        Total des crédits: {{ statement.totalCredit }} €<br>
+        Résultat: {{ statement.totalCredit - statement.totalDebit }} €
+    </div>
+</div>
+
+<table class="table datagrid">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Détails</th>
+        <th>Crédit</th>
+        <th>Débit</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for transaction in statement.transactions %}
+        <tr>
+            <td>{{ transaction.date|date('d/m/Y') }}</td>
+            <td>{{ transaction.details }}</td>
+            <td>{{ transaction.debit }}</td>
+            <td>{{ transaction.credit }}</td>
+        </tr>
+        {% if transaction.expenses.count > 0 %}
+            {% for expense in transaction.expenses %}
+                <tr>
+                    <td></td>
+                    <td colspan="3">
+                        {{ expense.getAmount }} dans le budget {{ expense.category }} / {{ expense.budget }} de {{ expense.date|date('F Y') }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
