@@ -95,6 +95,7 @@ easy_admin:
             class: App\Entity\Expense
             controller: App\Controller\Admin\ExpenseController
             list:
+                filters: ['category', 'date', 'budget', 'label']
                 actions:
                     - { name: 'create_debt', template: 'admin/expense/list/action/create_debt_from_expense.html.twig' }
                 fields:
