@@ -58,7 +58,11 @@ class ResultatController extends EasyAdminController
 
         $p = $this->generatePeriodArray($startingDate, $endingDate);
 
-        $test = [];
+        $datas = new \stdClass();
+        $datas->headers = [];
+        $datas->rows = [];
+
+        $datasForGraph = [];
         foreach ($p as $periode) {
             $obj = new \stdClass();
             $obj->x = [];
@@ -66,29 +70,51 @@ class ResultatController extends EasyAdminController
             $obj->type = 'bar';
             $obj->name = $periode[0]->format('F Y');
 
+            $row = new \stdClass();
+            $row->period = $periode;
+            $row->values = [];
+            $row->total = 0;
+
             foreach($categories as $category) {
                 $obj->x[] = $category->getName();
                 $ids = $this->repo->getChildren($category);
                 $ids[] = $category;
-                $datas = $this->em->getRepository(Expense::class)->getTotalsForCategories($budget, $ids, $periode[0], $periode[1])[0];
-                $obj->y[] = $datas['totalDebit'] - $datas['totalCredit'];
+                $values = $this->em->getRepository(Expense::class)->getTotalsForCategories($budget, $ids, $periode[0], $periode[1])[0];
+                $obj->y[] = $values['totalDebit'] - $values['totalCredit'];
+
+                if (false === in_array($category, $datas->headers)) {
+                    $datas->headers[] = $category;
+                }
+                $data = new \stdClass();
+                $data->category = $category;
+                $data->value = $values['totalDebit'] - $values['totalCredit'];
+                $row->total += $data->value;
+                $row->values[] = $data;
             }
 
-            $test[] = $obj;
+//            https://localhost/admin/?entity=Expense&action=list&filters[date][comparison]=between&filters[date][value][day]=1&filters[date][value][month]=1&filters[date][value][year]=2020&filters[date][value2][day]=31&filters[date][value2][month]=1&filters[date][value2][year]=2020
+//            https://localhost/admin/?entity=Expense&action=list&filters[date][comparison]=between&filters[date][value][day]=1&filters[date][value][month]=1&filters[date][value][year]=2020&filters[date][value2][day]=31&filters[date][value2][month]=1&filters[date][value2][year]=2020
+            $datas->rows[] = $row;
+
+            $datasForGraph[] = $obj;
         }
 
         return $this->render('admin/resultat/index.html.twig', [
             'form' => $form->createView(),
-            'data' => $test,
+            'datasForGraph' => $datasForGraph,
+            'datas' => $datas,
         ]);
     }
 
-    private function generatePeriodArray(\DateTime $startingDate, \DateTime $endingDate, $granularity = 'monthly') : array
-    {
+    private function generatePeriodArray(
+        \DateTime $startingDate,
+        \DateTime $endingDate,
+        string $granularity = 'monthly'
+    ) : array {
+
         switch ($granularity) {
             default:
                 $interval = new \DateInterval('P1M');
-                break;
         }
 
         $period = new \DatePeriod($startingDate, $interval, $endingDate);

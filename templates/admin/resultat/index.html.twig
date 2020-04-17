@@ -70,29 +70,51 @@
     {{ form_end(form) }}
 
     <table class="table datagrid">
-        {% for month in data %}
-        {% if loop.first %}
         <thead>
-        <tr>
-            <th></th>
-            {% for cat in month.x %}
-                <th>{{ cat }}</th>
-            {% endfor %}
-            <th>Totaux</th>
-        </tr>
+            <tr>
+                <th></th>
+                {% for category in datas.headers %}
+                    <th>{{ category.name}}</th>
+                {% endfor %}
+                <th>Totaux</th>
+            </tr>
         </thead>
         <tbody>
-        {% endif %}
-        <tr>
-            <td>{{ month.name }}</td>
-            {% set totalByMonth = 0 %}
-            {% for categoryMonthlyTotal in month.y %}
-                {% set totalByMonth = totalByMonth + categoryMonthlyTotal %}
-                <td>{{ categoryMonthlyTotal }}</td>
+            {% for row in datas.rows %}
+                <tr>
+                    <td>{{ row.period[0]|date('F Y') }}</td>
+                    {% for value in row.values %}
+                        <td>
+                            <a href="{{ path('easyadmin', {
+                                'entity': 'Expense',
+                                'action': 'list',
+                                'filters': {
+                                    'category': {
+                                        'comparison': '=',
+                                        'value': value.category.id
+                                    },
+                                    'date': {
+                                        'comparison': 'between',
+                                        'value': {
+                                            'day': row.period[0]|date('j'),
+                                            'month': row.period[0]|date('n'),
+                                            'year': row.period[0]|date('Y')
+                                        },
+                                        'value2': {
+                                            'day': row.period[1]|date('j'),
+                                            'month': row.period[1]|date('n'),
+                                            'year': row.period[1]|date('Y')
+                                        }
+                                    }
+                                }
+                            }) }}">
+                                {{ value.value }}
+                            </a>
+                        </td>
+                    {% endfor %}
+                    <td>{{ row.total }}</td>
+                </tr>
             {% endfor %}
-            <td>{{ totalByMonth }}</td>
-        </tr>
-        {% endfor %}
         </tbody>
     </table>
 
@@ -100,7 +122,7 @@
 
     <script>
         var layout = {barmode: 'group'};
-        Plotly.newPlot('tester', {{ data|json_encode()|raw }}, layout);
+        Plotly.newPlot('tester', {{ datasForGraph|json_encode()|raw }}, layout);
 
 
         // Get categories elements
