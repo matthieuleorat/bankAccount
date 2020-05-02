@@ -1,10 +1,13 @@
 budget.label: Budgets
 result.label: Résultats
 Category: Categorie
-category.label: Catégories
 category:
   entity:
     name: Catégorie
+  label: Catégories
+  list:
+    title: Liste des categories
+    add-new-category: Ajouter une catégorie
   name:
     label: Nom
   parent:

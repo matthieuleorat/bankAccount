@@ -1,0 +1,15 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    {{ 'category.list.title'|trans }}
+{% endblock %}
+
+{% block global_actions %}
+    <a class="btn btn-primary action-new" href="{{ easyadmin_path('Category', 'new') }}">
+        {{ 'category.list.add-new-category'|trans }}
+    </a>
+{% endblock %}
+
+{% block main %}
+    {{ htmlTree|raw }}
+{% endblock %}

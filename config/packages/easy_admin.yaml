@@ -65,6 +65,7 @@ easy_admin:
                     - { property: 'amount', template: 'admin/transaction/list/amount.html.twig', label: 'transaction.amount'}
         Category:
             class: App\Entity\Category
+            controller: App\Controller\Admin\CategoryController
             label: 'category.entity.name'
             list:
                 fields:
