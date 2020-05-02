@@ -89,10 +89,7 @@
                                 'entity': 'Expense',
                                 'action': 'list',
                                 'filters': {
-                                    'category': {
-                                        'comparison': '=',
-                                        'value': value.category.id
-                                    },
+                                    'category': value.category.id,
                                     'date': {
                                         'comparison': 'between',
                                         'value': {

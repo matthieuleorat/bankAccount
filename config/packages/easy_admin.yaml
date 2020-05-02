@@ -95,7 +95,12 @@ easy_admin:
             class: App\Entity\Expense
             controller: App\Controller\Admin\ExpenseController
             list:
-                filters: ['category', 'date', 'budget', 'label']
+                filters:
+                    - property: 'category'
+                      type: 'App\Form\Filter\CategoryWithChildrenFilterType'
+                    - 'date'
+                    - 'budget'
+                    - 'label'
                 actions:
                     - { name: 'create_debt', template: 'admin/expense/list/action/create_debt_from_expense.html.twig' }
                 fields:
@@ -111,7 +116,6 @@ easy_admin:
                 actions: ['apply']
             form:
                 fields:
-                    #- { type: 'section', label: 'Filtre' }
                     - { type: 'group', columns: 4, label: 'Filtre' }
                     - { property: 'regex', label: 'Nom'}
                     - { property: 'filters', label: 'Filtres', type: 'collection', type_options: { allow_delete: true, allow_add: true, by_reference: false, entry_type: 'App\Form\FilterType'}}
