@@ -127,7 +127,7 @@ easy_admin:
 #                    - { type: 'section', label: 'Dépense' }
                     - { type: 'group', columns: 8, label: 'Dépense' }
                     - { property: 'label', label: 'Champ dans lequel prendre le label à associer à la dépense', type: 'App\Form\AttributeSelectionType'}
-                    - { property: 'category', label: 'Catégorie'}
+                    - { property: 'category', label: 'Catégorie', type: 'App\Form\CategoryType'}
                     - { property: 'debit', label: 'Champ dans lequel prendre le montant du débit à la dépense', type: 'App\Form\AttributeSelectionType'}
                     - { property: 'credit', label: 'Champ dans lequel prendre le montant du crédit à la dépense', type: 'App\Form\AttributeSelectionType'}
                     - { property: 'date', label: 'Champ dans lequel prendre la date', type: 'App\Form\AttributeSelectionType'}
