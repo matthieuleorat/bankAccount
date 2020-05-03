@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Expense;
 use App\Entity\Transaction;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use Matleo\BankStatementParser\Model\CreditCardPayment;
 
 class ExpenseController extends EasyAdminController
 {
@@ -37,8 +38,18 @@ class ExpenseController extends EasyAdminController
 
             $entity->setCredit($credit);
             $entity->setDebit($debit);
-            $entity->setLabel($transaction->getDetails());
-            $entity->setDate($transaction->getDate());
+
+            $label = $transaction->getDetails();
+            $date = $transaction->getDate();
+
+            if ($transaction->getType() instanceof CreditCardPayment) {
+                $date = $transaction->getType()->getDate();
+                $label = $transaction->getType()->getMerchant();
+            }
+
+            $entity->setDate($date);
+            $entity->setLabel($label);
+
             $entity->setTransaction($transaction);
 
             if (null !== $defaultBudget = $transaction->getStatement()->getSource()->getDefaultBudget()) {

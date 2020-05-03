@@ -99,6 +99,10 @@ easy_admin:
                 fields:
                     - label
                     - { property: 'category', type: 'App\Form\CategoryType' }
+                    - debit
+                    - credit
+                    - date
+                    - budget
             list:
                 filters:
                     - property: 'category'
