@@ -74,7 +74,7 @@ easy_admin:
             form:
                 fields:
                     - { property: 'name', label: 'category.name.label' }
-                    - { property: 'parent', label: 'category.parent.label' }
+                    - { property: 'parent', label: 'category.parent.label', type: 'App\Form\CategoryType' }
         Source:
             class: App\Entity\Source
             label: 'source.entity.name'
@@ -95,6 +95,10 @@ easy_admin:
         Expense:
             class: App\Entity\Expense
             controller: App\Controller\Admin\ExpenseController
+            form:
+                fields:
+                    - label
+                    - { property: 'category', type: 'App\Form\CategoryType' }
             list:
                 filters:
                     - property: 'category'
@@ -123,7 +127,7 @@ easy_admin:
 #                    - { type: 'section', label: 'Dépense' }
                     - { type: 'group', columns: 8, label: 'Dépense' }
                     - { property: 'label', label: 'Champ dans lequel prendre le label à associer à la dépense', type: 'App\Form\AttributeSelectionType'}
-                    - { property: 'category', label: 'Catégorie'}
+                    - { property: 'category', label: 'Catégorie', type: 'App\Form\CategoryType'}
                     - { property: 'debit', label: 'Champ dans lequel prendre le montant du débit à la dépense', type: 'App\Form\AttributeSelectionType'}
                     - { property: 'credit', label: 'Champ dans lequel prendre le montant du crédit à la dépense', type: 'App\Form\AttributeSelectionType'}
                     - { property: 'date', label: 'Champ dans lequel prendre la date', type: 'App\Form\AttributeSelectionType'}
