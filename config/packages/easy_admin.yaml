@@ -98,7 +98,7 @@ easy_admin:
             form:
                 fields:
                     - label
-                    - { property: 'category', label: 'lala', type: 'App\Form\CategoryType' }
+                    - { property: 'category', type: 'App\Form\CategoryType' }
             list:
                 filters:
                     - property: 'category'
