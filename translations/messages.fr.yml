@@ -57,12 +57,14 @@ statement.all.label: Liste
 statement.import.label: Importer un relevé
 Transaction: Transaction
 TransactionWithoutExpense: Transaction sans dépenses liées
+IgnoredTransaction: Transactions ignorées
 transaction:
   amount: Montant
   menu:
     all: Toutes les transactions
     label: Transactions
     withoutexpenses: Transactions à trier
+    ignoredTransaction: Transactions ignorées
   createexpense: Créer une dépense liée
   credit: Crédit
   date: Date

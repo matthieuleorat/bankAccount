@@ -1,0 +1,11 @@
+<a href="{{ path('easyadmin', {
+    'entity': 'Transaction',
+    'action': 'toggleIgnore',
+    'id': item.id
+}) }}">
+    {% if item.ignore %}
+        Dé-ignorer cette transaction
+    {% else %}
+        Ignorer cette transaction
+    {% endif %}
+</a>

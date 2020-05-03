@@ -16,6 +16,10 @@ class TransactionExtension extends AbstractExtension
 
     public function displayTransactionType($value)
     {
+        if (false === is_object($value)) {
+            return '';
+        }
+
         $reflect = new \ReflectionClass($value);
         $props   = $reflect->getProperties();
         $datas = [];

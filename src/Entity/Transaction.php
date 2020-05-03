@@ -56,6 +56,12 @@ class Transaction
 
     /**
      * @var bool
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $ignore = false;
+
+    /**
+     * @var bool
      */
     private $createExpense = false;
 
@@ -210,5 +216,21 @@ class Transaction
         $this->type = base64_encode(serialize($type));
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIgnore(): ? bool
+    {
+        return $this->ignore;
+    }
+
+    /**
+     * @param bool $ignore
+     */
+    public function setIgnore(bool $ignore): void
+    {
+        $this->ignore = $ignore;
     }
 }
