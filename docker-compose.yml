@@ -39,6 +39,8 @@ services:
       # SSH keys
       - ~/.ssh:/root/.ssh:ro
     tty: true
+    env_file:
+      - .env
 
   nginx:
     build: docker/nginx
