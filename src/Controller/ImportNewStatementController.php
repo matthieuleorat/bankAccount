@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\AwsBucket\Uploader;
 use App\Filtering\AttributeExtractor;
 use App\Filtering\CategoryGuesser;
 use App\Entity\Expense;
@@ -11,6 +12,7 @@ use App\Entity\DetailsToCategory;
 use App\Entity\Statement;
 use App\Entity\Transaction;
 use App\Form\ImportStatementType;
+use Aws\S3\S3Client;
 use Matleo\BankStatementParser\BankStatementParser;
 use Matleo\BankStatementParser\Model\BankStatement;
 use Matleo\BankStatementParser\Model\Operation;
@@ -35,11 +37,19 @@ class ImportNewStatementController extends AbstractController
      * @var AttributeExtractor
      */
     private $attributeExtractor;
+    /**
+     * @var Uploader
+     */
+    private $uploader;
 
-    public function __construct(CategoryGuesser $categoryGuesser, AttributeExtractor $attributeExtractor)
-    {
+    public function __construct(
+        CategoryGuesser $categoryGuesser,
+        AttributeExtractor $attributeExtractor,
+        Uploader $uploader
+    ) {
         $this->categoryGuesser = $categoryGuesser;
         $this->attributeExtractor = $attributeExtractor;
+        $this->uploader = $uploader;
     }
 
     /**
@@ -63,7 +73,9 @@ class ImportNewStatementController extends AbstractController
                 try {
                     $originalFilename = pathinfo($statementFile->getClientOriginalName(), PATHINFO_FILENAME);
                     // this is needed to safely include the file name as part of the URL
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename).'.'.$statementFile->getClientOriginalExtension();
+
+                    $remoteFileName = $this->uploader->execute('statement/', $statementFile->getClientOriginalExtension(), $statementFile->getpath().'/'.$statementFile->getFilename());
 
                     /** @var BankStatement $plainStatement */
                     $plainStatement = $bankStatementParser->execute($statementFile->getFilename(), $statementFile->getpath().'/');
@@ -72,10 +84,7 @@ class ImportNewStatementController extends AbstractController
 
                     $account = $this->handleAccount($plainStatement->getAccountNumber());
 
-                    $statement = $this->handleStatement($account, $plainStatement, $safeFilename);
-                    if ($statement instanceof RedirectResponse) {
-                        return $statement;
-                    }
+                    $statement = $this->handleStatement($account, $plainStatement, $safeFilename, $remoteFileName);
 
                     $transactions = array_map(function(Operation $operation) use ($statement) {
                         return $this->transformOperationIntoTransaction($operation, $statement);
@@ -96,7 +105,7 @@ class ImportNewStatementController extends AbstractController
         ]);
     }
 
-    private function handleStatement(Source $account, BankStatement $bankStatement, string $filename)
+    private function handleStatement(Source $account, BankStatement $bankStatement, string $filename, string $remoteFileName) : Statement
     {
         $statement = $this->entityManager->getRepository(Statement::class)->findOneBy(['name' => $filename]);
 
@@ -113,6 +122,7 @@ class ImportNewStatementController extends AbstractController
         $statement->setEndingDate(\DateTimeImmutable::createFromFormat('d/m/Y', $bankStatement->getDateEnd()));
         $statement->setStartingBalance($bankStatement->getSoldePrecedent());
         $statement->setEndingBalance($bankStatement->getNouveauSolde());
+        $statement->setRemoteFile($remoteFileName);
         $this->entityManager->persist($statement);
 
         return $statement;

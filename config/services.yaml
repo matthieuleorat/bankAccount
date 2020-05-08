@@ -6,11 +6,16 @@
 parameters:
     pdftotext_binary_path: '%env(resolve:PDFTOTEXT_BINRAY_PATH)%'
 
+
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $s3_bucket_name: '%env(resolve:S3_BUCKET_NAME)%'
+            $aws_access_key_id: '%env(resolve:AWS_ACCESS_KEY_ID)%'
+            $aws_secret_access_key: '%env(resolve:AWS_SECRET_ACCESS_KEY)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
