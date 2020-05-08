@@ -80,14 +80,17 @@ class ResultatController extends EasyAdminController
                 $ids = $this->repo->getChildren($category);
                 $ids[] = $category;
                 $values = $this->em->getRepository(Expense::class)->getTotalsForCategories($budget, $ids, $periode[0], $periode[1])[0];
-                $obj->y[] = $values['totalDebit'] - $values['totalCredit'];
+
+                $value = $values['totalCredit'] - $values['totalDebit'];
+
+                $obj->y[] =  $value;
 
                 if (false === in_array($category, $datas->headers)) {
                     $datas->headers[] = $category;
                 }
                 $data = new \stdClass();
                 $data->category = $category;
-                $data->value = $values['totalDebit'] - $values['totalCredit'];
+                $data->value = $value;
                 $row->total += $data->value;
                 $row->values[] = $data;
             }
