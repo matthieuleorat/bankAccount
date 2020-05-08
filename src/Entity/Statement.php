@@ -64,6 +64,11 @@ class Statement
      */
     private $transactions;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $remoteFile;
+
     public function __construct()
     {
         $this->transactions = new ArrayCollection();
@@ -202,6 +207,18 @@ class Statement
                 $transaction->setStatement(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRemoteFile(): ?string
+    {
+        return $this->remoteFile;
+    }
+
+    public function setRemoteFile(?string $remoteFile): self
+    {
+        $this->remoteFile = $remoteFile;
 
         return $this;
     }

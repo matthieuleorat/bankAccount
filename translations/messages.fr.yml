@@ -81,3 +81,6 @@ page:
     users_balances: Qui doit quoi ?
     summary: Récapitulatif
     debtor-own-to-creditor: "%debtor% doit %amount%€ à %creditor%"
+    end-debt: Solder
+  end_debts:
+    title: Solder les dettes
