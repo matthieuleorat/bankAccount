@@ -11,11 +11,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FilterType extends AbstractType
 {
-    const AVAILABLE_FIELD = [
-        'Date dans le relevé' => 'date' ,
-        'Détails dans le relevé' => 'details',
-        'Montant du débit' => 'debit',
-        'Montant du crédit' => 'credit',
+    public const STATEMENT_DETAILS_FIELD = 'details';
+    public const STATEMENT_DEBIT_FIELD = 'debit';
+    public const STATEMENT_CREDIT_FIELD = 'credit';
+    public const STATEMENT_DATE_FIELD = 'date';
+
+    public const AVAILABLE_FIELD = [
+        'Date dans le relevé' => self::STATEMENT_DATE_FIELD ,
+        'Détails dans le relevé' => self::STATEMENT_DETAILS_FIELD,
+        'Montant du débit' => self::STATEMENT_DEBIT_FIELD,
+        'Montant du crédit' => self::STATEMENT_CREDIT_FIELD,
         'Mensualité de prêt' => [
             'Numéro de prêt' => 'type.loanNumber',
             'Montant du capital remboursé' => 'type.depreciatedCapital',
@@ -61,7 +66,7 @@ class FilterType extends AbstractType
         ],
     ];
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
             ->add('field', ChoiceType::class, [
@@ -79,7 +84,7 @@ class FilterType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'data_class' => Filter::class
