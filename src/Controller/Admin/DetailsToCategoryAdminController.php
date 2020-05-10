@@ -7,7 +7,9 @@ use App\Filtering\CategoryGuesser;
 use App\Entity\DetailsToCategory;
 use App\Entity\Expense;
 use App\Entity\Transaction;
+use App\Form\FilterType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DetailsToCategoryAdminController extends EasyAdminController
 {
@@ -26,7 +28,21 @@ class DetailsToCategoryAdminController extends EasyAdminController
         $this->attributeExtractor = $attributeExtractor;
     }
 
-    public function applyAction()
+    public function createNewEntity() : DetailsToCategory
+    {
+        $entityFullyQualifiedClassName = $this->entity['class'];
+        /** @var DetailsToCategory $entity */
+        $entity = new $entityFullyQualifiedClassName();
+
+        $entity->setLabel(FilterType::STATEMENT_DETAILS_FIELD);
+        $entity->setCredit(FilterType::STATEMENT_CREDIT_FIELD);
+        $entity->setDebit(FilterType::STATEMENT_DEBIT_FIELD);
+        $entity->setDate(FilterType::STATEMENT_DATE_FIELD);
+
+        return $entity;
+    }
+
+    public function applyAction() : RedirectResponse
     {
         try {
             $id = $this->request->query->get('id');
