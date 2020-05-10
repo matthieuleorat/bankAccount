@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Budget;
 use App\AwsBucket\Uploader;
 use App\Filtering\AttributeExtractor;
 use App\Filtering\CategoryGuesser;
@@ -12,7 +13,6 @@ use App\Entity\DetailsToCategory;
 use App\Entity\Statement;
 use App\Entity\Transaction;
 use App\Form\ImportStatementType;
-use Aws\S3\S3Client;
 use Matleo\BankStatementParser\BankStatementParser;
 use Matleo\BankStatementParser\Model\BankStatement;
 use Matleo\BankStatementParser\Model\Operation;
@@ -172,6 +172,14 @@ class ImportNewStatementController extends AbstractController
                     $expense->setDate($this->attributeExtractor->extract($transaction, $filter->getDate()));
                     $expense->setCredit($this->attributeExtractor->extract($transaction, $filter->getCredit()));
                     $expense->setDebit($this->attributeExtractor->extract($transaction, $filter->getDebit()));
+
+                    if (
+                        $statement->getSource() instanceof Source &&
+                        $statement->getSource()->getDefaultBudget() instanceof Budget
+                    ) {
+                        $expense->setBudget($statement->getSource()->getDefaultBudget());
+                    }
+
                     $this->entityManager->persist($expense);
                 }
             }
