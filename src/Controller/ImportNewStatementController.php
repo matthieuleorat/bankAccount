@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Budget;
 use App\AwsBucket\Uploader;
+use App\Factories\ExpenseFactory;
 use App\Filtering\AttributeExtractor;
 use App\Filtering\CategoryGuesser;
 use App\Entity\Expense;
@@ -41,15 +42,21 @@ class ImportNewStatementController extends AbstractController
      * @var Uploader
      */
     private $uploader;
+    /**
+     * @var ExpenseFactory
+     */
+    private $expenseFactory;
 
     public function __construct(
         CategoryGuesser $categoryGuesser,
         AttributeExtractor $attributeExtractor,
-        Uploader $uploader
+        Uploader $uploader,
+        ExpenseFactory $expenseFactory
     ) {
         $this->categoryGuesser = $categoryGuesser;
         $this->attributeExtractor = $attributeExtractor;
         $this->uploader = $uploader;
+        $this->expenseFactory = $expenseFactory;
     }
 
     /**
@@ -165,21 +172,7 @@ class ImportNewStatementController extends AbstractController
             $filters = $this->entityManager->getRepository(DetailsToCategory::class)->findAll();
             foreach ($filters as $filter) {
                 if (true === $this->categoryGuesser->execute($filter, $transaction)) {
-                    $expense = new Expense();
-                    $expense->setLabel($this->attributeExtractor->extract($transaction, $filter->getLabel()));
-                    $expense->setCategory($filter->getCategory());
-                    $expense->setTransaction($transaction);
-                    $expense->setDate($this->attributeExtractor->extract($transaction, $filter->getDate()));
-                    $expense->setCredit($this->attributeExtractor->extract($transaction, $filter->getCredit()));
-                    $expense->setDebit($this->attributeExtractor->extract($transaction, $filter->getDebit()));
-
-                    if (
-                        $statement->getSource() instanceof Source &&
-                        $statement->getSource()->getDefaultBudget() instanceof Budget
-                    ) {
-                        $expense->setBudget($statement->getSource()->getDefaultBudget());
-                    }
-
+                    $expense = $this->expenseFactory->fromTransaction($transaction, $filter);
                     $this->entityManager->persist($expense);
                 }
             }
@@ -188,20 +181,6 @@ class ImportNewStatementController extends AbstractController
         $this->entityManager->persist($transaction);
 
         return $transaction;
-    }
-
-    private function categoryGuesser(Transaction $transaction) : ? DetailsToCategory
-    {
-        $filters = $this->entityManager->getRepository(DetailsToCategory::class)->findAll();
-
-        /** @var DetailsToCategory $filter */
-        foreach ($filters as $filter) {
-            if (true === CategoryGuesser::execute($filter, $transaction)) {
-                return $filter;
-            }
-        }
-
-        return null;
     }
 
     private function handleAccount(string $accountNumber) : Source

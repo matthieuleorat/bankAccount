@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Filtering\ApplyFilter;
 use App\Filtering\AttributeExtractor;
 use App\Filtering\CategoryGuesser;
 use App\Entity\DetailsToCategory;
@@ -21,11 +22,16 @@ class DetailsToCategoryAdminController extends EasyAdminController
      * @var AttributeExtractor
      */
     private $attributeExtractor;
+    /**
+     * @var ApplyFilter
+     */
+    private $applyFilter;
 
-    public function __construct(CategoryGuesser $categoryGuesser, AttributeExtractor $attributeExtractor)
+    public function __construct(CategoryGuesser $categoryGuesser, AttributeExtractor $attributeExtractor, ApplyFilter $applyFilter)
     {
         $this->categoryGuesser = $categoryGuesser;
         $this->attributeExtractor = $attributeExtractor;
+        $this->applyFilter = $applyFilter;
     }
 
     public function createNewEntity() : DetailsToCategory
@@ -49,36 +55,11 @@ class DetailsToCategoryAdminController extends EasyAdminController
             /** @var DetailsToCategory $entity */
             $entity = $this->em->getRepository(DetailsToCategory::class)->find($id);
 
-            /** @var Transaction[] $transactionWithoutCategories */
-            $transactionWithoutCategories = $this->em->getRepository(Transaction::class)->findTransactionWithoutExpense();
+            $expenses = $this->applyFilter->execute($entity);
 
-            $count = 0;
-
-            foreach ($transactionWithoutCategories as $transaction) {
-
-                if (true === $this->categoryGuesser->execute($entity, $transaction)) {
-                    $expense = new Expense();
-                    $expense->setLabel($this->attributeExtractor->extract($transaction, $entity->getLabel()));
-                    $expense->setCategory($entity->getCategory());
-                    $expense->setTransaction($transaction);
-                    $expense->setDate($this->attributeExtractor->extract($transaction, $entity->getDate()));
-                    $expense->setCredit($this->attributeExtractor->extract($transaction, $entity->getCredit()));
-                    $expense->setDebit($this->attributeExtractor->extract($transaction, $entity->getDebit()));
-                    $this->em->persist($expense);
-                    $count++;
-                }
-            }
-
-            $this->em->flush();
-
-            $this->addFlash('success', $count . ' transactions trouvées');
+            $this->addFlash('success', count($expenses) . ' transactions trouvées');
         } catch (\Exception $e) {
             $this->addFlash('warning', $e->getMessage());
-
-            return $this->redirectToRoute('easyadmin', array(
-                'action' => 'list',
-                'entity' => 'DetailsToCategory',
-            ));
         }
 
         return $this->redirectToRoute('easyadmin', array(
