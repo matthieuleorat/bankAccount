@@ -25,7 +25,7 @@ services:
 
   php:
     build:
-      context: docker/php-ubuntu
+      context: docker/php-ubuntu-7.4
       args:
         HOST_USER: ${HOST_USER}
     volumes:
