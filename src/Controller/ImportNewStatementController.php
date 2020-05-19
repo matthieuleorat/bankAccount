@@ -46,17 +46,20 @@ class ImportNewStatementController extends AbstractController
      * @var ExpenseFactory
      */
     private $expenseFactory;
+    private string $aws_remote_path;
 
     public function __construct(
         CategoryGuesser $categoryGuesser,
         AttributeExtractor $attributeExtractor,
         Uploader $uploader,
-        ExpenseFactory $expenseFactory
+        ExpenseFactory $expenseFactory,
+        string $aws_remote_path
     ) {
         $this->categoryGuesser = $categoryGuesser;
         $this->attributeExtractor = $attributeExtractor;
         $this->uploader = $uploader;
         $this->expenseFactory = $expenseFactory;
+        $this->aws_remote_path = $aws_remote_path;
     }
 
     /**
@@ -82,7 +85,7 @@ class ImportNewStatementController extends AbstractController
                     // this is needed to safely include the file name as part of the URL
                     $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename).'.'.$statementFile->getClientOriginalExtension();
 
-                    $remoteFileName = $this->uploader->execute('statement/', $statementFile->getClientOriginalExtension(), $statementFile->getpath().'/'.$statementFile->getFilename());
+                    $remoteFileName = $this->uploader->execute($this->aws_remote_path, $statementFile->getClientOriginalExtension(), $statementFile->getpath().'/'.$statementFile->getFilename());
 
                     /** @var BankStatement $plainStatement */
                     $plainStatement = $bankStatementParser->execute($statementFile->getFilename(), $statementFile->getpath().'/');
