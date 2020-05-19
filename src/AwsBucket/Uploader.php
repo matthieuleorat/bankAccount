@@ -2,44 +2,18 @@
 
 namespace App\AwsBucket;
 
-use Aws\S3\S3Client;
-
-class Uploader
+class Uploader extends AbstractS3Client
 {
-    /**
-     * @var string
-     */
-    private $s3_bucket_name;
-    /**
-     * @var string
-     */
-    private $aws_access_key_id;
-    /**
-     * @var string
-     */
-    private $aws_secret_access_key;
-
     public function __construct(string $s3_bucket_name, string $aws_access_key_id, string $aws_secret_access_key)
     {
-        $this->s3_bucket_name = $s3_bucket_name;
-        $this->aws_access_key_id = $aws_access_key_id;
-        $this->aws_secret_access_key = $aws_secret_access_key;
+        parent::__construct($s3_bucket_name, $aws_access_key_id, $aws_secret_access_key);
     }
 
     public function execute(string $remoteFolder, string $extension, string $filePath) : string
     {
-        $s3 = new S3Client([
-            'version'  => '2006-03-01',
-            'region'   => 'eu-west-3',
-            'credentials' => [
-                'key'    => $this->aws_access_key_id,
-                'secret' => $this->aws_secret_access_key,
-            ]
-        ]);
-
         $filename = $remoteFolder.$this->generateFileName($extension);
 
-        $s3->putObject([
+        $this->client->putObject([
             'Bucket' => $this->s3_bucket_name,
             'Key'    => $filename,
             'Body'   => fopen($filePath, 'r'),

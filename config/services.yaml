@@ -49,3 +49,7 @@ services:
     App\Doctrine\EventListener\FixPostgreSQLDefaultSchemaListener:
         tags:
             - { name: doctrine.event_listener, event: postGenerateSchema }
+
+    App\EventListener\StatementDoctrineSubscriber:
+        tags:
+            - { name: 'doctrine.event_subscriber' }
