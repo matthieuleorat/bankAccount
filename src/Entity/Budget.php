@@ -28,6 +28,11 @@ class Budget
      */
     private $expenses;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="budget")
+     */
+    private $categories;
+
     public function __toString()
     {
         return $this->name;
@@ -36,6 +41,7 @@ class Budget
     public function __construct()
     {
         $this->expenses = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -80,6 +86,37 @@ class Budget
             // set the owning side to null (unless already changed)
             if ($expense->getBudget() === $this) {
                 $expense->setBudget(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->setBudget($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+            // set the owning side to null (unless already changed)
+            if ($category->getBudget() === $this) {
+                $category->setBudget(null);
             }
         }
 

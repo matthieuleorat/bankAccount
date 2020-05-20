@@ -85,10 +85,12 @@ easy_admin:
                 fields:
                     - { property: 'name', label: 'category.name.label' }
                     - { property: 'parent', label: 'category.parent.label' }
+                    - { property: 'budget', label: 'category.budget.label' }
             form:
                 fields:
                     - { property: 'name', label: 'category.name.label' }
                     - { property: 'parent', label: 'category.parent.label', type: 'App\Form\CategoryType' }
+                    - { property: 'budget', label: 'category.budget.label' }
         Source:
             class: App\Entity\Source
             label: 'source.entity.name'

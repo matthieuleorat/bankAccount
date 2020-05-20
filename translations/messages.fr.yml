@@ -12,6 +12,8 @@ category:
     label: Nom
   parent:
     label: Parent
+  budget:
+    label: Budget
 Debt: Dettes
 debt:
   menu:
