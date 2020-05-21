@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Budget;
 use App\Entity\Category;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,14 +28,18 @@ class CategoryController extends EasyAdminController
             },
         ];
 
-        $htmlTree = $repo->childrenHierarchy(
-            null, /* starting from root nodes */
-            false, /* true: load all children, false: only direct */
-            $options
+        /** @var Budget $budget */
+        $budget = $this->em->getRepository(Budget::class)->findOneBy(['id' => 1]);
+        $test = $repo->getTreeByBudget(
+            $budget->getId(),
+            null,
+            false,
+            $options,
+            true
         );
 
         return $this->render('admin/category/list.html.twig', [
-            'htmlTree' => $htmlTree,
+            'htmlTree' => $test,
         ]);
     }
 }
