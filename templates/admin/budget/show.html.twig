@@ -1,0 +1,123 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block head_javascript %}
+    {{ parent() }}
+    <script src="https://cdn.plot.ly/plotly-1.5.2.min.js"></script>
+{% endblock head_javascript %}
+
+{% block content_title %}
+    {{ entity.name }}
+{% endblock %}
+
+{% block global_actions %}
+    <a class="btn btn-primary action-new" href="{{ easyadmin_path('Category', 'list', {'budget':entity.id}) }}">
+        {{ 'budget.action.list-categories'|trans }}
+    </a>
+{% endblock %}
+
+{% block main %}
+    <style>
+        .date-container {
+            display: flex;
+            margin-bottom: 30px;
+        }
+        .date-container > div:first-child {
+            margin-right: 30px;
+        }
+        .date-container label{
+            display: block;
+        }
+        .category-selection {
+            display: flex
+        }
+        .category-selection div {
+            padding-right: 10px;
+        }
+        .category-selection div:last-child {
+            padding-right: 0px;
+        }
+        .lvl-2 {
+            margin-left: 20px;
+        }
+
+    </style>
+
+    {{ form_start(form) }}
+    <div class="date-container">
+        <div>
+            {{ form_label(form.startingDate) }}
+            {{ form_widget(form.startingDate) }}
+        </div>
+        <div>
+            {{ form_label(form.startingDate) }}
+            {{ form_widget(form.endingDate) }}
+        </div>
+    </div>
+    <div class="category-selection">
+        {% for category in form.children.categories %}
+        {% if category.vars.attr['attr_lvl'] == 0%}
+        {% if not loop.first %}
+    </div>
+    {% endif %}
+    <div><strong>
+            {% endif %}
+            <div class="lvl-{{ category.vars.attr['attr_lvl'] }}">
+                {{ form_widget(category) }}
+                {{ form_label(category) }}
+            </div>
+            {% if category.vars.attr['attr_lvl'] == 0%}
+        </strong>
+        {% endif %}
+        {% endfor %}
+    </div>
+    </div>
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+    <div id="tester"></div>
+
+    <script>
+        var layout = {barmode: 'group'};
+        Plotly.newPlot('tester', {{ datasForGraph|json_encode()|raw }}, layout);
+
+        // Get categories elements
+        let categories = document.querySelectorAll('[type=checkbox]');
+
+        (function() {
+            categories.forEach(function(category) {
+                if (category.checked === true && category.disabled === false) {
+                    toggleAllChildren(category);
+                }
+            });
+        })();
+
+        // Each time a category change, toggle its children
+        categories.forEach(function(category) {
+            category.addEventListener('change', (event) => {
+                toggleAllChildren(category);
+            })
+        });
+
+        /**
+         * Recursive function to check/uncheck categories and its children
+         *
+         * @param element
+         */
+        function toggleAllChildren(element) {
+            let children = element.getAttribute('attr_children').split(',');
+            children.forEach(id => {
+                if (id.length > 0) {
+                    let child = document.getElementById('resultat_categories_'+id);
+                    if (element.checked === true) {
+                        child.setAttribute('checked', 'checked');
+                    } else {
+                        child.toggleAttribute('checked');
+                    }
+                    child.toggleAttribute('disabled');
+                    toggleAllChildren(child)
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

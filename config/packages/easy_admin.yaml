@@ -85,10 +85,12 @@ easy_admin:
                 fields:
                     - { property: 'name', label: 'category.name.label' }
                     - { property: 'parent', label: 'category.parent.label' }
+                    - { property: 'budget', label: 'category.budget.label' }
             form:
                 fields:
                     - { property: 'name', label: 'category.name.label' }
                     - { property: 'parent', label: 'category.parent.label', type: 'App\Form\CategoryType' }
+                    - { property: 'budget', label: 'category.budget.label' }
         Source:
             class: App\Entity\Source
             label: 'source.entity.name'
@@ -153,6 +155,9 @@ easy_admin:
 
         Budget:
             class: App\Entity\Budget
+            controller: App\Controller\Admin\BudgetController
+            templates:
+                show: 'admin/budget/show.html.twig'
             list:
                 fields:
                     - { property: 'name', template: 'admin/budget/list/name.html.twig', label: 'Nom'}

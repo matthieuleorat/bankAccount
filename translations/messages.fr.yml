@@ -1,4 +1,7 @@
 budget.label: Budgets
+budget:
+  action:
+    list-categories: Gérer les catégories
 result.label: Résultats
 Category: Categorie
 category:
@@ -12,6 +15,8 @@ category:
     label: Nom
   parent:
     label: Parent
+  budget:
+    label: Budget
 Debt: Dettes
 debt:
   menu:

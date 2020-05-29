@@ -6,10 +6,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-
+// @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
 /**
  * @Gedmo\Tree(type="nested")
- * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  */
 class Category
 {
@@ -63,7 +63,6 @@ class Category
      */
     private $children;
 
-
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\DetailsToCategory", mappedBy="category", orphanRemoval=true)
      */
@@ -73,6 +72,11 @@ class Category
      * @ORM\OneToMany(targetEntity="App\Entity\Expense", mappedBy="category")
      */
     private $expenses;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Budget::class, inversedBy="categories")
+     */
+    private $budget;
 
     public function __construct()
     {
@@ -194,5 +198,17 @@ class Category
     public function getChildren()
     {
         return $this->children;
+    }
+
+    public function getBudget(): ?Budget
+    {
+        return $this->budget;
+    }
+
+    public function setBudget(?Budget $budget): self
+    {
+        $this->budget = $budget;
+
+        return $this;
     }
 }

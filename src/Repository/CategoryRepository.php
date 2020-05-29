@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Category;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
 /**
  * @method Category|null find($id, $lockMode = null, $lockVersion = null)
@@ -12,39 +12,65 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Category[]    findAll()
  * @method Category[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CategoryRepository extends ServiceEntityRepository
+class CategoryRepository extends NestedTreeRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private ?int $budget;
+
+    public function __construct(EntityManagerInterface $registry)
     {
-        parent::__construct($registry, Category::class);
+        parent::__construct($registry, $registry->getClassMetadata(Category::class));
     }
 
-    // /**
-    //  * @return Category[] Returns an array of Category objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getTreeByBudget($budgetId = null, $node = null, $direct = false, array $options = array(), $includeNode = false)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $this->budget = $budgetId;
 
-    /*
-    public function findOneBySomeField($value): ?Category
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $this->repoUtils->childrenHierarchy($node, $direct, $options, $includeNode);
     }
-    */
+
+    public function getRootNodesByBudget(int $budgetId, $sortByField = null, $direction = 'asc')
+    {
+        $qb = $this->getRootNodesQueryBuilderByBudget($budgetId, $sortByField, $direction);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getRootNodesQueryBuilderByBudget(int $budgetId, $sortByField = null, $direction = 'asc')
+    {
+        $qb = $this->getRootNodesQueryBuilder($sortByField, $direction);
+
+        $qb->andWhere('node.budget = :budget')
+            ->setParameter('budget', $budgetId);
+
+        return $qb;
+    }
+
+    /**
+     * Overwrite of Gedmo\Tree\Entity\Repository\NestedTreeRepository::getNodesHierarchyQuery to filter categories on budget
+     *
+     * @param null $node
+     * @param bool $direct
+     * @param array $options
+     * @param bool $includeNode
+     *
+     * @return \Doctrine\ORM\Query
+     */
+    public function getNodesHierarchyQuery($node = null, $direct = false, array $options = array(), $includeNode = false)
+    {
+        $qb = $this->getNodesHierarchyQueryBuilderByBudget($this->budget, $node, $direct, $options, $includeNode);
+
+        return $qb->getQuery();
+    }
+
+    public function getNodesHierarchyQueryBuilderByBudget($budget = null, $node = null, $direct = false, array $options = array(), $includeNode = false)
+    {
+        $qb = $this->getNodesHierarchyQueryBuilder($node, $direct, $options, $includeNode);
+
+        if (null !== $budget) {
+            $qb->andWhere('node.budget = :budget')
+                ->setParameter('budget', $budget);
+        }
+
+        return $qb;
+    }
 }
