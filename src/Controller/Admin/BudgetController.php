@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Category;
 use App\Entity\Expense;
-use App\Form\ResultatType;
+use App\Form\BudgetFilterType;
 use DateTime;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use EasyCorp\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
@@ -47,14 +47,16 @@ class BudgetController extends EasyAdminController
         $startingDate = new DateTime('first day of January');
         $endingDate = new DateTime('now');
         $form = $this->createForm(
-            ResultatType::class,
+            BudgetFilterType::class,
             [
                 'startingDate' => $startingDate,
                 'endingDate' => $endingDate,
                 'categories' => $categories,
             ],
-            [ResultatType::OPTION_BUDGET_KEY => $entity],
+            [BudgetFilterType::OPTION_BUDGET_KEY => $entity],
         );
+
+        $form->handleRequest($this->request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $startingDate = $form->getData()['startingDate'];
@@ -69,6 +71,7 @@ class BudgetController extends EasyAdminController
         $datas->rows = [];
 
         $datasForGraph = [];
+
         foreach ($p as $periode) {
             $obj = new \stdClass();
             $obj->x = [];
@@ -80,14 +83,15 @@ class BudgetController extends EasyAdminController
             $row->period = $periode;
             $row->values = [];
             $row->total = 0;
+            $row->label = $periode[0]->format('F Y');
 
-            foreach($categories as $category) {
+            foreach ($categories as $category) {
                 $obj->x[] = $category->getName();
                 $ids = $this->repo->getChildren($category);
                 $ids[] = $category;
                 $values = $this->em->getRepository(Expense::class)->getTotalsForCategories($entity, $ids, $periode[0], $periode[1])[0];
-                $value =$values['totalCredit'] -  $values['totalDebit'];
-                $obj->y[] =  $value;
+                $value = $values['totalCredit'] - $values['totalDebit'];
+                $obj->y[] = $value;
 
                 if (false === in_array($category, $datas->headers)) {
                     $datas->headers[] = $category;
@@ -106,7 +110,7 @@ class BudgetController extends EasyAdminController
 
         $parameters['form'] = $form->createView();
         $parameters['datasForGraph'] = $datasForGraph;
-        $parameters['datas'] = $datasForGraph;
+        $parameters['datas'] = $datas;
 
         return $this->executeDynamicMethod(
             'render<EntityName>Template',
@@ -130,8 +134,8 @@ class BudgetController extends EasyAdminController
         $p = [];
         foreach ($period as $key => $dt) {
             $p[] = [
-                $key == 0 ? $startingDate : new DateTime('first day of ' . $dt->format('F Y')),
-                new DateTime('last day of ' . $dt->format('F Y')) > $endingDate ? $endingDate : new DateTime('last day of ' . $dt->format('F Y')),
+                $key == 0 ? $startingDate : new DateTime('first day of '.$dt->format('F Y')),
+                new DateTime('last day of '.$dt->format('F Y')) > $endingDate ? $endingDate : new DateTime('last day of '.$dt->format('F Y')),
             ];
         }
 

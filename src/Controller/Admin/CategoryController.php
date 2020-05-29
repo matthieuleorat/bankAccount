@@ -29,10 +29,8 @@ class CategoryController extends EasyAdminController
         ];
 
         $budgetId = $this->request->query->get('budget');
-        /** @var Budget $budget */
-        //$budget = $this->em->getRepository(Budget::class)->findOneBy(['id' => 1]);
-        //dump($this->request->query->get('budget'));
-        $test = $repo->getTreeByBudget(
+
+        $categoriesHtmlList = $repo->getTreeByBudget(
             $budgetId,
             null,
             false,
@@ -41,7 +39,7 @@ class CategoryController extends EasyAdminController
         );
 
         return $this->render('admin/category/list.html.twig', [
-            'htmlTree' => $test,
+            'categoriesHtmlList' => $categoriesHtmlList,
         ]);
     }
 }

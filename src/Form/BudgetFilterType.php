@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ResultatType extends AbstractType
+class BudgetFilterType extends AbstractType
 {
     const OPTION_BUDGET_KEY = 'budget';
 

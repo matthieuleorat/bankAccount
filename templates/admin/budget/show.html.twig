@@ -74,6 +74,52 @@
     {{ form_rest(form) }}
     {{ form_end(form) }}
 
+    <table class="table datagrid">
+        <thead>
+        <tr>
+            <th></th>
+            {% for category in datas.headers %}
+                <th>{{ category.name}}</th>
+            {% endfor %}
+            <th>Totaux</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in datas.rows %}
+            <tr>
+                <td>{{ row.period[0]|date('F Y') }}</td>
+                {% for value in row.values %}
+                    <td>
+                        <a href="{{ path('easyadmin', {
+                            'entity': 'Expense',
+                            'action': 'list',
+                            'filters': {
+                                'category': value.category.id,
+                                'date': {
+                                    'comparison': 'between',
+                                    'value': {
+                                        'day': row.period[0]|date('j'),
+                                        'month': row.period[0]|date('n'),
+                                        'year': row.period[0]|date('Y')
+                                    },
+                                    'value2': {
+                                        'day': row.period[1]|date('j'),
+                                        'month': row.period[1]|date('n'),
+                                        'year': row.period[1]|date('Y')
+                                    }
+                                }
+                            }
+                        }) }}">
+                            {{ value.value }}
+                        </a>
+                    </td>
+                {% endfor %}
+                <td>{{ row.total }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
     <div id="tester"></div>
 
     <script>
@@ -107,7 +153,7 @@
             let children = element.getAttribute('attr_children').split(',');
             children.forEach(id => {
                 if (id.length > 0) {
-                    let child = document.getElementById('resultat_categories_'+id);
+                    let child = document.getElementById('budget_filter_categories_'+id);
                     if (element.checked === true) {
                         child.setAttribute('checked', 'checked');
                     } else {
