@@ -21,11 +21,28 @@ class CategoryRepository extends NestedTreeRepository
         parent::__construct($registry, $registry->getClassMetadata(Category::class));
     }
 
-    public function getTreeByBudget(int $budgetId, $node, $direct, $options, $includeNode)
+    public function getTreeByBudget($budgetId = null, $node = null, $direct = false, array $options = array(), $includeNode = false)
     {
         $this->budget = $budgetId;
 
         return $this->repoUtils->childrenHierarchy($node, $direct, $options, $includeNode);
+    }
+
+    public function getRootNodesByBudget(int $budgetId, $sortByField = null, $direction = 'asc')
+    {
+        $qb = $this->getRootNodesQueryBuilderByBudget($budgetId, $sortByField, $direction);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getRootNodesQueryBuilderByBudget(int $budgetId, $sortByField = null, $direction = 'asc')
+    {
+        $qb = $this->getRootNodesQueryBuilder($sortByField, $direction);
+
+        $qb->andWhere('node.budget = :budget')
+            ->setParameter('budget', $budgetId);
+
+        return $qb;
     }
 
     /**
@@ -40,13 +57,20 @@ class CategoryRepository extends NestedTreeRepository
      */
     public function getNodesHierarchyQuery($node = null, $direct = false, array $options = array(), $includeNode = false)
     {
-        $qb = $this->getNodesHierarchyQueryBuilder($node, $direct, $options, $includeNode);
-
-        if (is_int($this->budget)) {
-            $qb->andWhere('node.budget = :budget')
-                ->setParameter('budget', $this->budget);
-        }
+        $qb = $this->getNodesHierarchyQueryBuilderByBudget($this->budget, $node, $direct, $options, $includeNode);
 
         return $qb->getQuery();
+    }
+
+    public function getNodesHierarchyQueryBuilderByBudget($budget = null, $node = null, $direct = false, array $options = array(), $includeNode = false)
+    {
+        $qb = $this->getNodesHierarchyQueryBuilder($node, $direct, $options, $includeNode);
+
+        if (null !== $budget) {
+            $qb->andWhere('node.budget = :budget')
+                ->setParameter('budget', $budget);
+        }
+
+        return $qb;
     }
 }

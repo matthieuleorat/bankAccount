@@ -1,4 +1,7 @@
 budget.label: Budgets
+budget:
+  action:
+    list-categories: Gérer les catégories
 result.label: Résultats
 Category: Categorie
 category:

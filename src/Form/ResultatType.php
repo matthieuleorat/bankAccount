@@ -1,10 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Entity\Budget;
 use App\Entity\Category;
-use Gedmo\Tree\Entity\Repository\AbstractTreeRepository;
+use App\Repository\CategoryRepository;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -15,6 +14,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ResultatType extends AbstractType
 {
+    const OPTION_BUDGET_KEY = 'budget';
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -26,19 +27,13 @@ class ResultatType extends AbstractType
                 'widget' => 'single_text',
                 'label' => "Date de fin",
             ])
-            ->add('budget', EntityType::class, [
-                'class' => Budget::class,
-                'choice_label' => 'name',
-                'expanded' => false,
-                'multiple' => false,
-            ])
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'expanded' => true,
                 'multiple' => true,
-                'query_builder' => static function (NestedTreeRepository $er) {
-                    return $er->getNodesHierarchyQueryBuilder();
+                'query_builder' => function (CategoryRepository $repo) use ($options) {
+                    return $repo->getNodesHierarchyQueryBuilderByBudget($options[self::OPTION_BUDGET_KEY]);
                 },
                 'choice_attr' => static function(Category $choice, $key, $value) {
                     return [
@@ -60,7 +55,7 @@ class ResultatType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            // Configure your form options here
+            self::OPTION_BUDGET_KEY => null,
         ]);
     }
 }
