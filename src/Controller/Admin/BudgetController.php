@@ -85,13 +85,13 @@ class BudgetController extends EasyAdminController
             $row->total = 0;
             $row->label = $periode[0]->format('F Y');
 
-            foreach($categories as $category) {
+            foreach ($categories as $category) {
                 $obj->x[] = $category->getName();
                 $ids = $this->repo->getChildren($category);
                 $ids[] = $category;
                 $values = $this->em->getRepository(Expense::class)->getTotalsForCategories($entity, $ids, $periode[0], $periode[1])[0];
-                $value = $values['totalCredit'] -  $values['totalDebit'];
-                $obj->y[] =  $value;
+                $value = $values['totalCredit'] - $values['totalDebit'];
+                $obj->y[] = $value;
 
                 if (false === in_array($category, $datas->headers)) {
                     $datas->headers[] = $category;
@@ -134,8 +134,8 @@ class BudgetController extends EasyAdminController
         $p = [];
         foreach ($period as $key => $dt) {
             $p[] = [
-                $key == 0 ? $startingDate : new DateTime('first day of ' . $dt->format('F Y')),
-                new DateTime('last day of ' . $dt->format('F Y')) > $endingDate ? $endingDate : new DateTime('last day of ' . $dt->format('F Y')),
+                $key == 0 ? $startingDate : new DateTime('first day of '.$dt->format('F Y')),
+                new DateTime('last day of '.$dt->format('F Y')) > $endingDate ? $endingDate : new DateTime('last day of '.$dt->format('F Y')),
             ];
         }
 
