@@ -163,7 +163,6 @@ easy_admin:
                     - { property: 'name', template: 'admin/budget/list/name.html.twig', label: 'Nom'}
     design:
         menu:
-            - { label: 'category.label', entity: 'Category' }
             - { label: 'source.label', entity: 'Source' }
             - label: 'transaction.menu.label'
               children:
