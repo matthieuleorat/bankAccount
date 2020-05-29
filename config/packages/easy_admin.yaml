@@ -182,4 +182,3 @@ easy_admin:
               children:
                 - { label: 'debt.menu.all', entity: 'Debt'}
                 - { label: 'debt.menu.seeBalance', route: 'see_balance'}
-            - { label: 'result.label', route: 'resultat'}
