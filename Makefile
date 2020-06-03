@@ -12,12 +12,11 @@ reset:
 php:
 	docker-compose exec -u www-data php bash
 
+redis:
+	docker-compose exec redis redis-cli
+
 database:
 	docker-compose exec postgre bash
-	#docker-compose exec mysql mysql -u root -ppass db_name
-
-database_backup:
-	# docker-compose exec mysql mysqldump -u root -ppass db_name > backup-`date +%Y-%m-%d`.sql
 
 load_backup:
 ifdef file
