@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     php7.4-xdebug \
     php7.4-xml \
     php7.4-zip \
+    php7.4-redis \
     apt-transport-https \
     unzip \
 && apt-get clean && rm -rf /var/lib/apt/lists/*

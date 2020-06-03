@@ -12,6 +12,7 @@ backups
 public/bundles/
 var/
 vendor
+docker/volumes/redis
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
