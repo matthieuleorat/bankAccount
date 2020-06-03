@@ -41,6 +41,8 @@ services:
     tty: true
     env_file:
       - .env
+    links:
+      - redis
 
   nginx:
     build: docker/nginx
@@ -68,6 +70,11 @@ services:
     ports:
       - "5050:80"
     restart: unless-stopped
+
+  redis:
+    image: redis:6.0.4
+    volumes:
+      - ./docker/volumes/redis:/data
 
 #  nuxt:
 #    build:
