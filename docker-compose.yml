@@ -75,11 +75,6 @@ services:
     image: redis:6.0.4
     volumes:
       - ./docker/volumes/redis:/data
-#    ports:
-#      - 6379:6379
-    env_file:
-      - docker/redis/redis.env
-
 
 #  nuxt:
 #    build:
