@@ -5,6 +5,7 @@
         "php": "~7.4.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-igbinary": "*",
         "ext-intl": "*",
         "ext-openssl": "*",
         "ext-redis": "*",
