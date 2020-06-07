@@ -1,7 +1,7 @@
 include .env
 
 down:
-	docker-compose down
+	docker-compose down --remove-orphans
 
 up:
 	docker-compose up -d --build
@@ -11,9 +11,6 @@ reset:
 
 php:
 	docker-compose exec -u www-data php bash
-
-redis:
-	docker-compose exec redis redis-cli
 
 database:
 	docker-compose exec postgre bash
