@@ -7,7 +7,6 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-openssl": "*",
-        "ext-redis": "*",
         "aws/aws-sdk-php": "^3.137",
         "easycorp/easyadmin-bundle": "^2.3",
         "gedmo/doctrine-extensions": "^2.4",
