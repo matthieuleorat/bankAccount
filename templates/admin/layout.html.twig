@@ -1,0 +1,11 @@
+{% extends '@EasyAdmin/default/layout.html.twig' %}
+
+{% block header_custom_menu %}
+    {% set budgetSelectionForm = displayBudgetSelection() %}
+    {{ form_start(budgetSelectionForm, {'action': path('budget_selection'), 'method': 'POST'}) }}
+        {{ form_widget(budgetSelectionForm.budget) }}
+        {{ form_rest(budgetSelectionForm) }}
+    {{ form_end(budgetSelectionForm) }}
+
+    {{ parent() }}
+{% endblock header_custom_menu %}

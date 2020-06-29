@@ -162,6 +162,8 @@ easy_admin:
                 fields:
                     - { property: 'name', template: 'admin/budget/list/name.html.twig', label: 'Nom'}
     design:
+        templates:
+            layout: 'admin/layout.html.twig'
         menu:
             - { label: 'source.label', entity: 'Source' }
             - label: 'transaction.menu.label'
