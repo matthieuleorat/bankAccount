@@ -2,6 +2,7 @@ budget.label: Budgets
 budget:
   action:
     list-categories: Gérer les catégories
+    list-expense: Voir les dépenses
 Category: Categorie
 category:
   entity:

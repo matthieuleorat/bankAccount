@@ -1,0 +1,9 @@
+<a class="btn btn-primary action-new" href="{{ easyadmin_path('Category', 'list') }}">
+    {{ 'budget.action.list-categories'|trans }}
+</a>
+
+<a class="btn btn-primary action-new" href="{{ easyadmin_path('Expense', 'list') }}">
+    {{ 'budget.action.list-expense'|trans }}
+</a>
+
+{% include('admin/budget/budget-selection.html.twig') %}

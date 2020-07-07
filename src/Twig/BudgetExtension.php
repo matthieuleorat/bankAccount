@@ -12,6 +12,7 @@ use Twig\TwigFunction;
 
 class BudgetExtension extends AbstractExtension
 {
+    const BUDGET_ID_SESSION_KEY = 'budget_id';
     /**
      * @var FormFactoryInterface
      */
@@ -41,7 +42,7 @@ class BudgetExtension extends AbstractExtension
 
     public function displayBudgetSelection()
     {
-        $budget_id = $this->session->get('budget_id');
+        $budget_id = $this->session->get(self::BUDGET_ID_SESSION_KEY);
 
         $budget = $this->em->getRepository(Budget::class)->findOneBy(['id' => $budget_id]);
 

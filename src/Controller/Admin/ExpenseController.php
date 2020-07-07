@@ -2,9 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Budget;
 use App\Entity\Expense;
 use App\Entity\Transaction;
+use App\Twig\BudgetExtension;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use EasyCorp\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 use Matleo\BankStatementParser\Model\CreditCardPayment;
 
 class ExpenseController extends EasyAdminController
@@ -16,7 +19,58 @@ class ExpenseController extends EasyAdminController
 
         $transactionId = (int) $this->request->query->get('transaction');
 
+        $budgetId = $this->request->getSession()->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
+        $budget = $this->getDoctrine()->getRepository(Budget::class)->findOneBy(['id' => $budgetId]);
+
+        $entity->setBudget($budget);
+        $entity->setDate(new \DateTimeImmutable());
+
         return $this->fillExpenseWithTransaction($transactionId, $entity);
+    }
+
+    protected function listAction()
+    {
+        $this->dispatch(EasyAdminEvents::PRE_LIST);
+
+        $fields = $this->entity['list']['fields'];
+        $paginator = $this->findByBudget($this->entity['class'], $this->request->query->get('page', 1), $this->entity['list']['max_results'], $this->request->query->get('sortField'), $this->request->query->get('sortDirection'), $this->entity['list']['dql_filter']);
+
+        $this->dispatch(EasyAdminEvents::POST_LIST, ['paginator' => $paginator]);
+
+        $parameters = [
+            'paginator' => $paginator,
+            'fields' => $fields,
+            'batch_form' => $this->createBatchForm($this->entity['name'])->createView(),
+            'delete_form_template' => $this->createDeleteForm($this->entity['name'], '__id__')->createView(),
+        ];
+
+        return $this->executeDynamicMethod('render<EntityName>Template', ['list', $this->entity['templates']['list'], $parameters]);
+    }
+
+    protected function findByBudget($entityClass, $page = 1, $maxPerPage = 15, $sortField = null, $sortDirection = null, $dqlFilter = null)
+    {
+        if (null === $sortDirection || !\in_array(strtoupper($sortDirection), ['ASC', 'DESC'])) {
+            $sortDirection = 'DESC';
+        }
+
+        $queryBuilder = $this->executeDynamicMethod('create<EntityName>ListQueryBuilder', [$entityClass, $sortDirection, $sortField, $dqlFilter]);
+
+        $budgetId = $this->request->getSession()->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
+        $rootAlias = $queryBuilder->getRootAlias();
+        $queryBuilder
+            ->andWhere($rootAlias.'.budget = :budgetId')
+            ->setParameter('budgetId', $budgetId)
+        ;
+
+        $this->filterQueryBuilder($queryBuilder);
+
+        $this->dispatch(EasyAdminEvents::POST_LIST_QUERY_BUILDER, [
+            'query_builder' => $queryBuilder,
+            'sort_field' => $sortField,
+            'sort_direction' => $sortDirection,
+        ]);
+
+        return $this->get('easyadmin.paginator')->createOrmPaginator($queryBuilder, $page, $maxPerPage);
     }
 
     private function fillExpenseWithTransaction(int $transactionId, Expense $entity)

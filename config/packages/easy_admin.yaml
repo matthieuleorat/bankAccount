@@ -111,6 +111,8 @@ easy_admin:
         Expense:
             class: App\Entity\Expense
             controller: App\Controller\Admin\ExpenseController
+            templates:
+                list: 'admin/expense/list.html.twig'
             form:
                 fields:
                     - label
@@ -118,7 +120,6 @@ easy_admin:
                     - debit
                     - credit
                     - date
-                    - budget
             list:
                 filters:
                     - property: 'category'
@@ -171,9 +172,6 @@ easy_admin:
                 - { label: 'transaction.menu.all', entity: 'Transaction' }
                 - { label: 'transaction.menu.withoutexpenses', entity: 'TransactionWithoutExpense' }
                 - { label: 'transaction.menu.ignoredTransaction', entity: 'IgnoredTransaction' }
-            - label: 'expense.label'
-              children:
-                  - {label: 'expense.all.label', entity: 'Expense'}
             - { label: 'detailstocategory.label', entity: 'DetailsToCategory' }
             - label: 'statement.label'
               children:
