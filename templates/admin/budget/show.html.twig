@@ -10,9 +10,7 @@
 {% endblock %}
 
 {% block global_actions %}
-    <a class="btn btn-primary action-new" href="{{ easyadmin_path('Category', 'list', {'budget':entity.id}) }}">
-        {{ 'budget.action.list-categories'|trans }}
-    </a>
+    {% include('admin/budget/budget-submenu.html.twig') %}
 {% endblock %}
 
 {% block main %}
@@ -43,35 +41,43 @@
     </style>
 
     {{ form_start(form) }}
-    <div class="date-container">
-        <div>
-            {{ form_label(form.startingDate) }}
-            {{ form_widget(form.startingDate) }}
-        </div>
-        <div>
-            {{ form_label(form.startingDate) }}
-            {{ form_widget(form.endingDate) }}
-        </div>
-    </div>
-    <div class="category-selection">
-        {% for category in form.children.categories %}
-        {% if category.vars.attr['attr_lvl'] == 0%}
-        {% if not loop.first %}
-    </div>
-    {% endif %}
-    <div><strong>
-            {% endif %}
-            <div class="lvl-{{ category.vars.attr['attr_lvl'] }}">
-                {{ form_widget(category) }}
-                {{ form_label(category) }}
+        <div class="date-container">
+            <div>
+                {{ form_label(form.startingDate) }}
+                {{ form_widget(form.startingDate) }}
             </div>
-            {% if category.vars.attr['attr_lvl'] == 0%}
-        </strong>
-        {% endif %}
-        {% endfor %}
-    </div>
-    </div>
-    {{ form_rest(form) }}
+            <div>
+                {{ form_label(form.startingDate) }}
+                {{ form_widget(form.endingDate) }}
+            </div>
+        </div>
+
+        <div class="category-selection">
+            {% for category in form.children.categories %}
+                {% if category.vars.attr['attr_lvl'] == 0 %}
+                    {% if not loop.first %}
+                        </div>
+                    {% endif %}
+                    <div><strong>
+                {% endif %}
+
+                <div class="lvl-{{ category.vars.attr['attr_lvl'] }}">
+                    {{ form_widget(category) }}
+                    {{ form_label(category) }}
+                </div>
+
+                {% if category.vars.attr['attr_lvl'] == 0 %}
+                    </strong>
+                {% endif %}
+
+                {% if loop.last %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+
+        {{ form_rest(form) }}
     {{ form_end(form) }}
 
     <table class="table datagrid">
@@ -85,6 +91,7 @@
         </tr>
         </thead>
         <tbody>
+
         {% for row in datas.rows %}
             <tr>
                 <td>{{ row.period[0]|date('F Y') }}</td>

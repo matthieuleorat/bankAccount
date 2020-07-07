@@ -22,11 +22,13 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     php7.4-zip \
     apt-transport-https \
     unzip \
+    iproute2 \
 && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Configuration PHP (FPM, CLI) + extensions
 COPY 7.4/fpm/php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf
 COPY 7.4/fpm/pool.d/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+COPY 7.4/usr/local/etc/php/conf.d/zz-xdebug-settings.ini /etc/php/7.4/fpm/conf.d/zz-xdebug-settings.ini
 
 COPY 7.4/mods-available/php-custom.ini /etc/php/7.4/mods-available/php-custom.ini
 RUN ln -s /etc/php/7.4/mods-available/php-custom.ini /etc/php/7.4/fpm/conf.d/php-custom.ini

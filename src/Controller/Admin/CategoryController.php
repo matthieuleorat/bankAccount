@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Budget;
 use App\Entity\Category;
+use App\Twig\BudgetExtension;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,7 +29,7 @@ class CategoryController extends EasyAdminController
             },
         ];
 
-        $budgetId = $this->request->query->get('budget');
+        $budgetId = $this->request->getSession()->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
 
         $categoriesHtmlList = $repo->getTreeByBudget(
             $budgetId,
@@ -41,5 +42,19 @@ class CategoryController extends EasyAdminController
         return $this->render('admin/category/list.html.twig', [
             'categoriesHtmlList' => $categoriesHtmlList,
         ]);
+    }
+
+    protected function createNewEntity() : Category
+    {
+        $entityFullyQualifiedClassName = $this->entity['class'];
+
+        $entity = new $entityFullyQualifiedClassName();
+
+        $budgetId = $this->request->getSession()->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
+        $budget = $this->getDoctrine()->getRepository(Budget::class)->findOneBy(['id' => $budgetId]);
+
+        $entity->setBudget($budget);
+
+        return $entity;
     }
 }

@@ -5,9 +5,7 @@
 {% endblock %}
 
 {% block global_actions %}
-    <a class="btn btn-primary action-new" href="{{ easyadmin_path('Category', 'new') }}">
-        {{ 'category.list.add-new-category'|trans }}
-    </a>
+    {% include('admin/budget/budget-submenu.html.twig') %}
 {% endblock %}
 
 {% block main %}

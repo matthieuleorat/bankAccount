@@ -16,18 +16,18 @@ class DetailsToCategory
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $regex;
+    private string $regex;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="detailsToCategories")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $category;
+    private ?Category $category;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Filter", mappedBy="detailsToCategory", orphanRemoval=true, cascade={"persist"})
@@ -37,27 +37,32 @@ class DetailsToCategory
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $label;
+    private string $label;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $debit;
+    private ?string $debit;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $credit;
+    private ?string $credit;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $date;
+    private ?string $date;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $comment;
+    private ?string $comment;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Budget::class, inversedBy="detailsToCategories")
+     */
+    private $budget;
 
     public function __construct()
     {
@@ -185,6 +190,18 @@ class DetailsToCategory
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getBudget(): ?Budget
+    {
+        return $this->budget;
+    }
+
+    public function setBudget(?Budget $budget): self
+    {
+        $this->budget = $budget;
 
         return $this;
     }

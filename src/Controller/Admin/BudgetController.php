@@ -2,9 +2,11 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Budget;
 use App\Entity\Category;
 use App\Entity\Expense;
 use App\Form\BudgetFilterType;
+use App\Twig\BudgetExtension;
 use DateTime;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use EasyCorp\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
@@ -24,6 +26,8 @@ class BudgetController extends EasyAdminController
         $id = $this->request->query->get('id');
         $easyadmin = $this->request->attributes->get('easyadmin');
         $entity = $easyadmin['item'];
+
+        $this->request->getSession()->set(BudgetExtension::BUDGET_ID_SESSION_KEY, $id);
 
         $fields = $this->entity['show']['fields'];
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
