@@ -33,13 +33,17 @@ class ExpenseFactory
         $expense->setDate($this->attributeExtractor->extract($transaction, $detailsToCategory->getDate()));
         $expense->setCredit($this->attributeExtractor->extract($transaction, $detailsToCategory->getCredit()));
         $expense->setDebit($this->attributeExtractor->extract($transaction, $detailsToCategory->getDebit()));
-        $expense->setBudget($this->getBudget($transaction));
+        $expense->setBudget($this->getBudget($transaction, $detailsToCategory));
 
         return $expense;
     }
 
-    private function getBudget(Transaction $transaction) : ? Budget
+    private function getBudget(Transaction $transaction, DetailsToCategory $detailsToCategory) : ? Budget
     {
+        if ($detailsToCategory->getBudget() instanceof Budget) {
+            return $detailsToCategory->getBudget();
+        }
+        
         if (
             $transaction->getStatement() instanceof Statement &&
             $transaction->getStatement()->getSource() instanceof Source

@@ -6,4 +6,8 @@
     {{ 'budget.action.list-expense'|trans }}
 </a>
 
+<a class="btn btn-primary action-new" href="{{ easyadmin_path('DetailsToCategory', 'list') }}">
+    {{ 'budget.action.list-filter'|trans }}
+</a>
+
 {% include('admin/budget/budget-selection.html.twig') %}

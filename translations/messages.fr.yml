@@ -3,6 +3,7 @@ budget:
   action:
     list-categories: Gérer les catégories
     list-expense: Voir les dépenses
+    list-filter: Voir les filtres
 Category: Categorie
 category:
   entity:

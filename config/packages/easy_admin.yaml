@@ -144,8 +144,8 @@ easy_admin:
                 fields:
                     - { type: 'group', columns: 4, label: 'Filtre' }
                     - { property: 'regex', label: 'Nom'}
+                    - { property: 'budget', label: 'Budget', type: 'entity'}
                     - { property: 'filters', label: 'Filtres', type: 'collection', type_options: { allow_delete: true, allow_add: true, by_reference: false, entry_type: 'App\Form\FilterType'}}
-#                    - { type: 'section', label: 'Dépense' }
                     - { type: 'group', columns: 8, label: 'Dépense' }
                     - { property: 'label', label: 'Champ dans lequel prendre le label à associer à la dépense', type: 'App\Form\AttributeSelectionType'}
                     - { property: 'category', label: 'Catégorie', type: 'App\Form\CategoryType'}
@@ -172,7 +172,6 @@ easy_admin:
                 - { label: 'transaction.menu.all', entity: 'Transaction' }
                 - { label: 'transaction.menu.withoutexpenses', entity: 'TransactionWithoutExpense' }
                 - { label: 'transaction.menu.ignoredTransaction', entity: 'IgnoredTransaction' }
-            - { label: 'detailstocategory.label', entity: 'DetailsToCategory' }
             - label: 'statement.label'
               children:
                 - { label: 'statement.all.label', entity: 'Statement' }
