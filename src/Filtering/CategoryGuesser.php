@@ -3,7 +3,7 @@
 namespace App\Filtering;
 
 use App\Entity\DetailsToCategory;
-use App\Entity\Filter;
+use App\Entity\Criteria;
 use App\Entity\Transaction;
 
 class CategoryGuesser
@@ -26,8 +26,8 @@ class CategoryGuesser
     {
         $this->transaction = $transaction;
 
-        foreach ($detailsToCategory->getFilters() as $filter) {
-            if (false === $this->applyFilter($filter)) {
+        foreach ($detailsToCategory->getCriteria() as $criterion) {
+            if (false === $this->applyCriterion($criterion)) {
                 return false;
             }
         }
@@ -35,15 +35,15 @@ class CategoryGuesser
         return true;
     }
 
-    private function applyFilter(Filter $filter)
+    private function applyCriterion(Criteria $criterion)
     {
-        return $this->{$filter->getCompareOperator()}($filter);
+        return $this->{$criterion->getCompareOperator()}($criterion);
     }
 
-    private function startWith(Filter $filter)
+    private function startWith(Criteria $criterion)
     {
-        $needle = $filter->getValue();
-        $subject = $this->attributeExtractor->extract($this->transaction, $filter->getField());
+        $needle = $criterion->getValue();
+        $subject = $this->attributeExtractor->extract($this->transaction, $criterion->getField());
 
         if (substr($subject,0, strlen($needle)) === $needle) {
             return true;
@@ -52,20 +52,20 @@ class CategoryGuesser
         return false;
     }
 
-    private function endWith(Filter $filter)
+    private function endWith(Criteria $criteria)
     {
 
     }
 
-    private function contain(Filter $filter)
+    private function contain(Criteria $criteria)
     {
 
     }
 
-    private function equal(Filter $filter) : bool
+    private function equal(Criteria $criteria) : bool
     {
-        $needle = $filter->getValue();
-        $subject = $this->attributeExtractor->extract($this->transaction, $filter->getField());
+        $needle = $criteria->getValue();
+        $subject = $this->attributeExtractor->extract($this->transaction, $criteria->getField());
 
         if ($subject == $needle) {
             return true;

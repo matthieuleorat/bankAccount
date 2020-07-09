@@ -30,9 +30,9 @@ class DetailsToCategory
     private ?Category $category;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Filter", mappedBy="detailsToCategory", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Criteria", mappedBy="detailsToCategory", orphanRemoval=true, cascade={"persist"})
      */
-    private $filters;
+    private $criteria;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -66,7 +66,7 @@ class DetailsToCategory
 
     public function __construct()
     {
-        $this->filters = new ArrayCollection();
+        $this->criteria = new ArrayCollection();
     }
 
     public function __toString()
@@ -104,30 +104,30 @@ class DetailsToCategory
     }
 
     /**
-     * @return Collection|Filter[]
+     * @return Collection|Criteria[]
      */
-    public function getFilters(): Collection
+    public function getCriteria(): Collection
     {
-        return $this->filters;
+        return $this->criteria;
     }
 
-    public function addFilter(Filter $filter): self
+    public function addCriteria(Criteria $criteria): self
     {
-        if (!$this->filters->contains($filter)) {
-            $this->filters[] = $filter;
-            $filter->setDetailsToCategory($this);
+        if (!$this->criteria->contains($criteria)) {
+            $this->criteria[] = $criteria;
+            $criteria->setDetailsToCategory($this);
         }
 
         return $this;
     }
 
-    public function removeFilter(Filter $filter): self
+    public function removeCriteria(Criteria $criteria): self
     {
-        if ($this->filters->contains($filter)) {
-            $this->filters->removeElement($filter);
+        if ($this->criteria->contains($criteria)) {
+            $this->criteria->removeElement($criteria);
             // set the owning side to null (unless already changed)
-            if ($filter->getDetailsToCategory() === $this) {
-                $filter->setDetailsToCategory(null);
+            if ($criteria->getDetailsToCategory() === $this) {
+                $criteria->setDetailsToCategory(null);
             }
         }
 

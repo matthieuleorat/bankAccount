@@ -8,7 +8,7 @@ use App\Filtering\CategoryGuesser;
 use App\Entity\DetailsToCategory;
 use App\Entity\Expense;
 use App\Entity\Transaction;
-use App\Form\FilterType;
+use App\Form\CriteriaType;
 use App\Twig\BudgetExtension;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use EasyCorp\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
@@ -42,10 +42,10 @@ class DetailsToCategoryAdminController extends EasyAdminController
         /** @var DetailsToCategory $entity */
         $entity = new $entityFullyQualifiedClassName();
 
-        $entity->setLabel(FilterType::STATEMENT_DETAILS_FIELD);
-        $entity->setCredit(FilterType::STATEMENT_CREDIT_FIELD);
-        $entity->setDebit(FilterType::STATEMENT_DEBIT_FIELD);
-        $entity->setDate(FilterType::STATEMENT_DATE_FIELD);
+        $entity->setLabel(CriteriaType::STATEMENT_DETAILS_FIELD);
+        $entity->setCredit(CriteriaType::STATEMENT_CREDIT_FIELD);
+        $entity->setDebit(CriteriaType::STATEMENT_DEBIT_FIELD);
+        $entity->setDate(CriteriaType::STATEMENT_DATE_FIELD);
 
         return $entity;
     }

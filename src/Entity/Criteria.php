@@ -5,37 +5,38 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\FilterRepository")
+ *
+ * @ORM\Entity(repositoryClass="App\Repository\CriteriaRepository")
  */
-class Filter
+class Criteria
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $field;
+    private string $field;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $compareOperator;
+    private string $compareOperator;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $value;
+    private ?string $value;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\DetailsToCategory", inversedBy="filters")
+     * @ORM\ManyToOne(targetEntity="App\Entity\DetailsToCategory", inversedBy="criteria")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $detailsToCategory;
+    private ?DetailsToCategory $detailsToCategory;
 
     public function getId(): ?int
     {

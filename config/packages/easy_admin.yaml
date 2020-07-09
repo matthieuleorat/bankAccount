@@ -145,7 +145,7 @@ easy_admin:
                     - { type: 'group', columns: 4, label: 'Filtre' }
                     - { property: 'regex', label: 'Nom'}
                     - { property: 'budget', label: 'Budget', type: 'entity'}
-                    - { property: 'filters', label: 'Filtres', type: 'collection', type_options: { allow_delete: true, allow_add: true, by_reference: false, entry_type: 'App\Form\FilterType'}}
+                    - { property: 'criteria', label: 'Filtres', type: 'collection', type_options: { allow_delete: true, allow_add: true, by_reference: false, entry_type: 'App\Form\CriteriaType'}}
                     - { type: 'group', columns: 8, label: 'Dépense' }
                     - { property: 'label', label: 'Champ dans lequel prendre le label à associer à la dépense', type: 'App\Form\AttributeSelectionType'}
                     - { property: 'category', label: 'Catégorie', type: 'App\Form\CategoryType'}
