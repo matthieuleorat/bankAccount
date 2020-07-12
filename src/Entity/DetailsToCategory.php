@@ -16,48 +16,48 @@ class DetailsToCategory
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $regex;
+    private $regex;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="detailsToCategories")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?Category $category;
+    private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Filter", mappedBy="detailsToCategory", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Criteria", mappedBy="detailsToCategory", orphanRemoval=true, cascade={"persist"})
      */
-    private $filters;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $label;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $debit;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $credit;
+    private $criteria;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $date;
+    private $label;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $debit;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $credit;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $date;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private ?string $comment;
+    private $comment;
 
     /**
      * @ORM\ManyToOne(targetEntity=Budget::class, inversedBy="detailsToCategories")
@@ -66,7 +66,7 @@ class DetailsToCategory
 
     public function __construct()
     {
-        $this->filters = new ArrayCollection();
+        $this->criteria = new ArrayCollection();
     }
 
     public function __toString()
@@ -104,30 +104,30 @@ class DetailsToCategory
     }
 
     /**
-     * @return Collection|Filter[]
+     * @return Collection|Criteria[]
      */
-    public function getFilters(): Collection
+    public function getCriteria(): Collection
     {
-        return $this->filters;
+        return $this->criteria;
     }
 
-    public function addFilter(Filter $filter): self
+    public function addCriterium(Criteria $criteria): self
     {
-        if (!$this->filters->contains($filter)) {
-            $this->filters[] = $filter;
-            $filter->setDetailsToCategory($this);
+        if (!$this->criteria->contains($criteria)) {
+            $this->criteria[] = $criteria;
+            $criteria->setDetailsToCategory($this);
         }
 
         return $this;
     }
 
-    public function removeFilter(Filter $filter): self
+    public function removeCriterium(Criteria $criteria): self
     {
-        if ($this->filters->contains($filter)) {
-            $this->filters->removeElement($filter);
+        if ($this->criteria->contains($criteria)) {
+            $this->criteria->removeElement($criteria);
             // set the owning side to null (unless already changed)
-            if ($filter->getDetailsToCategory() === $this) {
-                $filter->setDetailsToCategory(null);
+            if ($criteria->getDetailsToCategory() === $this) {
+                $criteria->setDetailsToCategory(null);
             }
         }
 

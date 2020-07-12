@@ -11,7 +11,7 @@ class AttributeSelectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => FilterType::AVAILABLE_FIELD
+            'choices' => CriteriaType::AVAILABLE_FIELD
         ]);
     }
 

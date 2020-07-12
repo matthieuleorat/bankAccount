@@ -43,7 +43,7 @@ class ExpenseFactory
         if ($detailsToCategory->getBudget() instanceof Budget) {
             return $detailsToCategory->getBudget();
         }
-        
+
         if (
             $transaction->getStatement() instanceof Statement &&
             $transaction->getStatement()->getSource() instanceof Source
