@@ -15,22 +15,22 @@ class Criteria
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $field;
+    private $field;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $compareOperator;
+    private $compareOperator;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $value;
+    private $value;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\DetailsToCategory", inversedBy="criteria")

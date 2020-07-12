@@ -16,18 +16,18 @@ class DetailsToCategory
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $regex;
+    private $regex;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="detailsToCategories")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?Category $category;
+    private $category;
 
     /**
      * @ORM\OneToMany(targetEntity="Criteria", mappedBy="detailsToCategory", orphanRemoval=true, cascade={"persist"})
@@ -37,27 +37,27 @@ class DetailsToCategory
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $label;
+    private $label;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $debit;
+    private $debit;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $credit;
+    private $credit;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $date;
+    private $date;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private ?string $comment;
+    private $comment;
 
     /**
      * @ORM\ManyToOne(targetEntity=Budget::class, inversedBy="detailsToCategories")
@@ -111,7 +111,7 @@ class DetailsToCategory
         return $this->criteria;
     }
 
-    public function addCriteria(Criteria $criteria): self
+    public function addCriterium(Criteria $criteria): self
     {
         if (!$this->criteria->contains($criteria)) {
             $this->criteria[] = $criteria;
@@ -121,7 +121,7 @@ class DetailsToCategory
         return $this;
     }
 
-    public function removeCriteria(Criteria $criteria): self
+    public function removeCriterium(Criteria $criteria): self
     {
         if ($this->criteria->contains($criteria)) {
             $this->criteria->removeElement($criteria);
