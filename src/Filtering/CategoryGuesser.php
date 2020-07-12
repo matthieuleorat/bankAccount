@@ -35,12 +35,12 @@ class CategoryGuesser
         return true;
     }
 
-    private function applyCriterion(Criteria $criterion)
+    private function applyCriterion(Criteria $criterion) : bool
     {
         return $this->{$criterion->getCompareOperator()}($criterion);
     }
 
-    private function startWith(Criteria $criterion)
+    private function startWith(Criteria $criterion) : bool
     {
         $needle = $criterion->getValue();
         $subject = $this->attributeExtractor->extract($this->transaction, $criterion->getField());
@@ -52,14 +52,29 @@ class CategoryGuesser
         return false;
     }
 
-    private function endWith(Criteria $criteria)
+    private function endWith(Criteria $criterion) : bool
     {
+        $needle = $criterion->getValue();
+        $subject = $this->attributeExtractor->extract($this->transaction, $criterion->getField());
 
+        $length = strlen($needle);
+        if ($length == 0) {
+            return true;
+        }
+
+        return (substr($subject, -$length) === $needle);
     }
 
-    private function contain(Criteria $criteria)
+    private function contain(Criteria $criteria) : bool
     {
+        $needle = $criteria->getValue();
+        $subject = $this->attributeExtractor->extract($this->transaction, $criteria->getField());
 
+        if (false === strpos($subject, $needle)) {
+            return false;
+        }
+
+        return true;
     }
 
     private function equal(Criteria $criteria) : bool
