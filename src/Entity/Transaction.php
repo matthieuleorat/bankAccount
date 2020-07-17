@@ -208,7 +208,7 @@ class Transaction
 
     public function getType()
     {
-        return unserialize(base64_decode($this->type));
+        return base64_decode($this->type);
     }
 
     public function setType($type): self

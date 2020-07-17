@@ -5,15 +5,15 @@
     <script src="https://cdn.plot.ly/plotly-1.5.2.min.js"></script>
 {% endblock head_javascript %}
 
-{% block content_title %}
+{% block page_title %}
     {{ entity.name }}
 {% endblock %}
 
-{% block global_actions %}
+{% block page_actions %}
     {% include('admin/budget/budget-submenu.html.twig') %}
 {% endblock %}
 
-{% block main %}
+{% block page_content %}
     <style>
         .date-container {
             display: flex;
@@ -97,7 +97,7 @@
                 <td>{{ row.period[0]|date('F Y') }}</td>
                 {% for value in row.values %}
                     <td>
-                        <a href="{{ path('easyadmin', {
+                        <a href="{{ path('admin_dashboard', {
                             'entity': 'Expense',
                             'action': 'list',
                             'filters': {

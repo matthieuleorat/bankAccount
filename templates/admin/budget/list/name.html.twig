@@ -1,3 +1,8 @@
-<a href="{{ path('easyadmin', {'entity': 'Budget', 'action':'show', 'id': item.id}) }}">
-    {{ value }}
+{% set url = ea_url()
+    .setController('App\\Controller\\Admin\\BudgetCrudController')
+    .setEntityId(entity.primaryKeyValue)
+    .setAction('detail') %}
+
+<a href="{{ url }}">
+    {{ entity.instance.name }}
 </a>

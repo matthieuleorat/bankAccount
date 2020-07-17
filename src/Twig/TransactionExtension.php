@@ -16,6 +16,8 @@ class TransactionExtension extends AbstractExtension
 
     public function displayTransactionType($value)
     {
+        $value = unserialize($value);
+
         if (false === is_object($value)) {
             return '';
         }

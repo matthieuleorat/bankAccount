@@ -1,10 +1,12 @@
-{% for expense in value %}
-    <a href="{{ path('easyadmin', {'entity': 'Expense', 'id': expense.id, 'action': 'show'}) }}">
+{% for expense in entity.instance.expenses %}
+{#    <a href="{{ path('easyadmin', {'entity': 'Expense', 'id': expense.id, 'action': 'show'}) }}">#}
     {% if expense.category %}
        {{ expense.category.name }}
     {% else %}
         /!\ {{ expense.label }}
     {% endif %}
-    </a>
+<!--    </a>-->
     : {{ expense.getAmount }}<br>
 {% endfor %}
+
+hihi
