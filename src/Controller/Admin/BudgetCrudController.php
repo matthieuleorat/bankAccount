@@ -6,6 +6,7 @@ use App\Entity\Budget;
 use App\Entity\Category;
 use App\Entity\Expense;
 use App\Form\BudgetFilterType;
+use App\Twig\BudgetExtension;
 use DateTime;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -50,6 +51,8 @@ class BudgetCrudController extends AbstractCrudController
         if (!$context->getEntity()->isAccessible()) {
             throw new InsufficientEntityPermissionException($context);
         }
+
+        $this->container->get('session')->set(BudgetExtension::BUDGET_ID_SESSION_KEY, $context->getEntity()->getPrimaryKeyValue());
 
         $this->get(EntityFactory::class)->processFields($context->getEntity(), FieldCollection::new($this->configureFields(Crud::PAGE_DETAIL)));
         $this->get(EntityFactory::class)->processActions($context->getEntity(), $context->getCrud()->getActionsConfig());
