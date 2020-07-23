@@ -15,7 +15,7 @@
 </a>
 
 {% set detailtocategory_index_url = ea_url()
-    .setController('App\\Controller\\Admin\\DetailToCategoryCrudController')
+    .setController('App\\Controller\\Admin\\DetailsToCategoryCrudController')
     .setEntityId(entity.primaryKeyValue)
     .setAction('index') %}
 <a class="btn btn-primary action-new" href="{{ detailtocategory_index_url }}">

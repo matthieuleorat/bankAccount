@@ -97,9 +97,9 @@
                 {% for value in row.values %}
                     <td>
                         {% set url = ea_url()
-                            .setDashboard('App\\Controller\Admin\\DashboardController')
                             .setController('App\\Controller\\Admin\\ExpenseCrudController')
                             .setAction('index')
+                            .includeReferrer()
                             .set('filters', {
                                 'category': value.category.id,
                                 'date': {
