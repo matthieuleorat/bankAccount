@@ -2,8 +2,11 @@
 
 namespace App\Controller\Admin;
 
+use App\Admin\Filter\CategoryFilter;
 use App\Entity\Expense;
+use App\Form\Filter\CategoryWithChildrenFilterType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -50,5 +53,15 @@ class ExpenseCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$label, $category, $debit, $credit, $date];
         }
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+
+        return $filters
+            ->add(CategoryFilter::new('category'))
+            ->add('date')
+            ->add('label')
+        ;
     }
 }

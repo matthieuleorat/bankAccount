@@ -91,16 +91,16 @@
         </tr>
         </thead>
         <tbody>
-
         {% for row in datas.rows %}
             <tr>
                 <td>{{ row.period[0]|date('F Y') }}</td>
                 {% for value in row.values %}
                     <td>
-                        <a href="{{ path('admin_dashboard', {
-                            'entity': 'Expense',
-                            'action': 'list',
-                            'filters': {
+                        {% set url = ea_url()
+                            .setDashboard('App\\Controller\Admin\\DashboardController')
+                            .setController('App\\Controller\\Admin\\ExpenseCrudController')
+                            .setAction('index')
+                            .set('filters', {
                                 'category': value.category.id,
                                 'date': {
                                     'comparison': 'between',
@@ -115,8 +115,10 @@
                                         'year': row.period[1]|date('Y')
                                     }
                                 }
-                            }
-                        }) }}">
+                            })
+                        %}
+
+                        <a href="{{ url }}">
                             {{ value.value }}
                         </a>
                     </td>
