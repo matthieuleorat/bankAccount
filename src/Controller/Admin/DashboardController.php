@@ -41,8 +41,6 @@ class DashboardController extends AbstractDashboardController
     {
         $submenu1 = [
             MenuItem::linkToCrud('transaction.menu.all', '', Transaction::class),
-            MenuItem::linkToCrud('transaction.menu.withoutexpenses', '', Transaction::class),
-            MenuItem::linkToCrud('transaction.menu.ignoredTransaction', '', Transaction::class),
         ];
 
         $submenu2 = [

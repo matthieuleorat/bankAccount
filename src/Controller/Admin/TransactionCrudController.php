@@ -3,14 +3,17 @@
 namespace App\Controller\Admin;
 
 use App\Admin\Field\ObjectType;
+use App\Admin\Filter\TransactionNotFullFilledWithExpense;
 use App\Entity\Transaction;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 
 class TransactionCrudController extends AbstractCrudController
 {
@@ -45,5 +48,13 @@ class TransactionCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$date, $details, $debit, $credit, $createExpense];
         }
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add(BooleanFilter::new('ignore'))
+            ->add(TransactionNotFullFilledWithExpense::new('expenses'))
+            ;
     }
 }
