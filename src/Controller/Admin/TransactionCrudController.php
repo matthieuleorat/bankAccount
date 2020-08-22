@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Admin\Field\ObjectType;
 use App\Entity\Transaction;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -32,7 +33,7 @@ class TransactionCrudController extends AbstractCrudController
         $credit = NumberField::new('credit', 'transaction.credit');
         $createExpense = Field::new('createExpense', 'transaction.createexpense');
         $amount = TextareaField::new('amount', 'transaction.amount')->setTemplatePath('admin/transaction/list/amount.html.twig');
-        $type = TextareaField::new('type', 'transaction.type')->setTemplatePath('admin/transaction/show/type.html.twig');
+        $type = ObjectType::new('type', 'transaction.type')->setTemplatePath('admin/transaction/show/type.html.twig');
         $expenses = AssociationField::new('expenses', 'transaction.expenses')->setTemplatePath('admin/transaction/list/expenses.html.twig');
 
         if (Crud::PAGE_INDEX === $pageName) {

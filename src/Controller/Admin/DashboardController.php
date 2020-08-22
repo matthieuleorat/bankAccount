@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Budget;
-use App\Entity\Debt;
 use App\Entity\Source;
 use App\Entity\Statement;
 use App\Entity\Transaction;
@@ -51,15 +50,9 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linktoRoute('statement.import.label', '', 'import_new_statement'),
         ];
 
-        $submenu3 = [
-            MenuItem::linkToCrud('debt.menu.all', '', Debt::class),
-            MenuItem::linktoRoute('debt.menu.seeBalance', '', 'see_balance'),
-        ];
-
         yield MenuItem::linkToCrud('source.label', 'fas fa-folder-open', Source::class);
         yield MenuItem::subMenu('transaction.menu.label', 'fas fa-folder-open')->setSubItems($submenu1);
         yield MenuItem::subMenu('statement.label', 'fas fa-folder-open')->setSubItems($submenu2);
         yield MenuItem::linkToCrud('budget.label', 'fas fa-folder-open', Budget::class);
-        yield MenuItem::subMenu('debt.label', 'fas fa-folder-open')->setSubItems($submenu3);
     }
 }

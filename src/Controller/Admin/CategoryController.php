@@ -43,18 +43,4 @@ class CategoryController extends EasyAdminController
             'categoriesHtmlList' => $categoriesHtmlList,
         ]);
     }
-
-    protected function createNewEntity() : Category
-    {
-        $entityFullyQualifiedClassName = $this->entity['class'];
-
-        $entity = new $entityFullyQualifiedClassName();
-
-        $budgetId = $this->request->getSession()->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
-        $budget = $this->getDoctrine()->getRepository(Budget::class)->findOneBy(['id' => $budgetId]);
-
-        $entity->setBudget($budget);
-
-        return $entity;
-    }
 }

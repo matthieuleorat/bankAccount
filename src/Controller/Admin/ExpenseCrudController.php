@@ -7,6 +7,7 @@ use App\Entity\Expense;
 use App\Form\Filter\CategoryWithChildrenFilterType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -27,7 +28,8 @@ class ExpenseCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Expense')
             ->setEntityLabelInPlural('Expense')
             ->setSearchFields(['id', 'label', 'debit', 'credit', 'comment'])
-            ->overrideTemplate('crud/index', 'admin/expense/list.html.twig');
+            ->overrideTemplate('crud/index', 'admin/expense/list.html.twig')
+            ;
     }
 
     public function configureFields(string $pageName): iterable
@@ -57,7 +59,6 @@ class ExpenseCrudController extends AbstractCrudController
 
     public function configureFilters(Filters $filters): Filters
     {
-
         return $filters
             ->add(CategoryFilter::new('category'))
             ->add('date')

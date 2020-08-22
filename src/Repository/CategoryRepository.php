@@ -25,7 +25,7 @@ class CategoryRepository extends NestedTreeRepository
     {
         $this->budget = $budgetId;
 
-        return $this->repoUtils->childrenHierarchy($node, $direct, $options, $includeNode);
+        return $this->childrenHierarchy($node, $direct, $options, $includeNode);
     }
 
     public function getRootNodesByBudget(int $budgetId, $sortByField = null, $direction = 'asc')

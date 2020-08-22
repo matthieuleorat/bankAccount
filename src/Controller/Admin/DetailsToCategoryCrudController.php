@@ -3,16 +3,44 @@
 namespace App\Controller\Admin;
 
 use App\Entity\DetailsToCategory;
+use App\Filtering\ApplyFilter;
+use App\Filtering\AttributeExtractor;
+use App\Filtering\CategoryGuesser;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DetailsToCategoryCrudController extends AbstractCrudController
 {
+    /**
+     * @var CategoryGuesser
+     */
+    private $categoryGuesser;
+    /**
+     * @var AttributeExtractor
+     */
+    private $attributeExtractor;
+    /**
+     * @var ApplyFilter
+     */
+    private $applyFilter;
+
+    public function __construct(CategoryGuesser $categoryGuesser, AttributeExtractor $attributeExtractor, ApplyFilter $applyFilter)
+    {
+        $this->categoryGuesser = $categoryGuesser;
+        $this->attributeExtractor = $attributeExtractor;
+        $this->applyFilter = $applyFilter;
+    }
+
     public static function getEntityFqcn(): string
     {
         return DetailsToCategory::class;
@@ -50,5 +78,39 @@ class DetailsToCategoryCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$panel1, $regex, $budget, $criteria, $panel2, $label, $category, $debit, $credit, $date, $comment];
         }
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $apply = Action::new('apply', 'apply')
+            ->linkToCrudAction('apply');
+
+        return $actions
+            ->add(Crud::PAGE_INDEX, $apply);
+    }
+
+    public function apply(AdminContext $context) : RedirectResponse
+    {
+        $request = $context->getRequest();
+
+        try {
+            $id = $request->get('entityId');
+            /** @var DetailsToCategory $entity */
+            $entity = $this->getDoctrine()->getRepository(DetailsToCategory::class)->find($id);
+
+            $expenses = $this->applyFilter->execute($entity);
+
+            $this->addFlash('success', count($expenses) . ' transactions trouvées');
+        } catch (\Exception $e) {
+            $this->addFlash('warning', $e->getMessage());
+        }
+
+        $crudUrlGenerator = $this->get(CrudUrlGenerator::class);
+        $url = $crudUrlGenerator->build()
+            ->setController(DetailsToCategoryCrudController::class)
+            ->setAction('index')
+            ->generateUrl();
+
+        return $this->redirect($url);
     }
 }

@@ -39,7 +39,7 @@ class CategoryCrudController extends AbstractCrudController
         $expenses = AssociationField::new('expenses');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$name, $parent, $budget];
+            return [$name, $parent, $budget, $lft, $rgt, $root];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $name, $lft, $lvl, $rgt, $root, $parent, $children, $detailsToCategories, $expenses, $budget];
         } elseif (Crud::PAGE_NEW === $pageName) {
