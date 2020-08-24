@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 use App\Admin\Field\ObjectType;
 use App\Admin\Filter\TransactionNotFullFilledWithExpense;
 use App\Entity\Transaction;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -14,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 
 class TransactionCrudController extends AbstractCrudController
 {
@@ -56,5 +59,22 @@ class TransactionCrudController extends AbstractCrudController
             ->add(BooleanFilter::new('ignore'))
             ->add(TransactionNotFullFilledWithExpense::new('expenses'))
             ;
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $crudUrlGenerator = $this->get(CrudUrlGenerator::class);
+
+        $createExpense = $viewInvoice = Action::new('transactionToExpense', 'transaction.createexpense')
+            ->linkToUrl(function (Transaction $entity) use ($crudUrlGenerator) {
+                return $crudUrlGenerator->build()
+                    ->setController(ExpenseCrudController::class)
+                    ->setAction('new')
+                    ->set('transaction', $entity->getId())
+                    ->generateUrl();
+            })
+        ;
+
+        return $actions->add(Crud::PAGE_INDEX, $createExpense);
     }
 }
