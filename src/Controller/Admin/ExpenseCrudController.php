@@ -8,15 +8,23 @@ use App\Entity\Expense;
 use App\Entity\Transaction;
 use App\Form\Filter\CategoryWithChildrenFilterType;
 use App\Twig\BudgetExtension;
+use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use Matleo\BankStatementParser\Model\CreditCardPayment;
 
 class ExpenseCrudController extends AbstractCrudController
@@ -50,6 +58,21 @@ class ExpenseCrudController extends AbstractCrudController
             ->setSearchFields(['id', 'label', 'debit', 'credit', 'comment'])
             ->overrideTemplate('crud/index', 'admin/expense/list.html.twig')
             ;
+    }
+
+    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
+    {
+        $queryBuilder = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+
+        $session = $this->get('session');
+        $budgetId = $session->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
+        $rootAlias = $queryBuilder->getRootAlias();
+        $queryBuilder
+            ->andWhere($rootAlias.'.budget = :budgetId')
+            ->setParameter('budgetId', $budgetId)
+        ;
+
+        return $queryBuilder;
     }
 
     public function configureFields(string $pageName): iterable

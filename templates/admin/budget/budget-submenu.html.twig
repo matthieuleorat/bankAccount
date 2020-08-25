@@ -1,6 +1,6 @@
 {% set category_index_url = ea_url()
     .setController('App\\Controller\\Admin\\CategoryCrudController')
-    .setEntityId(entity.primaryKeyValue)
+    .unset('entityId')
     .setAction('index') %}
 <a class="btn btn-primary action-new" href="{{ category_index_url }}">
     {{ 'budget.action.list-categories'|trans }}
@@ -8,7 +8,7 @@
 
 {% set expense_index_url = ea_url()
     .setController('App\\Controller\\Admin\\ExpenseCrudController')
-    .setEntityId(entity.primaryKeyValue)
+    .unset('entityId')
     .setAction('index') %}
 <a class="btn btn-primary action-new" href="{{ expense_index_url }}">
     {{ 'budget.action.list-expense'|trans }}
@@ -16,7 +16,7 @@
 
 {% set detailtocategory_index_url = ea_url()
     .setController('App\\Controller\\Admin\\DetailsToCategoryCrudController')
-    .setEntityId(entity.primaryKeyValue)
+    .unset('entityId')
     .setAction('index') %}
 <a class="btn btn-primary action-new" href="{{ detailtocategory_index_url }}">
     {{ 'budget.action.list-filter'|trans }}

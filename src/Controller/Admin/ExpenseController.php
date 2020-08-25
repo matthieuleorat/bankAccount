@@ -12,22 +12,6 @@ use Matleo\BankStatementParser\Model\CreditCardPayment;
 
 class ExpenseController extends EasyAdminController
 {
-    public function createNewEntity()
-    {
-        $entityFullyQualifiedClassName = $this->entity['class'];
-        $entity = new $entityFullyQualifiedClassName();
-
-        $transactionId = (int) $this->request->query->get('transaction');
-
-        $budgetId = $this->request->getSession()->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
-        $budget = $this->getDoctrine()->getRepository(Budget::class)->findOneBy(['id' => $budgetId]);
-
-        $entity->setBudget($budget);
-        $entity->setDate(new \DateTimeImmutable());
-
-        return $this->fillExpenseWithTransaction($transactionId, $entity);
-    }
-
     protected function listAction()
     {
         $this->dispatch(EasyAdminEvents::PRE_LIST);

@@ -4,5 +4,7 @@
     .setAction('detail') %}
 
 <a href="{{ url }}">
-    {{ entity.instance.transaction.details|nl2br }}
+    {% if entity.instance.transaction is not null %}
+        {{ entity.instance.transaction.details|nl2br }}
+    {% endif %}
 </a>
