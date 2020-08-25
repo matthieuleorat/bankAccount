@@ -6,6 +6,7 @@ use App\Entity\Budget;
 use App\Entity\Category;
 use App\Entity\Expense;
 use App\Form\BudgetFilterType;
+use App\Form\BudgetSelectionType;
 use App\Twig\BudgetExtension;
 use DateTime;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -21,8 +22,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use stdClass;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class BudgetCrudController extends AbstractCrudController
 {
@@ -99,6 +102,32 @@ class BudgetCrudController extends AbstractCrudController
         }
 
         return $responseParameters;
+    }
+
+    public function selection(AdminContext $context) : RedirectResponse
+    {
+        $form = $this->createForm(BudgetSelectionType::class);
+
+        $request = $this->get('request_stack')->getMasterRequest();
+
+        $form->handleRequest($request);
+
+        $redirecteTo = $request->server->get('HTTP_REFERER');
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $budget = $form->getData()['budget'];
+            $this->container->get('session')->set(BudgetExtension::BUDGET_ID_SESSION_KEY, $budget->getId());
+            if (preg_match('@(https://.*/admin\?crudAction=detail)(.*)@', $redirecteTo, $matches)) {
+                $crudUrlGenerator = $this->get(CrudUrlGenerator::class);
+                $redirecteTo = $crudUrlGenerator->build()
+                    ->setController(BudgetCrudController::class)
+                    ->setAction(CRUD::PAGE_DETAIL)
+                    ->setEntityId($budget->getId())
+                    ->generateUrl();
+            }
+        }
+
+        return $this->redirect($redirecteTo);
     }
 
     public function configureCrud(Crud $crud): Crud
