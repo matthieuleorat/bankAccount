@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -17,12 +18,41 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
+use Symfony\Component\HttpFoundation\Response;
 
 class TransactionCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
         return Transaction::class;
+    }
+
+    public function toggleIgnoreAction(AdminContext $context) : Response
+    {
+        $id = $context->getEntity()->getInstance()->getId();
+
+        $em = $this->getDoctrine()->getManager();
+        /** @var Transaction $entity */
+        $entity = $em->getRepository(Transaction::class)->find($id);
+
+        $value = true;
+
+        if ($entity->isIgnore()) {
+            $value = false;
+        }
+
+        $entity->setIgnore($value);
+
+        $em->flush();
+
+        $this->addFlash('success', 'Modification enregistrée');
+
+        $url = $this->get(CrudUrlGenerator::class)->build()
+            ->setAction(Action::INDEX)
+            ->unset('entityId')
+            ->generateUrl();
+
+        return $this->redirect($url);
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -65,7 +95,7 @@ class TransactionCrudController extends AbstractCrudController
     {
         $crudUrlGenerator = $this->get(CrudUrlGenerator::class);
 
-        $createExpense = $viewInvoice = Action::new('transactionToExpense', 'transaction.createexpense')
+        $createExpense = Action::new('transactionToExpense', 'transaction.createexpense')
             ->linkToUrl(function (Transaction $entity) use ($crudUrlGenerator) {
                 return $crudUrlGenerator->build()
                     ->setController(ExpenseCrudController::class)
@@ -75,6 +105,20 @@ class TransactionCrudController extends AbstractCrudController
             })
         ;
 
-        return $actions->add(Crud::PAGE_INDEX, $createExpense);
+        $toggleIgnore = Action::new('toggleIgnore', 'transaction.toggleIngore')
+            ->linkToUrl(function (Transaction $entity) use ($crudUrlGenerator) {
+                return $crudUrlGenerator->build()
+                    ->setController(TransactionCrudController::class)
+                    ->setAction('toggleIgnore')
+                    ->setEntityId($entity->getId())
+                    ->generateUrl();
+            })
+            ->setTemplatePath('admin/transaction/list/action/ignore_transaction.html.twig')
+        ;
+
+        return $actions
+            ->add(Crud::PAGE_INDEX, $createExpense)
+            ->add(Crud::PAGE_INDEX, $toggleIgnore)
+            ;
     }
 }
