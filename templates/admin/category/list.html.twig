@@ -1,13 +1,6 @@
-{% extends '@EasyAdmin/page/content.html.twig' %}
+{% extends '@!EasyAdmin/crud/index.html.twig' %}
 
-{% block content_title %}
-    {{ 'category.list.title'|trans }}
-{% endblock %}
-
-{% block global_actions %}
+{% block page_actions %}
+    {{ parent() }}
     {% include('admin/budget/budget-submenu.html.twig') %}
-{% endblock %}
-
-{% block main %}
-    {{ categoriesHtmlList|raw }}
 {% endblock %}
