@@ -27,7 +27,7 @@ class CategoryCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setSearchFields(['id', 'name', 'root'])
+            ->setSearchFields(['id', 'name'])
             ->overrideTemplate('crud/index', 'admin/category/list.html.twig')
         ;
     }
