@@ -1,0 +1,6 @@
+{% extends '@!EasyAdmin/crud/index.html.twig' %}
+
+{% block page_actions %}
+    {{ parent() }}
+    {% include('admin/budget/budget-submenu.html.twig') %}
+{% endblock %}

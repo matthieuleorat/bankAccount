@@ -6,16 +6,23 @@ use App\Entity\DetailsToCategory;
 use App\Filtering\ApplyFilter;
 use App\Filtering\AttributeExtractor;
 use App\Filtering\CategoryGuesser;
+use App\Twig\BudgetExtension;
+use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -51,7 +58,8 @@ class DetailsToCategoryCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('DetailsToCategory')
             ->setEntityLabelInPlural('DetailsToCategory')
-            ->setSearchFields(['id', 'regex', 'label', 'debit', 'credit', 'date', 'comment']);
+            ->setSearchFields(['id', 'regex', 'label', 'debit', 'credit', 'date', 'comment'])
+            ->overrideTemplate('crud/index', 'admin/details-to-category/list.html.twig');
     }
 
     public function configureFields(string $pageName): iterable
@@ -78,6 +86,21 @@ class DetailsToCategoryCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$panel1, $regex, $budget, $criteria, $panel2, $label, $category, $debit, $credit, $date, $comment];
         }
+    }
+
+    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
+    {
+        $queryBuilder = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+
+        $session = $this->get('session');
+        $budgetId = $session->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
+        $rootAlias = $queryBuilder->getRootAlias();
+        $queryBuilder
+            ->andWhere($rootAlias.'.budget = :budgetId')
+            ->setParameter('budgetId', $budgetId)
+        ;
+
+        return $queryBuilder;
     }
 
     public function configureActions(Actions $actions): Actions
