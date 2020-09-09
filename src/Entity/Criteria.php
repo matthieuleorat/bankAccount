@@ -38,6 +38,11 @@ class Criteria
      */
     private ?DetailsToCategory $detailsToCategory;
 
+    public function __toString()
+    {
+        return $this->field . " " . $this->compareOperator . " ".$this->value;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

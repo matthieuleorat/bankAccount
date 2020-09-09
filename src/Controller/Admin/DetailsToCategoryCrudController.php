@@ -2,10 +2,13 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Budget;
 use App\Entity\DetailsToCategory;
 use App\Filtering\ApplyFilter;
 use App\Filtering\AttributeExtractor;
 use App\Filtering\CategoryGuesser;
+use App\Form\CriteriaType;
+use App\Repository\CategoryRepository;
 use App\Twig\BudgetExtension;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -18,6 +21,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
@@ -64,17 +69,41 @@ class DetailsToCategoryCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        $budgetId = $this->get('session')->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
+
         $panel1 = FormField::addPanel('Filtre');
         $regex = TextField::new('regex');
-        $budget = AssociationField::new('budget');
-        $criteria = AssociationField::new('criteria');
+        $budget = AssociationField::new('budget')->setFormTypeOption('disabled','disabled');
+        $criteria = CollectionField::new('criteria')
+            ->setFormTypeOption('allow_add',true)
+            ->setFormTypeOption('allow_delete',true)
+            ->setFormTypeOption('by_reference',false)
+            ->setFormTypeOption('entry_type','App\Form\CriteriaType')
+        ;
         $panel2 = FormField::addPanel('Dépense');
-        $label = TextField::new('label');
-        $category = AssociationField::new('category');
-        $debit = TextField::new('debit');
-        $credit = TextField::new('credit');
-        $date = TextField::new('date');
+        $label = ChoiceField::new('label')
+            ->setChoices(CriteriaType::AVAILABLE_FIELD)
+            ->autocomplete();
+
+        $category = AssociationField::new('category')
+            ->setFormTypeOption('query_builder', function (CategoryRepository $er) use ($budgetId) {
+                return $er->getNodesHierarchyQueryBuilderByBudget($budgetId);
+            });
+
+        $debit = ChoiceField::new('debit')
+            ->setChoices(CriteriaType::AVAILABLE_FIELD)
+            ->autocomplete();
+
+        $credit = ChoiceField::new('credit')
+            ->setChoices(CriteriaType::AVAILABLE_FIELD)
+            ->autocomplete();
+
+        $date = ChoiceField::new('date')
+            ->setChoices(CriteriaType::AVAILABLE_FIELD)
+            ->autocomplete();
+
         $comment = TextareaField::new('comment');
+
         $id = IntegerField::new('id', 'ID');
 
         if (Crud::PAGE_INDEX === $pageName) {
@@ -135,5 +164,22 @@ class DetailsToCategoryCrudController extends AbstractCrudController
             ->generateUrl();
 
         return $this->redirect($url);
+    }
+
+    public function createEntity(string $entityFqcn) : DetailsToCategory
+    {
+        $entity = new $entityFqcn();
+
+        $entity->setLabel(CriteriaType::STATEMENT_DETAILS_FIELD);
+        $entity->setCredit(CriteriaType::STATEMENT_CREDIT_FIELD);
+        $entity->setDebit(CriteriaType::STATEMENT_DEBIT_FIELD);
+        $entity->setDate(CriteriaType::STATEMENT_DATE_FIELD);
+
+        $budgetId = $this->get('session')->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
+        $budget = $this->getDoctrine()->getRepository(Budget::class)->findOneBy(['id' => $budgetId]);
+
+        $entity->setBudget($budget);
+
+        return $entity;
     }
 }

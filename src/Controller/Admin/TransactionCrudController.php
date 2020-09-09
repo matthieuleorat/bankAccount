@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Admin\Field\ObjectType;
 use App\Admin\Filter\TransactionNotFullFilledWithExpense;
 use App\Entity\Transaction;
+use Doctrine\Common\Collections\Collection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -12,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -71,9 +73,10 @@ class TransactionCrudController extends AbstractCrudController
         $amount = TextareaField::new('amount', 'transaction.amount')->setTemplatePath('admin/transaction/list/amount.html.twig');
         $type = ObjectType::new('type', 'transaction.type')->setTemplatePath('admin/transaction/show/type.html.twig');
         $expenses = AssociationField::new('expenses', 'transaction.expenses')->setTemplatePath('admin/transaction/list/expenses.html.twig');
+        $statement = AssociationField::new('statement');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$date, $details, $expenses, $amount];
+            return [$date, $details, $expenses, $amount, $statement];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$date, $details, $amount, $type];
         } elseif (Crud::PAGE_NEW === $pageName) {
@@ -88,6 +91,7 @@ class TransactionCrudController extends AbstractCrudController
         return $filters
             ->add(BooleanFilter::new('ignore'))
             ->add(TransactionNotFullFilledWithExpense::new('expenses'))
+            ->add('statement')
             ;
     }
 
