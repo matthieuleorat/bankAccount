@@ -171,12 +171,14 @@ class ImportNewStatementController extends AbstractController
         $transaction->setDetails($operation->getDetails());
 
         if ($transaction->getId() === null) {
-            /** @var DetailsToCategory[] $filters */
-            $filters = $this->entityManager->getRepository(DetailsToCategory::class)->findAll();
-            foreach ($filters as $filter) {
-                if (true === $this->categoryGuesser->execute($filter, $transaction)) {
-                    $expense = $this->expenseFactory->fromTransaction($transaction, $filter);
-                    $this->entityManager->persist($expense);
+            if ($statement->getSource() instanceof Source && $statement->getSource()->getDefaultBudget() instanceof Budget) {
+                /** @var DetailsToCategory[] $filters */
+                $filters = $this->entityManager->getRepository(DetailsToCategory::class)->findBy(['budget' => $statement->getSource()->getDefaultBudget()]);
+                foreach ($filters as $filter) {
+                    if (true === $this->categoryGuesser->execute($filter, $transaction)) {
+                        $expense = $this->expenseFactory->fromTransaction($transaction, $filter);
+                        $this->entityManager->persist($expense);
+                    }
                 }
             }
         }
