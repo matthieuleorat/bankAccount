@@ -189,9 +189,9 @@ class BudgetCrudController extends AbstractCrudController
         $datas = new stdClass();
         $datas->headers = [];
         $datas->rows = [];
+        $datas->totals = [];
 
         $datasForGraph = [];
-
         foreach ($p as $periode) {
             $obj = new stdClass();
             $obj->x = [];
@@ -205,12 +205,16 @@ class BudgetCrudController extends AbstractCrudController
             $row->total = 0;
             $row->label = $periode[0]->format('F Y');
 
-            foreach ($categories as $category) {
+            foreach ($categories as $i => $category) {
                 $obj->x[] = $category->getName();
                 $ids = $this->repo->getChildren($category);
                 $ids[] = $category;
                 $values = $this->getDoctrine()->getRepository(Expense::class)->getTotalsForCategories($budget, $ids, $periode[0], $periode[1])[0];
                 $value = $values['totalCredit'] - $values['totalDebit'];
+                if (false === array_key_exists($i, $datas->totals)) {
+                    $datas->totals[$i] = 0;
+                }
+                $datas->totals[$i] += $value;
                 $obj->y[] = $value;
 
                 if (false === in_array($category, $datas->headers)) {
@@ -222,11 +226,11 @@ class BudgetCrudController extends AbstractCrudController
                 $row->total += $value;
                 $row->values[] = $data;
             }
-
             $datas->rows[] = $row;
 
             $datasForGraph[] = $obj;
         }
+        $datas->totals[] = array_sum($datas->totals);
 
         $parameters['datasForGraph'] = $datasForGraph;
         $parameters['datas'] = $datas;

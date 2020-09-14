@@ -98,6 +98,7 @@
                     <td>
                         {% set url = ea_url()
                             .setController('App\\Controller\\Admin\\ExpenseCrudController')
+                            .unset('entityId')
                             .setAction('index')
                             .includeReferrer()
                             .set('filters', {
@@ -127,6 +128,16 @@
             </tr>
         {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+                <td>Totals</td>
+                {% for row in datas.totals %}
+                    <td>
+                        {{ row }}
+                    </td>
+                {% endfor %}
+            </tr>
+        </tfoot>
     </table>
 
     <div id="tester"></div>
