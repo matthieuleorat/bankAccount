@@ -107,7 +107,7 @@ class DetailsToCategoryCrudController extends AbstractCrudController
         $id = IntegerField::new('id', 'ID');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $regex, $label, $debit, $credit, $date, $category];
+            return [$id, $regex, $category];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $regex, $label, $debit, $credit, $date, $comment, $category, $criteria, $budget];
         } elseif (Crud::PAGE_NEW === $pageName) {
