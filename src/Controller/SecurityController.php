@@ -15,7 +15,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
          if ($this->getUser()) {
-             return $this->redirectToRoute('easyadmin');
+             return $this->redirectToRoute('admin_dashboard');
          }
 
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -32,7 +32,7 @@ class SecurityController extends AbstractController
             // this parameter, the login form won't include a CSRF token
             'csrf_token_intention' => 'authenticate',
             // the URL users are redirected to after the login (default: path('easyadmin'))
-            'target_path' => $this->generateUrl('easyadmin'),
+            'target_path' => $this->generateUrl('admin_dashboard'),
             // the label displayed for the username form field (the |trans filter is applied to it)
             'username_label' => "Votre nom d'utilisateur",
             // the label displayed for the password form field (the |trans filter is applied to it)

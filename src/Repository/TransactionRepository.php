@@ -42,6 +42,7 @@ class TransactionRepository extends ServiceEntityRepository
                     $qb->expr()->lt('sum(e.debit)', 't.debit')
                 )
             )
+            // TODO Remove ignored transactions
             ->getQuery()
             ->getResult()
         ;

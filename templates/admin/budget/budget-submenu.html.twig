@@ -1,12 +1,24 @@
-<a class="btn btn-primary action-new" href="{{ easyadmin_path('Category', 'list') }}">
+{% set category_index_url = ea_url()
+    .setController('App\\Controller\\Admin\\CategoryCrudController')
+    .unset('entityId')
+    .setAction('index') %}
+<a class="btn btn-primary action-new" href="{{ category_index_url }}">
     {{ 'budget.action.list-categories'|trans }}
 </a>
 
-<a class="btn btn-primary action-new" href="{{ easyadmin_path('Expense', 'list') }}">
+{% set expense_index_url = ea_url()
+    .setController('App\\Controller\\Admin\\ExpenseCrudController')
+    .unset('entityId')
+    .setAction('index') %}
+<a class="btn btn-primary action-new" href="{{ expense_index_url }}">
     {{ 'budget.action.list-expense'|trans }}
 </a>
 
-<a class="btn btn-primary action-new" href="{{ easyadmin_path('DetailsToCategory', 'list') }}">
+{% set detailtocategory_index_url = ea_url()
+    .setController('App\\Controller\\Admin\\DetailsToCategoryCrudController')
+    .unset('entityId')
+    .setAction('index') %}
+<a class="btn btn-primary action-new" href="{{ detailtocategory_index_url }}">
     {{ 'budget.action.list-filter'|trans }}
 </a>
 

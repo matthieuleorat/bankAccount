@@ -1,0 +1,39 @@
+<?php declare(strict_types=1);
+
+namespace App\Admin\Filter;
+
+use App\Form\Filter\TransactionNotFullFilledWithExpenseFilterType;
+use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Filter\FilterInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\FilterDataDto;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\FilterTrait;
+
+class TransactionNotFullFilledWithExpense implements FilterInterface
+{
+    use FilterTrait;
+
+    public static function new(string $propertyName, $label = null): self
+    {
+        return (new self())
+            ->setFilterFqcn(__CLASS__)
+            ->setProperty($propertyName)
+            ->setLabel($label)
+            ->setFormType(TransactionNotFullFilledWithExpenseFilterType::class);
+    }
+
+    public function apply(QueryBuilder $queryBuilder, FilterDataDto $filterDataDto, ?FieldDto $fieldDto, EntityDto $entityDto): void
+    {
+        if (true === $filterDataDto->getValue()) {
+            $queryBuilder
+                ->andwhere(
+                    $queryBuilder->expr()->orX(
+                        sprintf('%s.%s', $filterDataDto->getEntityAlias(), $filterDataDto->getProperty()).' is empty',
+
+                    )
+                )
+            ;
+        }
+    }
+}

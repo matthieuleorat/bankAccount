@@ -1,5 +1,12 @@
 {% set budgetSelectionForm = displayBudgetSelection() %}
-{{ form_start(budgetSelectionForm, {'action': path('budget_selection'), 'method': 'POST'}) }}
-{{ form_widget(budgetSelectionForm.budget) }}
-{{ form_rest(budgetSelectionForm) }}
+
+{% set category_index_url = ea_url()
+    .setController('App\\Controller\\Admin\\BudgetCrudController')
+    .unset('entityId')
+    .includeReferrer()
+    .setAction('selection') %}
+
+{{ form_start(budgetSelectionForm, {'action': category_index_url, 'method': 'POST'}) }}
+    {{ form_widget(budgetSelectionForm.budget) }}
+    {{ form_rest(budgetSelectionForm) }}
 {{ form_end(budgetSelectionForm) }}

@@ -5,15 +5,15 @@
     <script src="https://cdn.plot.ly/plotly-1.5.2.min.js"></script>
 {% endblock head_javascript %}
 
-{% block content_title %}
+{% block page_title %}
     {{ entity.name }}
 {% endblock %}
 
-{% block global_actions %}
+{% block page_actions %}
     {% include('admin/budget/budget-submenu.html.twig') %}
 {% endblock %}
 
-{% block main %}
+{% block page_content %}
     <style>
         .date-container {
             display: flex;
@@ -91,16 +91,17 @@
         </tr>
         </thead>
         <tbody>
-
         {% for row in datas.rows %}
             <tr>
                 <td>{{ row.period[0]|date('F Y') }}</td>
                 {% for value in row.values %}
                     <td>
-                        <a href="{{ path('easyadmin', {
-                            'entity': 'Expense',
-                            'action': 'list',
-                            'filters': {
+                        {% set url = ea_url()
+                            .setController('App\\Controller\\Admin\\ExpenseCrudController')
+                            .unset('entityId')
+                            .setAction('index')
+                            .includeReferrer()
+                            .set('filters', {
                                 'category': value.category.id,
                                 'date': {
                                     'comparison': 'between',
@@ -115,8 +116,10 @@
                                         'year': row.period[1]|date('Y')
                                     }
                                 }
-                            }
-                        }) }}">
+                            })
+                        %}
+
+                        <a href="{{ url }}">
                             {{ value.value }}
                         </a>
                     </td>
@@ -125,6 +128,16 @@
             </tr>
         {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+                <td>Totals</td>
+                {% for row in datas.totals %}
+                    <td>
+                        {{ row }}
+                    </td>
+                {% endfor %}
+            </tr>
+        </tfoot>
     </table>
 
     <div id="tester"></div>

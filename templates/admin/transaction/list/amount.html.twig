@@ -1,5 +1,5 @@
-{% if item.debit %}
-    - {{ item.debit }} €
+{% if entity.instance.debit %}
+    - {{ entity.instance.debit }} €
 {% else %}
-    {{ item.credit }} €
+    {{ entity.instance.credit }} €
 {% endif %}

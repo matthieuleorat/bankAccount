@@ -2,22 +2,21 @@
 
 namespace App\Form\Filter;
 
-use App\Entity\Category;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\BooleanFilterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CategoryWithChildrenFilterType extends AbstractType
+class TransactionNotFullFilledWithExpenseFilterType extends AbstractType
 {
     public function getParent() : string
     {
-        return EntityType::class;
+        return BooleanFilterType::class;
     }
 
     public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
-            'class' => Category::class,
+
         ]);
     }
 }

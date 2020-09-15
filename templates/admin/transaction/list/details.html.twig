@@ -1,3 +1,8 @@
-<a href="{{ path('easyadmin', {'entity': 'Transaction', 'action':'show', 'id': item.id}) }}">
-    {{ value|nl2br }}
+{% set url = ea_url()
+    .setController('App\\Controller\\Admin\\TransactionCrudController')
+    .setEntityId(entity.primaryKeyValue)
+    .setAction('detail') %}
+
+<a href="{{ url }}">
+    {{ entity.instance.details|nl2br }}
 </a>

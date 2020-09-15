@@ -1,9 +1,10 @@
-<a href="{{ path('easyadmin', {
-    'entity': 'Transaction',
-    'action': 'toggleIgnore',
-    'id': item.id
-}) }}">
-    {% if item.ignore %}
+{% set url = ea_url()
+        .setController('App\\Controller\\Admin\\TransactionCrudController')
+        .setEntityId(entity.primaryKeyValue)
+        .setAction('toggleIgnoreAction') %}
+
+<a href="{{ url }}">
+    {% if entity.instance.ignore %}
         Dé-ignorer cette transaction
     {% else %}
         Ignorer cette transaction

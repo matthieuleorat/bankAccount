@@ -16,6 +16,7 @@ class AttributeExtractor
 
         if (count($tmp) > 1) {
             array_shift($tmp);
+
             return $this->extract($object->{$methodName}(), implode($separator, $tmp));
         }
 

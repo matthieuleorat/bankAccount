@@ -196,10 +196,6 @@ class Transaction
         return $this->createExpense;
     }
 
-    /**
-     * @param bool $createExpense
-     * @return Transaction
-     */
     public function setCreateExpense(bool $createExpense): Transaction
     {
         $this->createExpense = $createExpense;
@@ -218,17 +214,11 @@ class Transaction
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isIgnore(): ? bool
     {
         return $this->ignore;
     }
 
-    /**
-     * @param bool $ignore
-     */
     public function setIgnore(bool $ignore): void
     {
         $this->ignore = $ignore;
