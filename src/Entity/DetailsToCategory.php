@@ -61,6 +61,7 @@ class DetailsToCategory
 
     /**
      * @ORM\ManyToOne(targetEntity=Budget::class, inversedBy="detailsToCategories")
+     * @ORM\JoinColumn(name="budget_id", referencedColumnName="id", nullable=true)
      */
     private $budget;
 
