@@ -6,6 +6,7 @@ use App\Admin\Filter\CategoryFilter;
 use App\Entity\Budget;
 use App\Entity\Expense;
 use App\Entity\Transaction;
+use App\Form\CategoryType;
 use App\Form\Filter\CategoryWithChildrenFilterType;
 use App\Twig\BudgetExtension;
 use Doctrine\ORM\QueryBuilder;
@@ -78,7 +79,7 @@ class ExpenseCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $label = TextareaField::new('label')->setTemplatePath('admin/expense/list/details.html.twig');
-        $category = AssociationField::new('category');
+        $category = AssociationField::new('category')->setFormType(CategoryType::class);
         $debit = NumberField::new('debit');
         $credit = NumberField::new('credit');
         $date = DateField::new('date');
