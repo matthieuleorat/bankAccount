@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Admin\Filter\TransactionNotFullFilledWithExpense;
 use App\Entity\Budget;
 use App\Entity\DetailsToCategory;
 use App\Filtering\ApplyFilter;
@@ -16,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
@@ -27,6 +29,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -73,7 +76,7 @@ class DetailsToCategoryCrudController extends AbstractCrudController
 
         $panel1 = FormField::addPanel('Filtre');
         $regex = TextField::new('regex');
-        $budget = AssociationField::new('budget')->setFormTypeOption('disabled','disabled');
+        $budget = AssociationField::new('budget');
         $criteria = CollectionField::new('criteria')
             ->setFormTypeOption('allow_add',true)
             ->setFormTypeOption('allow_delete',true)
@@ -165,6 +168,14 @@ class DetailsToCategoryCrudController extends AbstractCrudController
 
         return $this->redirect($url);
     }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('budget')
+            ;
+    }
+
 
     public function createEntity(string $entityFqcn) : DetailsToCategory
     {
