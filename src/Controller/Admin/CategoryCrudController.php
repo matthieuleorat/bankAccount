@@ -9,6 +9,7 @@ use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
@@ -30,6 +31,13 @@ class CategoryCrudController extends AbstractCrudController
             ->setSearchFields(['id', 'name'])
             ->overrideTemplate('crud/index', 'admin/category/list.html.twig')
         ;
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('budget')
+            ;
     }
 
     public function configureFields(string $pageName): iterable
@@ -65,7 +73,12 @@ class CategoryCrudController extends AbstractCrudController
         $budgetId = $session->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
         $rootAlias = $queryBuilder->getRootAlias();
         $queryBuilder
-            ->andWhere($rootAlias.'.budget = :budgetId')
+            ->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->isNull($rootAlias.'.budget'),
+                    $queryBuilder->expr()->eq($rootAlias.'.budget', ':budgetId')
+                )
+            )
             ->setParameter('budgetId', $budgetId)
         ;
 

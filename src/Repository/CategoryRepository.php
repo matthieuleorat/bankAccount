@@ -39,8 +39,13 @@ class CategoryRepository extends NestedTreeRepository
     {
         $qb = $this->getRootNodesQueryBuilder($sortByField, $direction);
 
-        $qb->andWhere('node.budget = :budget')
-            ->setParameter('budget', $budgetId);
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->isNull('node.budget'),
+                $qb->expr()->eq('node.budget', ':budgetId')
+            )
+        )
+            ->setParameter('budgetId', $budgetId);
 
         return $qb;
     }

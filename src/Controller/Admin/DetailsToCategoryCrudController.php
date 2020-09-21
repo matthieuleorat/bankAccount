@@ -110,7 +110,7 @@ class DetailsToCategoryCrudController extends AbstractCrudController
         $id = IntegerField::new('id', 'ID');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $regex, $category];
+            return [$id, $regex, $category, $budget];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $regex, $label, $debit, $credit, $date, $comment, $category, $criteria, $budget];
         } elseif (Crud::PAGE_NEW === $pageName) {
@@ -124,13 +124,18 @@ class DetailsToCategoryCrudController extends AbstractCrudController
     {
         $queryBuilder = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
 
-//        $session = $this->get('session');
-//        $budgetId = $session->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
-//        $rootAlias = $queryBuilder->getRootAlias();
-//        $queryBuilder
-//            ->andWhere($rootAlias.'.budget = :budgetId')
-//            ->setParameter('budgetId', $budgetId)
-//        ;
+        $session = $this->get('session');
+        $budgetId = $session->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
+        $rootAlias = $queryBuilder->getRootAlias();
+        $queryBuilder
+            ->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->isNull($rootAlias.'.budget'),
+                    $queryBuilder->expr()->eq($rootAlias.'.budget', ':budgetId')
+                )
+            )
+            ->setParameter('budgetId', $budgetId)
+        ;
 
         return $queryBuilder;
     }
