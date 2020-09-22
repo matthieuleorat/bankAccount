@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Budget;
 use App\Entity\Category;
+use App\Form\CategoryType;
 use App\Twig\BudgetExtension;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -43,7 +44,7 @@ class CategoryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name', 'category.name.label');
-        $parent = AssociationField::new('parent', 'category.parent.label');
+        $parent = AssociationField::new('parent', 'category.parent.label')->setFormType(CategoryType::class);
         $budget = AssociationField::new('budget', 'category.budget.label')->setFormTypeOption('disabled','disabled');
         $id = IntegerField::new('id', 'ID');
         $lft = IntegerField::new('lft');
