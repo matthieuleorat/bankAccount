@@ -16,10 +16,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Factory\FormFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -27,6 +29,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use Matleo\BankStatementParser\Model\CreditCardPayment;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
 class ExpenseCrudController extends AbstractCrudController
 {
@@ -95,9 +101,9 @@ class ExpenseCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $label, $debit, $credit, $date, $comment, $category, $transaction, $budget, $debts];
         } elseif (Crud::PAGE_NEW === $pageName) {
-            return [$label, $category, $debit, $credit, $date];
+            return [$label, $budget, $debit, $credit, $date];
         } elseif (Crud::PAGE_EDIT === $pageName) {
-            return [$label, $category, $debit, $credit, $date];
+            return [$label, $budget, $category, $debit, $credit, $date];
         }
     }
 
@@ -108,6 +114,28 @@ class ExpenseCrudController extends AbstractCrudController
             ->add('date')
             ->add('label')
         ;
+    }
+
+    public function createNewFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface
+    {
+        $formBuilder = $this->get(FormFactory::class)->createNewFormBuilder($entityDto, $formOptions, $context);
+
+        // Add category field if budget is defined
+        $formBuilder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $form = $event->getForm();
+            $expense = $event->getData();
+            if ($expense->getBudget() instanceof Budget) {
+                $budget_id = $expense->getBudget()->getId();
+                $form->add('category', CategoryType::class, [
+                    'query_builder' => static function (NestedTreeRepository $er) use ($budget_id) {
+                        return $er->getNodesHierarchyQueryBuilderByBudget($budget_id);
+                    },
+                ]);
+            }
+        });
+
+
+        return $formBuilder;
     }
 
     private function fillExpenseWithTransaction(int $transactionId, Expense $entity)
