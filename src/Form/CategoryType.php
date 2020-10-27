@@ -3,32 +3,25 @@
 namespace App\Form;
 
 use App\Entity\Category;
-use App\Twig\BudgetExtension;
-use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CategoryType extends AbstractType
 {
-    /**
-     * @var SessionInterface
-     */
-    private SessionInterface $session;
-
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'class' => Category::class,
-            'choice_label' => static function(Category $choice) {
-                return str_repeat('-', $choice->getLvl()). ' ' . $choice->getName();
+            'expanded' => true,
+            'multiple' => false,
+            'choice_attr' => static function(Category $choice, $key, $value) {
+                return [
+                    'attr_lvl' => $choice->getLvl(),
+                    'attr_children' => implode(',', array_map(static function(Category $category) {
+                        return $category->getId();
+                    }, $choice->getChildren()->toArray())),
+                ];
             },
         ]);
     }

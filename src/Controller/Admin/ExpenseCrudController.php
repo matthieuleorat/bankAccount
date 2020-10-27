@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Admin\Field\CategoryField;
 use App\Admin\Filter\CategoryFilter;
 use App\Entity\Budget;
 use App\Entity\Expense;
@@ -14,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
@@ -33,6 +35,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
+use Symfony\Component\Form\FormInterface;
 
 class ExpenseCrudController extends AbstractCrudController
 {
@@ -64,7 +67,14 @@ class ExpenseCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Expense')
             ->setSearchFields(['id', 'label', 'debit', 'credit', 'comment'])
             ->overrideTemplate('crud/index', 'admin/expense/list.html.twig')
+            ->addFormTheme('admin/field/category.html.twig')
             ;
+    }
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+            ->addJsFile('build/dynamic-category-list.js');
     }
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
@@ -85,7 +95,10 @@ class ExpenseCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $label = TextareaField::new('label')->setTemplatePath('admin/expense/list/details.html.twig');
-        $category = AssociationField::new('category')->setFormType(CategoryType::class);
+        $category = CategoryField::new('category')
+//            ->setCustomOption('placeholder' , 'Choose an option')
+//            ->setTemplatePath('admin/field/category.html.twig')
+        ;
         $debit = NumberField::new('debit');
         $credit = NumberField::new('credit');
         $date = DateField::new('date');
@@ -101,7 +114,7 @@ class ExpenseCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $label, $debit, $credit, $date, $comment, $category, $transaction, $budget, $debts];
         } elseif (Crud::PAGE_NEW === $pageName) {
-            return [$label, $budget, $debit, $credit, $date];
+            return [$label, $credit, $budget, $debit, $date];
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$label, $budget, $category, $debit, $credit, $date];
         }
@@ -120,20 +133,32 @@ class ExpenseCrudController extends AbstractCrudController
     {
         $formBuilder = $this->get(FormFactory::class)->createNewFormBuilder($entityDto, $formOptions, $context);
 
-        // Add category field if budget is defined
-        $formBuilder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $formModifier = function (FormInterface $form, Budget $budget) {
+            $form->add('category', CategoryType::class, [
+                'block_name' => 'coucou',
+                'block_prefix' => 'coucou',
+                'query_builder' => static function (NestedTreeRepository $er) use ($budget) {
+                    return $er->getNodesHierarchyQueryBuilderByBudget($budget->getId());
+                },
+            ]);
+        };
+
+//        // Add category field if budget is defined
+        $formBuilder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier) {
             $form = $event->getForm();
             $expense = $event->getData();
             if ($expense->getBudget() instanceof Budget) {
-                $budget_id = $expense->getBudget()->getId();
-                $form->add('category', CategoryType::class, [
-                    'query_builder' => static function (NestedTreeRepository $er) use ($budget_id) {
-                        return $er->getNodesHierarchyQueryBuilderByBudget($budget_id);
-                    },
-                ]);
+                $formModifier($form, $expense->getBudget());
             }
         });
 
+        $formBuilder->get('budget')->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) use ($formModifier) {
+                $budget = $event->getForm()->getData();
+                $formModifier($event->getForm()->getParent(), $budget);
+            }
+        );
 
         return $formBuilder;
     }
