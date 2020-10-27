@@ -95,10 +95,7 @@ class ExpenseCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $label = TextareaField::new('label')->setTemplatePath('admin/expense/list/details.html.twig');
-        $category = CategoryField::new('category')
-//            ->setCustomOption('placeholder' , 'Choose an option')
-//            ->setTemplatePath('admin/field/category.html.twig')
-        ;
+        $category = CategoryField::new('category');
         $debit = NumberField::new('debit');
         $credit = NumberField::new('credit');
         $date = DateField::new('date');
@@ -135,15 +132,13 @@ class ExpenseCrudController extends AbstractCrudController
 
         $formModifier = function (FormInterface $form, Budget $budget) {
             $form->add('category', CategoryType::class, [
-                'block_name' => 'coucou',
-                'block_prefix' => 'coucou',
                 'query_builder' => static function (NestedTreeRepository $er) use ($budget) {
                     return $er->getNodesHierarchyQueryBuilderByBudget($budget->getId());
                 },
             ]);
         };
 
-//        // Add category field if budget is defined
+        // Add category field if budget is defined
         $formBuilder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier) {
             $form = $event->getForm();
             $expense = $event->getData();
