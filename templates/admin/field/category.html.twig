@@ -1,0 +1,39 @@
+{% block _Expense_category_widget %}
+    <style>
+        #Expense_category {
+            display: flex;
+        }
+        #Expense_category label{
+            text-align: left;
+        }
+        .lvl-1 {
+            margin-left: 10px;
+        }
+        .lvl-2 {
+            margin-left: 20px;
+        }
+    </style>
+    <div id="Expense_category">
+    {% for category in form.children %}
+        {% if category.vars.attr['attr_lvl'] == 0 %}
+            {% if not loop.first %}
+                </div>
+            {% endif %}
+            <div><strong>
+        {% endif %}
+
+        <div class="lvl-{{ category.vars.attr['attr_lvl'] }}">
+            {{ form_widget(category) }}
+            {{ form_label(category) }}
+        </div>
+
+        {% if category.vars.attr['attr_lvl'] == 0 %}
+        </strong>
+        {% endif %}
+
+        {% if loop.last %}
+            </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+{% endblock %}
