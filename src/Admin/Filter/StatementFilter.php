@@ -2,9 +2,6 @@
 
 namespace App\Admin\Filter;
 
-use App\Entity\Statement;
-use App\Form\Filter\StatementFilterType;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Filter\FilterInterface;
@@ -27,8 +24,7 @@ class StatementFilter implements FilterInterface
             ->setLabel($label)
             ->setFormType(EntityFilterType::class)
             ->setFormTypeOption('translation_domain', 'EasyAdminBundle')
-            ;
-
+        ;
     }
 
     public function apply(QueryBuilder $queryBuilder, FilterDataDto $filterDataDto, ?FieldDto $fieldDto, EntityDto $entityDto): void
