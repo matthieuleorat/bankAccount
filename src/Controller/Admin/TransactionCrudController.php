@@ -3,9 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Admin\Field\ObjectType;
-use App\Admin\Filter\TransactionNotFullFilledWithExpense;
+use App\Admin\Filter\StatementFilter;
+use App\Admin\Filter\TransactionNotFullFilledWithExpenseFilter;
 use App\Entity\Transaction;
-use Doctrine\Common\Collections\Collection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -13,12 +13,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -88,11 +88,11 @@ class TransactionCrudController extends AbstractCrudController
 
     public function configureFilters(Filters $filters): Filters
     {
-        return $filters
-            ->add(BooleanFilter::new('ignore'))
-            ->add(TransactionNotFullFilledWithExpense::new('expenses'))
-            ->add('statement')
-            ;
+         return $filters
+            ->add(BooleanFilter::new('ignore', 'Afficher uniquement les transactions ignorées'))
+            ->add(TransactionNotFullFilledWithExpenseFilter::new('expenses', 'Afficher uniquement les transactions sans dépense liée'))
+            ->add(StatementFilter::new('statement', 'Relevé'))
+         ;
     }
 
     public function configureActions(Actions $actions): Actions

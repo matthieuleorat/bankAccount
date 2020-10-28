@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Admin\Filter\TransactionNotFullFilledWithExpense;
+use App\Admin\Filter\TransactionNotFullFilledWithExpenseFilter;
 use App\Entity\Budget;
 use App\Entity\DetailsToCategory;
 use App\Filtering\ApplyFilter;
