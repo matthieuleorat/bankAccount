@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Admin\Filter;
+namespace App\Admin\Filter\Configurator;
 
+use App\Admin\Filter\CategoryFilter;
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;

@@ -10,7 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\FilterDataDto;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\FilterTrait;
 
-class TransactionNotFullFilledWithExpense implements FilterInterface
+class TransactionNotFullFilledWithExpenseFilter implements FilterInterface
 {
     use FilterTrait;
 
@@ -28,10 +28,8 @@ class TransactionNotFullFilledWithExpense implements FilterInterface
         if (true === $filterDataDto->getValue()) {
             $queryBuilder
                 ->andwhere(
-                    $queryBuilder->expr()->orX(
-                        sprintf('%s.%s', $filterDataDto->getEntityAlias(), $filterDataDto->getProperty()).' is empty',
+                        sprintf('%s.%s', $filterDataDto->getEntityAlias(), $filterDataDto->getProperty()).' is empty'
 
-                    )
                 )
             ;
         }
