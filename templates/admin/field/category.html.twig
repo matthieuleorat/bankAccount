@@ -1,4 +1,5 @@
-{% block _Expense_category_widget %}
+
+{% block cat_form %}
     <style>
         #Expense_category {
             display: flex;
@@ -36,4 +37,12 @@
         {% endif %}
     {% endfor %}
     </div>
+{% endblock %}
+
+{% block _Category_parent_widget %}
+    {{ block('cat_form') }}
+{% endblock %}
+
+{% block _Expense_category_widget %}
+    {{ block('cat_form') }}
 {% endblock %}
