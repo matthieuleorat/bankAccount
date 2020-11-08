@@ -8,13 +8,10 @@ use App\Entity\Budget;
 use App\Entity\Expense;
 use App\Entity\Transaction;
 use App\Form\CategoryType;
-use App\Form\Filter\CategoryWithChildrenFilterType;
 use App\Twig\BudgetExtension;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
@@ -130,6 +127,18 @@ class ExpenseCrudController extends AbstractCrudController
     {
         $formBuilder = $this->get(FormFactory::class)->createNewFormBuilder($entityDto, $formOptions, $context);
 
+        return $this->setDynamicCategoryList($formBuilder);
+    }
+
+    public function createEditFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface
+    {
+        $formBuilder = $this->get(FormFactory::class)->createEditFormBuilder($entityDto, $formOptions, $context);
+
+        return $this->setDynamicCategoryList($formBuilder);
+    }
+
+    private function setDynamicCategoryList(FormBuilderInterface $formBuilder) : FormBuilderInterface
+    {
         $formModifier = function (FormInterface $form, Budget $budget) {
             $form->add('category', CategoryType::class, [
                 'query_builder' => static function (NestedTreeRepository $er) use ($budget) {
