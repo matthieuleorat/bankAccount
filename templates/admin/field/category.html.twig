@@ -16,19 +16,26 @@
     </style>
     <div id="Expense_category">
     {% for category in form.children %}
-        {% if category.vars.attr['attr_lvl'] == 0 %}
+
+        {% set level = 0 %}
+
+        {% if category.vars.attr.attr_lvl is defined %}
+            {% set level = category.vars.attr['attr_lvl'] %}
+        {% endif %}
+
+        {% if level == 0%}
             {% if not loop.first %}
                 </div>
             {% endif %}
             <div><strong>
         {% endif %}
 
-        <div class="lvl-{{ category.vars.attr['attr_lvl'] }}">
+        <div class="lvl-{{ level }}">
             {{ form_widget(category) }}
             {{ form_label(category) }}
         </div>
 
-        {% if category.vars.attr['attr_lvl'] == 0 %}
+        {% if level == 0 %}
         </strong>
         {% endif %}
 
