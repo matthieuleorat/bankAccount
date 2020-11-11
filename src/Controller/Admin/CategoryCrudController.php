@@ -117,6 +117,7 @@ class CategoryCrudController extends AbstractCrudController
                 'query_builder' => static function (NestedTreeRepository $er) use ($budget) {
                     return $er->getNodesHierarchyQueryBuilderByBudget($budget->getId());
                 },
+                'required' => false,
             ]);
         };
 
