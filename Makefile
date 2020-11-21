@@ -45,3 +45,6 @@ her_bash:
 
 her_logs:
 	heroku logs --tail --app ${HEROKU_APP_NAME}
+
+run_test:
+	 docker-compose exec -u www-data php  ./vendor/bin/simple-phpunit  --coverage-html='/var/www/html/report'

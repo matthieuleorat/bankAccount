@@ -10,7 +10,6 @@
         "aws/aws-sdk-php": "^3.137",
         "easycorp/easyadmin-bundle": "^3.0",
         "gedmo/doctrine-extensions": "^2.4",
-        "matleo/bank-statement-parser": "dev-master",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "5.1.*",
         "symfony/console": "5.1.*",
@@ -50,6 +49,7 @@
     },
     "autoload": {
         "psr-4": {
+            "BankStatementParser\\": "src/BankStatementParser",
             "App\\": "src/",
             "DoctrineMigrations\\": "src/Migrations"
         }
