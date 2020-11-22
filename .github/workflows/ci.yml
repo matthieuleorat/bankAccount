@@ -1,4 +1,8 @@
 name: CI
+uses: shivammathur/setup-php@v2
+  with:
+    php-version: '7.4'
+    extensions: intl-66.1
 
 on: [push]
 
