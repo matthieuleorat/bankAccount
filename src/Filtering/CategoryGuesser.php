@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Filtering;
 
@@ -58,9 +58,6 @@ class CategoryGuesser
         $subject = $this->attributeExtractor->extract($this->transaction, $criterion->getField());
 
         $length = strlen($needle);
-        if ($length == 0) {
-            return true;
-        }
 
         return (substr($subject, -$length) === $needle);
     }
