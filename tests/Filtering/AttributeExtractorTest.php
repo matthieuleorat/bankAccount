@@ -4,7 +4,7 @@ namespace App\Tests\Filtering;
 
 use App\Entity\Transaction;
 use App\Filtering\AttributeExtractor;
-use App\BankStatementParser\Model\TransferReceived;
+use BankStatementParser\Model\TransferReceived;
 use PHPUnit\Framework\TestCase;
 
 class AttributeExtractorTest extends TestCase

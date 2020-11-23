@@ -2,7 +2,7 @@
 
 namespace App\Tests\BankStatementParser\Model;
 
-use App\BankStatementParser\Model\HomeLoan;
+use BankStatementParser\Model\HomeLoan;
 use PHPUnit\Framework\TestCase;
 
 class HomeLoanTest extends TestCase

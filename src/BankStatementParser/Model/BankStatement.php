@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\BankStatementParser\Model;
+namespace BankStatementParser\Model;
 
 final class BankStatement
 {

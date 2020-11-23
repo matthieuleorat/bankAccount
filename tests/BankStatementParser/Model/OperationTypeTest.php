@@ -2,13 +2,13 @@
 
 namespace App\Tests\BankStatementParser\Model;
 
-use App\BankStatementParser\Model\CreditCardPayment;
-use App\BankStatementParser\Model\EuropeanDirectDebit;
-use App\BankStatementParser\Model\Operation;
-use App\BankStatementParser\Model\OperationTypeGuesser;
-use App\BankStatementParser\Model\PermanentTransfert;
-use App\BankStatementParser\Model\TransferReceived;
-use App\BankStatementParser\Model\TransferSended;
+use BankStatementParser\Model\CreditCardPayment;
+use BankStatementParser\Model\EuropeanDirectDebit;
+use BankStatementParser\Model\Operation;
+use BankStatementParser\Model\OperationTypeGuesser;
+use BankStatementParser\Model\PermanentTransfert;
+use BankStatementParser\Model\TransferReceived;
+use BankStatementParser\Model\TransferSended;
 use PHPUnit\Framework\TestCase;
 
 final class OperationTypeTest extends TestCase

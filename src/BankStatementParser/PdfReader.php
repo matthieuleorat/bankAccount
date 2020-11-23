@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\BankStatementParser;
+namespace BankStatementParser;
 
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;

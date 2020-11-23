@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\BankStatementParser\Model;
+namespace BankStatementParser\Model;
 
 abstract class AbstractType implements TypeInterface
 {

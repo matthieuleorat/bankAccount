@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\BankStatementParser\Model;
+namespace BankStatementParser\Model;
 
-use App\BankStatementParser\AmoutFormatter;
+use BankStatementParser\AmoutFormatter;
 
 class HomeLoan extends AbstractType
 {

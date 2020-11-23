@@ -49,6 +49,7 @@
     },
     "autoload": {
         "psr-4": {
+            "BankStatementParser\\": "src/BankStatementParser",
             "App\\": "src/",
             "DoctrineMigrations\\": "src/Migrations"
         }

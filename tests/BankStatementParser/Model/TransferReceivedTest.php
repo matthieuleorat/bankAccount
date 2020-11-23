@@ -2,7 +2,7 @@
 
 namespace App\Tests\BankStatementParser\Model;
 
-use App\BankStatementParser\Model\TransferReceived;
+use BankStatementParser\Model\TransferReceived;
 use PHPUnit\Framework\TestCase;
 
 final class TransferReceivedTest extends TestCase

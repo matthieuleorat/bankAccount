@@ -1,10 +1,10 @@
 <?php
 
-namespace App\BankStatementParser;
+namespace BankStatementParser;
 
-use App\BankStatementParser\Model\BankStatement;
-use App\BankStatementParser\Model\Operation;
-use App\BankStatementParser\PdfReader;
+use BankStatementParser\Model\BankStatement;
+use BankStatementParser\Model\Operation;
+use BankStatementParser\PdfReader;
 
 class BankStatementParser
 {
