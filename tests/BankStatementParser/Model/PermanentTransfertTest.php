@@ -2,7 +2,7 @@
 
 namespace App\Tests\BankStatementParser\Model;
 
-use BankStatementParser\Model\PermanentTransfert;
+use App\BankStatementParser\Model\PermanentTransfert;
 use PHPUnit\Framework\TestCase;
 
 final class PermanentTransfertTest extends TestCase

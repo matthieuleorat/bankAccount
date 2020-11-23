@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace BankStatementParser\Model;
+namespace App\BankStatementParser\Model;
 
 class TransferSended extends AbstractType
 {

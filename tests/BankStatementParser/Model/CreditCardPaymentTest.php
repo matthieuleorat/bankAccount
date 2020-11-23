@@ -2,9 +2,9 @@
 
 namespace App\Tests\BankStatementParser\Model;
 
-use BankStatementParser\Model\CreditCardPayment;
-use BankStatementParser\Model\Operation;
-use BankStatementParser\Model\TypeInterface;
+use App\BankStatementParser\Model\CreditCardPayment;
+use App\BankStatementParser\Model\Operation;
+use App\BankStatementParser\Model\TypeInterface;
 use PHPUnit\Framework\TestCase;
 
 final class CreditCardPaymentTest extends TestCase

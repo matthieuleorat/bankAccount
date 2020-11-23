@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace BankStatementParser\Model;
+namespace App\BankStatementParser\Model;
 
-use BankStatementParser\AmoutFormatter;
+use App\BankStatementParser\AmoutFormatter;
 
 class Operation
 {

@@ -2,7 +2,7 @@
 
 namespace App\Tests\BankStatementParser\Model;
 
-use BankStatementParser\Model\EuropeanDirectDebit;
+use App\BankStatementParser\Model\EuropeanDirectDebit;
 use PHPUnit\Framework\TestCase;
 
 final class EuropeanDirectDebitTest extends TestCase
