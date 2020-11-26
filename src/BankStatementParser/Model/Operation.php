@@ -108,7 +108,7 @@ class Operation
             self::DATE_LENGTH
         );
 
-        if (false === empty($date)) {
+        if (false === empty($date) && preg_match('#^\d{2}/\d{2}/\d{4}$#', $date)) {
             $this->date = (\DateTimeImmutable::createFromFormat('d/m/Y', $date))->setTime(0,0,0);
         }
     }
