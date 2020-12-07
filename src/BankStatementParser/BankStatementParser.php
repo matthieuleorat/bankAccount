@@ -1,10 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace BankStatementParser;
 
 use BankStatementParser\Model\BankStatement;
 use BankStatementParser\Model\Operation;
-use BankStatementParser\PdfReader;
 
 class BankStatementParser
 {
@@ -42,6 +41,14 @@ class BankStatementParser
      * @var float
      */
     private $nouveauSolde;
+    /**
+     * @var bool
+     */
+    private $addTransaction = false;
+    /**
+     * @var mixed
+     */
+    private $header = null;
 
     public function __construct(PdfReader $pdfReader)
     {
@@ -105,70 +112,46 @@ class BankStatementParser
     private function filterTransaction(array $rows) : array
     {
         $operations = [];
-        $addTransaction = false;
-        $header = '';
         
         foreach ($rows as $i => $row) {
-
             if ($row == "") {
                 continue;
             }
 
-            // Cherche le numéro de compte
-            preg_match('/\sn° (\d{5} \d{5} \d{11} \d{2})/u', $row, $matches);
-            if (count($matches)) {
-                $this->accountNumber = $matches[1];
-            }
-
-            // Cherche la date de début et la date de fin
-            preg_match('/VOS CONTACTS\s+du (\d{1,2}\/\d{1,2}\/\d{4}) au (\d{1,2}\/\d{1,2}\/\d{4})$/', $row, $matches);
-            if (count($matches)) {
-                $this->dateBegin = $matches[1];
-                $this->dateEnd = $matches[2];
-            }
-
-            // Cherche le début d'une page
-            preg_match('/Date\s+Valeur\s+Nature de l\'opération/u', $row, $matches);
-            if (count($matches)) {
-                $header = $row;
-                $addTransaction = true;
+            if ($this->findAccountNumber($row)) {
                 continue;
             }
 
-            // Cherche les changements de mois
-            preg_match('/\*\*\* SOLDE AU \d{1,2}\/\d{1,2}\/\d{4}.*\*\*\*/', $row, $matches);
-            if (count($matches)) {
+            if ($this->findDateRange($row)) {
                 continue;
             }
 
-            // Cherche les soldes précédents
-            preg_match('/\s+SOLDE PRÉCÉDENT AU \d{1,2}\/\d{1,2}\/\d{4}\s+((\d{1,3}\.)?\d{1,3},\d{2})$/', $row, $matches);
-            if (count($matches)) {
-                $this->soldePrecedent = static::formatAmount($matches[1]);
+            if ($this->findStartOfPage($row)) {
                 continue;
             }
 
-            // Cherche la fin d'une page
-            preg_match('/\s+suite >>>/', $row, $matches);
-            if (count($matches)) {
-                $addTransaction = false;
+            if ($this->findChangeOfMonth($row)) {
                 continue;
             }
 
-            // Cherche la fin de la dernière page
+            if (true === $this->findPreviousSolde($row)) {
+                continue;
+            }
+
+            if ($this->findEndOfPage($row)) {
+                continue;
+            }
+
             if ($this->findEndOfStatementPattern($row)) {
                 continue;
             }
 
-            // Cherche le nouveau solde à la fin du relevé
-            preg_match('/\s+NOUVEAU SOLDE AU \d{1,2}\/\d{1,2}\/\d{4}\s+(\+|-) ((\d{1,3}\.)?\d{1,3},\d{2})$/', $row, $matches);
-            if (count($matches)) {
-                $this->nouveauSolde = static::formatAmount($matches[2]);
+            if (true === $this->findNewSolde($row)) {
                 break;
             }
 
-            if ($addTransaction === true) {
-                $operation = Operation::create($header, $row);
+            if ($this->addTransaction === true) {
+                $operation = Operation::create($this->header, $row);
 
                 // Est ce qu'on doit ajouter des informations à l'operation précédente ?
                 if ($operation->isComplementaryInformations() === true) {
@@ -202,6 +185,89 @@ class BankStatementParser
             ['', '', '.'],
             $amount
         );
+    }
+
+    private function findDateRange(string $row) : bool
+    {
+        preg_match('/VOS CONTACTS\s+du (\d{1,2}\/\d{1,2}\/\d{4}) au (\d{1,2}\/\d{1,2}\/\d{4})$/', $row, $matches);
+        if (count($matches)) {
+            $this->dateBegin = $matches[1];
+            $this->dateEnd = $matches[2];
+            return true;
+        }
+
+        return false;
+    }
+
+    private function findAccountNumber(string $row) : bool
+    {
+        preg_match('/\sn° (\d{5} \d{5} \d{11} \d{2})/u', $row, $matches);
+        if (count($matches)) {
+            $this->accountNumber = $matches[1];
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private function findStartOfPage(string $row) : bool
+    {
+        preg_match('/Date\s+Valeur\s+Nature de l\'opération/u', $row, $matches);
+        if (count($matches)) {
+            $this->header = $row;
+            $this->addTransaction = true;
+            
+            return true;
+        }
+
+        return false;
+    }
+
+    private function findEndOfPage(string $row) : bool
+    {
+        preg_match('/\s+suite >>>/', $row, $matches);
+        if (count($matches)) {
+            $this->addTransaction = false;
+            
+            return true;
+        }
+
+        return false;
+    }
+
+    private function findNewSolde(string $row) : bool
+    {
+        preg_match('/\s+NOUVEAU SOLDE AU \d{1,2}\/\d{1,2}\/\d{4}\s+(\+|-) ((\d{1,3}\.)?\d{1,3},\d{2})$/', $row, $matches);
+        if (count($matches)) {
+            $this->nouveauSolde = static::formatAmount($matches[2]);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private function findPreviousSolde(string $row) : bool
+    {
+        preg_match('/\s+SOLDE PRÉCÉDENT AU \d{1,2}\/\d{1,2}\/\d{4}\s+((\d{1,3}\.)?\d{1,3},\d{2})$/', $row, $matches);
+        if (count($matches)) {
+            $this->soldePrecedent = static::formatAmount($matches[1]);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private function findChangeOfMonth(string $row) : bool
+    {
+        preg_match('/\*\*\* SOLDE AU \d{1,2}\/\d{1,2}\/\d{4}.*\*\*\*/', $row, $matches);
+        if (count($matches)) {
+            return true;
+        }
+
+        return false;
     }
 
     private function findEndOfStatementPattern(string $row) : bool
