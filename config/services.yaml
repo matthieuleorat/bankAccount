@@ -21,7 +21,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php,BankStatementParser}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -39,11 +39,11 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    Matleo\BankStatementParser\:
-        resource: ../vendor/matleo/bank-statement-parser
+    BankStatementParser\:
+        resource: ../src/BankStatementParser
         autowire: true
 
-    Matleo\BankStatementParser\PdfReader:
+    BankStatementParser\PdfReader:
         arguments: ["%pdftotext_binary_path%"]
 
     App\Doctrine\EventListener\FixPostgreSQLDefaultSchemaListener:

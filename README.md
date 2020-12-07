@@ -1,3 +1,4 @@
+[![codecov](https://codecov.io/gh/matthieuleorat/bankAccount/branch/master/graph/badge.svg?token=8WLNNUR8X2)](https://codecov.io/gh/matthieuleorat/bankAccount)
 # Mon budget
 Mon budget est un projet personnel, qui devrait me servir à suivre un peu mes dépenses, à savoir où part mon argent.  
 C'est un projet en cours de développement, donc certaines fonctionnalités peuvent présenter quelques disfonctionnement.  

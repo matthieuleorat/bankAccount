@@ -4,6 +4,17 @@ namespace App\Filtering;
 
 class AttributeExtractor
 {
+    /**
+     * Try to extract the $attribute from the given $object
+     * It is a recursive function.
+     * The $attribute will be exploded with the $separator delimiter, and then recursivly parsed to the last one
+     *
+     * @param mixed $object
+     * @param string $attribute
+     * @param string $separator
+     *
+     * @return mixed
+     */
     public function extract($object, string $attribute, string $separator = '.')
     {
         $tmp = explode($separator, $attribute);
