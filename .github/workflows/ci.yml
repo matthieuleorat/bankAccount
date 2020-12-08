@@ -12,7 +12,7 @@ jobs:
         with:
           php-version: '7.4'
           extensions: intl-66.1
-          tools: composer:v1, php-cs-fixer
+          tools: composer:v1, cs2pr, php-cs-fixer, phpstan
           coverage: xdebug
       - uses: actions/checkout@v2
 
@@ -29,6 +29,12 @@ jobs:
 
       - name: Composer Dependencies
         run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Run PHPStan
+        run: phpstan analyse src
+
+      - name: Run phpcs
+        run: phpcs -q --report=checkstyle src | cs2pr
 
       - name: Run Tests
         run: ./vendor/bin/simple-phpunit --coverage-clover=coverage.xml
