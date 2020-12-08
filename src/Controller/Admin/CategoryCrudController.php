@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 use App\Entity\Budget;
 use App\Entity\Category;
 use App\Form\CategoryType;
-use App\Repository\CategoryRepository;
 use App\Twig\BudgetExtension;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -51,6 +50,11 @@ class CategoryCrudController extends AbstractCrudController
             ;
     }
 
+    /**
+     * @param string $pageName
+     *
+     * @return iterable
+     */
     public function configureFields(string $pageName): iterable
     {   $budget = null;
         $name = TextField::new('name', 'category.name.label');

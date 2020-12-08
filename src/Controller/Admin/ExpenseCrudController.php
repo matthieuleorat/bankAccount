@@ -89,6 +89,11 @@ class ExpenseCrudController extends AbstractCrudController
         return $queryBuilder;
     }
 
+    /**
+     * @param string $pageName
+     *
+     * @return iterable
+     */
     public function configureFields(string $pageName): iterable
     {
         $label = TextareaField::new('label')->setTemplatePath('admin/expense/list/details.html.twig');

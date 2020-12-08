@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\Expense;
 use App\Form\BudgetFilterType;
 use App\Form\BudgetSelectionType;
+use App\Repository\ExpenseRepository;
 use App\Twig\BudgetExtension;
 use DateTime;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -24,13 +25,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use stdClass;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class BudgetCrudController extends AbstractCrudController
 {
     /**
-     * @var \Doctrine\Persistence\ObjectRepository
+     * @var NestedTreeRepository
      */
     private $repo;
 
@@ -60,7 +62,9 @@ class BudgetCrudController extends AbstractCrudController
         $this->get(EntityFactory::class)->processFields($context->getEntity(), FieldCollection::new($this->configureFields(Crud::PAGE_DETAIL)));
         $this->get(EntityFactory::class)->processActions($context->getEntity(), $context->getCrud()->getActionsConfig());
 
+        /** @var NestedTreeRepository repo */
         $this->repo = $this->getDoctrine()->getRepository(Category::class);
+
         /** @var Category[] $categories */
         $categories = $this->repo->getRootNodesByBudget($context->getEntity()->getPrimaryKeyValue());
 
@@ -139,6 +143,11 @@ class BudgetCrudController extends AbstractCrudController
             ->overrideTemplate('crud/detail', 'admin/budget/show.html.twig');
     }
 
+    /**
+     * @param string $pageName
+     *
+     * @return iterable
+     */
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name')->setTemplatePath('admin/budget/list/name.html.twig');
@@ -192,6 +201,10 @@ class BudgetCrudController extends AbstractCrudController
         $datas->totals = [];
 
         $datasForGraph = [];
+
+        /** @var ExpenseRepository $expenseRepository */
+        $expenseRepository = $this->getDoctrine()->getRepository(Expense::class);
+
         foreach ($p as $periode) {
             $obj = new stdClass();
             $obj->x = [];
@@ -209,7 +222,7 @@ class BudgetCrudController extends AbstractCrudController
                 $obj->x[] = $category->getName();
                 $ids = $this->repo->getChildren($category);
                 $ids[] = $category;
-                $values = $this->getDoctrine()->getRepository(Expense::class)->getTotalsForCategories($budget, $ids, $periode[0], $periode[1])[0];
+                $values = $expenseRepository->getTotalsForCategories($budget, $ids, $periode[0], $periode[1])[0];
                 $value = $values['totalCredit'] - $values['totalDebit'];
                 if (false === array_key_exists($i, $datas->totals)) {
                     $datas->totals[$i] = 0;

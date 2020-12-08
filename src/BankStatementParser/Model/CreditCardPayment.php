@@ -39,7 +39,7 @@ class CreditCardPayment extends AbstractType
     {
         $obj = parent::createFormOperation($operation);
 
-        if ($obj instanceof TypeInterface) {
+        if ($obj instanceof self) {
             $year = $operation->getDate()->format('Y');
             $obj->date = (\DateTimeImmutable::createFromFormat('d/m/Y', $obj->date.'/'.$year));
         }

@@ -35,7 +35,7 @@ class CategoryConfigurator implements FilterConfiguratorInterface
                 $queryBuilder
                     ->andWhere(sprintf('%s.%s IN (:categories)', $queryBuilder->getRootAliases()[0], $filterDataDto->getProperty()))
                     ->setParameter('categories', $children);
-                return $filterDto->apply($queryBuilder, $filterDataDto, $fieldDto, $entityDto);
+                $filterDto->apply($queryBuilder, $filterDataDto, $fieldDto, $entityDto);
             }
         });
     }

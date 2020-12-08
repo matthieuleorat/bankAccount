@@ -25,6 +25,11 @@ class DebtCrudController extends AbstractCrudController
             ->setSearchFields(['id', 'amount', 'comment']);
     }
 
+    /**
+     * @param string $pageName
+     *
+     * @return iterable
+     */
     public function configureFields(string $pageName): iterable
     {
         $amount = NumberField::new('amount', 'debt.amount.label');

@@ -63,6 +63,11 @@ class TransactionCrudController extends AbstractCrudController
             ->setSearchFields(['id', 'details', 'debit', 'credit', 'comment', 'type']);
     }
 
+    /**
+     * @param string $pageName
+     *
+     * @return iterable
+     */
     public function configureFields(string $pageName): iterable
     {
         $date = DateField::new('date', 'transaction.date');

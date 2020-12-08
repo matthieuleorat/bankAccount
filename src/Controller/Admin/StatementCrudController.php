@@ -29,6 +29,11 @@ class StatementCrudController extends AbstractCrudController
             ->setSearchFields(['id', 'name', 'startingBalance', 'endingBalance', 'TotalDebit', 'totalCredit', 'remoteFile']);
     }
 
+    /**
+     * @param string $pageName
+     *
+     * @return iterable
+     */
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name');
