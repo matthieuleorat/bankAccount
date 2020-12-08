@@ -143,11 +143,6 @@ class BudgetCrudController extends AbstractCrudController
             ->overrideTemplate('crud/detail', 'admin/budget/show.html.twig');
     }
 
-    /**
-     * @param string $pageName
-     *
-     * @return iterable
-     */
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name')->setTemplatePath('admin/budget/list/name.html.twig');
@@ -165,6 +160,8 @@ class BudgetCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$name, $expenses, $categories, $detailsToCategories];
         }
+
+        return [];
     }
 
     private function generatePeriodArray(

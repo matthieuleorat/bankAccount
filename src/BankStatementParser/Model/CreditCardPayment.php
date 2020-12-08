@@ -41,7 +41,8 @@ class CreditCardPayment extends AbstractType
 
         if ($obj instanceof self) {
             $year = $operation->getDate()->format('Y');
-            $obj->date = (\DateTimeImmutable::createFromFormat('d/m/Y', $obj->date.'/'.$year));
+            $date = $obj->date.'/'.$year;
+            $obj->date = \DateTimeImmutable::createFromFormat('d/m/Y', $date);
         }
 
         return $obj;

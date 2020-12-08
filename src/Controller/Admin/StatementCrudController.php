@@ -29,11 +29,6 @@ class StatementCrudController extends AbstractCrudController
             ->setSearchFields(['id', 'name', 'startingBalance', 'endingBalance', 'TotalDebit', 'totalCredit', 'remoteFile']);
     }
 
-    /**
-     * @param string $pageName
-     *
-     * @return iterable
-     */
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name');
@@ -57,6 +52,8 @@ class StatementCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$name, $startingDate, $endingDate, $startingBalance, $endingBalance, $totalDebit, $totalCredit, $remoteFile, $source, $transactions];
         }
+
+        return [];
     }
 
     public function configureFilters(Filters $filters): Filters

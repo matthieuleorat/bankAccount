@@ -89,11 +89,6 @@ class ExpenseCrudController extends AbstractCrudController
         return $queryBuilder;
     }
 
-    /**
-     * @param string $pageName
-     *
-     * @return iterable
-     */
     public function configureFields(string $pageName): iterable
     {
         $label = TextareaField::new('label')->setTemplatePath('admin/expense/list/details.html.twig');
@@ -117,6 +112,8 @@ class ExpenseCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$label, $budget, $category, $debit, $credit, $date];
         }
+
+        return [];
     }
 
     public function configureFilters(Filters $filters): Filters

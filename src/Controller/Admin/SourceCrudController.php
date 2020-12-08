@@ -22,11 +22,6 @@ class SourceCrudController extends AbstractCrudController
             ->setSearchFields(['id', 'number', 'name']);
     }
 
-    /**
-     * @param string $pageName
-     *
-     * @return iterable
-     */
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name', 'source.name.label');
@@ -44,5 +39,7 @@ class SourceCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$name, $number, $statements, $defaultBudget];
         }
+
+        return [];
     }
 }

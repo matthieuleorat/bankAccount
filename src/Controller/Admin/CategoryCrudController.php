@@ -50,11 +50,6 @@ class CategoryCrudController extends AbstractCrudController
             ;
     }
 
-    /**
-     * @param string $pageName
-     *
-     * @return iterable
-     */
     public function configureFields(string $pageName): iterable
     {   $budget = null;
         $name = TextField::new('name', 'category.name.label');
@@ -78,6 +73,8 @@ class CategoryCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$name, $parent, $budget];
         }
+
+        return [];
     }
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
