@@ -1,0 +1,6 @@
+parameters:
+	level: 5
+	paths:
+		- src
+    ignoreErrors:
+      - '#Method [a-zA-Z0-9\\_]+ should return [a-zA-Z0-9\\_]+ but return statement is missing#'
