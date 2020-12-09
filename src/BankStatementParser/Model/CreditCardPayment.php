@@ -29,7 +29,7 @@ class CreditCardPayment extends AbstractType
         list (, $cardId, $date, $merchant) = $matches;
         $obj = new self();
         $obj->cardId = $cardId;
-        $obj->date = $date;
+        $obj->date = \DateTimeImmutable::createFromFormat('d/m', $date);
         $obj->merchant = $merchant;
 
         return $obj;
@@ -41,8 +41,8 @@ class CreditCardPayment extends AbstractType
 
         if ($obj instanceof self) {
             $year = $operation->getDate()->format('Y');
-            $date = $obj->date.'/'.$year;
-            $obj->date = \DateTimeImmutable::createFromFormat('d/m/Y', $date);
+            $date = $obj->date->format('d/m').'/'.$year;
+            $obj->date = $date2 = \DateTimeImmutable::createFromFormat('d/m/Y', $date);
         }
 
         return $obj;

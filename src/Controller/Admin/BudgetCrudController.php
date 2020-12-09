@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\Expense;
 use App\Form\BudgetFilterType;
 use App\Form\BudgetSelectionType;
+use App\Repository\CategoryRepository;
 use App\Repository\ExpenseRepository;
 use App\Twig\BudgetExtension;
 use DateTime;
@@ -25,16 +26,20 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
-use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use stdClass;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class BudgetCrudController extends AbstractCrudController
 {
     /**
-     * @var NestedTreeRepository
+     * @var CategoryRepository
      */
-    private $repo;
+    private CategoryRepository $categoryRepository;
+
+    public function __construct(CategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
 
     public static function getEntityFqcn(): string
     {
@@ -62,11 +67,8 @@ class BudgetCrudController extends AbstractCrudController
         $this->get(EntityFactory::class)->processFields($context->getEntity(), FieldCollection::new($this->configureFields(Crud::PAGE_DETAIL)));
         $this->get(EntityFactory::class)->processActions($context->getEntity(), $context->getCrud()->getActionsConfig());
 
-        /** @var NestedTreeRepository repo */
-        $this->repo = $this->getDoctrine()->getRepository(Category::class);
-
         /** @var Category[] $categories */
-        $categories = $this->repo->getRootNodesByBudget($context->getEntity()->getPrimaryKeyValue());
+        $categories = $this->categoryRepository->getRootNodesByBudget($context->getEntity()->getPrimaryKeyValue());
 
         $startingDate = new DateTime('first day of January');
         $endingDate = new DateTime('now');
@@ -108,7 +110,7 @@ class BudgetCrudController extends AbstractCrudController
         return $responseParameters;
     }
 
-    public function selection(AdminContext $context) : RedirectResponse
+    public function selection() : RedirectResponse
     {
         $form = $this->createForm(BudgetSelectionType::class);
 
@@ -217,7 +219,7 @@ class BudgetCrudController extends AbstractCrudController
 
             foreach ($categories as $i => $category) {
                 $obj->x[] = $category->getName();
-                $ids = $this->repo->getChildren($category);
+                $ids = $this->categoryRepository->getChildren($category);
                 $ids[] = $category;
                 $values = $expenseRepository->getTotalsForCategories($budget, $ids, $periode[0], $periode[1])[0];
                 $value = $values['totalCredit'] - $values['totalDebit'];
