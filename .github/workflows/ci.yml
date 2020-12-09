@@ -12,7 +12,7 @@ jobs:
         with:
           php-version: '7.4'
           extensions: intl-66.1
-          tools: composer:v1, cs2pr, php-cs-fixer, phpstan
+          tools: composer:v1, cs2pr, phpcs, phpstan
           coverage: xdebug
       - uses: actions/checkout@v2
 
