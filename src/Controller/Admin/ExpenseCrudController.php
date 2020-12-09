@@ -8,6 +8,7 @@ use App\Entity\Budget;
 use App\Entity\Expense;
 use App\Entity\Transaction;
 use App\Form\CategoryType;
+use App\Repository\CategoryRepository;
 use App\Twig\BudgetExtension;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -143,8 +144,8 @@ class ExpenseCrudController extends AbstractCrudController
     {
         $formModifier = function (FormInterface $form, Budget $budget) {
             $form->add('category', CategoryType::class, [
-                'query_builder' => static function (NestedTreeRepository $er) use ($budget) {
-                    return $er->getNodesHierarchyQueryBuilderByBudget($budget->getId());
+                'query_builder' => static function (CategoryRepository $categoryRepository) use ($budget) {
+                    return $categoryRepository->getNodesHierarchyQueryBuilderByBudget($budget->getId());
                 },
             ]);
         };

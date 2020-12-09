@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Budget;
 use App\Entity\Category;
 use App\Form\CategoryType;
+use App\Repository\CategoryRepository;
 use App\Twig\BudgetExtension;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -115,8 +116,8 @@ class CategoryCrudController extends AbstractCrudController
     {
         $formModifier = function (FormInterface $form, Budget $budget) {
             $form->add('parent', CategoryType::class, [
-                'query_builder' => static function (NestedTreeRepository $er) use ($budget) {
-                    return $er->getNodesHierarchyQueryBuilderByBudget($budget->getId());
+                'query_builder' => static function (CategoryRepository $categoryRepository) use ($budget) {
+                    return $categoryRepository->getNodesHierarchyQueryBuilderByBudget($budget->getId());
                 },
                 'required' => false,
             ]);

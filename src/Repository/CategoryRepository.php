@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
 /**
@@ -53,14 +54,14 @@ class CategoryRepository extends NestedTreeRepository
     /**
      * Overwrite of Gedmo\Tree\Entity\Repository\NestedTreeRepository::getNodesHierarchyQuery to filter categories on budget
      *
-     * @param null $node
+     * @param object $node
      * @param bool $direct
      * @param array $options
      * @param bool $includeNode
      *
      * @return \Doctrine\ORM\Query
      */
-    public function getNodesHierarchyQuery($node = null, $direct = false, array $options = array(), $includeNode = false)
+    public function getNodesHierarchyQuery($node = null, $direct = false, array $options = array(), $includeNode = false) : Query
     {
         $qb = $this->getNodesHierarchyQueryBuilderByBudget($this->budget, $node, $direct, $options, $includeNode);
 

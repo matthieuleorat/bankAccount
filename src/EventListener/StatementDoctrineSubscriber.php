@@ -7,6 +7,7 @@ use App\Entity\Statement;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class StatementDoctrineSubscriber implements EventSubscriber
@@ -16,7 +17,7 @@ class StatementDoctrineSubscriber implements EventSubscriber
      */
     private DeleteFile $deleteFile;
     /**
-     * @var SessionInterface
+     * @var SessionInterface|Session
      */
     private SessionInterface $session;
 

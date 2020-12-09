@@ -6,6 +6,7 @@ use App\Entity\DetailsToCategory;
 use App\Entity\Expense;
 use App\Entity\Transaction;
 use App\Factories\ExpenseFactory;
+use App\Repository\TransactionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ApplyFilter
@@ -40,7 +41,10 @@ class ApplyFilter
     public function execute(DetailsToCategory $detailsToCategory) : array
     {
         $this->detailsToCategory = $detailsToCategory;
-        $transactions = $this->em->getRepository(Transaction::class)->findTransactionWithoutExpense();
+
+        /** @var TransactionRepository $transactionRepository */
+        $transactionRepository = $this->em->getRepository(Transaction::class);
+        $transactions = $transactionRepository->findTransactionWithoutExpense();
 
         $expenses = array_map([$this, 'transactionToExpense'], $transactions);
 
