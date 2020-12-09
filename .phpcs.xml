@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="PHP_CodeSniffer" xsi:noNamespaceSchemaLocation="phpcs.xsd">
+    <description>The coding standard for PHP_CodeSniffer itself.</description>
+
+    <file>./src/</file>
+
+    <exclude-pattern>*/src/Migrations/*$</exclude-pattern>
+
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg name="parallel" value="75"/>
+    <arg value="np"/>
+
+    <autoload>./vendor/autoload.php</autoload>
+
+    <!-- Don't hide tokenizer exceptions -->
+    <rule ref="Internal.Tokenizer.Exception">
+        <type>error</type>
+    </rule>
+
+    <!-- Include the whole PEAR standard -->
+    <rule ref="PEAR">
+        <exclude name="PEAR.NamingConventions.ValidFunctionName"/>
+        <exclude name="PEAR.NamingConventions.ValidVariableName"/>
+        <exclude name="PEAR.NamingConventions.ValidVariableName.PrivateNoUnderscore"/>
+        <exclude name="PEAR.NamingConventions.ValidFunctionName.PrivateNoUnderscore"/>
+        <exclude name="PEAR.NamingConventions.ValidVariableName.PublicUnderscore"/>
+
+
+        <!-- File Comment -->
+        <exclude name="PEAR.Commenting.FileComment.MissingVersion"/>
+        <exclude name="PEAR.Commenting.FileComment.MissingCategoryTag"/>
+        <exclude name="PEAR.Commenting.FileComment.MissingPackageTag"/>
+        <exclude name="PEAR.Commenting.FileComment.MissingAuthorTag"/>
+        <exclude name="PEAR.Commenting.FileComment.MissingLicenseTag"/>
+        <exclude name="PEAR.Commenting.FileComment.MissingLinkTag"/>
+
+        <!-- Class Comment -->
+        <exclude name="PEAR.Commenting.ClassComment"/>
+
+        <!-- Function Comment -->
+        <exclude name="PEAR.Commenting.FunctionComment.SpacingAfterParamType"/><!-- Align varname in docblock-->
+        <exclude name="PEAR.Commenting.FunctionComment.MissingParamComment"/>
+        <exclude name="PEAR.Commenting.FunctionComment.Missing"/>
+
+        <exclude name="PEAR.Commenting.InlineComment"/>
+
+        <exclude name="Generic.Commenting.DocComment.MissingShort"/>
+    </rule>
+
+    <rule ref="PSR1"/>
+    <rule ref="PSR2"/>
+
+    <rule ref="PEAR.WhiteSpace.ScopeIndent">
+        <properties>
+            <property name="ignoreIndentationTokens" type="array" value="T_CASE" />
+        </properties>
+    </rule>
+
+</ruleset>
