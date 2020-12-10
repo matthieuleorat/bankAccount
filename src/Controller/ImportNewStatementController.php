@@ -17,9 +17,7 @@ use App\AwsBucket\Uploader;
 use App\Factories\ExpenseFactory;
 use App\Filtering\AttributeExtractor;
 use App\Filtering\CategoryGuesser;
-use App\Entity\Expense;
 use App\Entity\Source;
-use App\Entity\Category;
 use App\Entity\DetailsToCategory;
 use App\Entity\Statement;
 use App\Entity\Transaction;
@@ -29,7 +27,6 @@ use BankStatementParser\Model\BankStatement;
 use BankStatementParser\Model\Operation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -93,12 +90,22 @@ class ImportNewStatementController extends AbstractController
                 try {
                     $originalFilename = pathinfo($statementFile->getClientOriginalName(), PATHINFO_FILENAME);
                     // this is needed to safely include the file name as part of the URL
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename).'.'.$statementFile->getClientOriginalExtension();
+                    $safeFilename = transliterator_transliterate(
+                        'Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',
+                        $originalFilename
+                        ).'.'.$statementFile->getClientOriginalExtension();
 
-                    $remoteFileName = $this->uploader->execute($this->aws_remote_path, $statementFile->getClientOriginalExtension(), $statementFile->getpath().'/'.$statementFile->getFilename());
+                    $remoteFileName = $this->uploader->execute(
+                        $this->aws_remote_path,
+                        $statementFile->getClientOriginalExtension(),
+                        $statementFile->getpath().'/'.$statementFile->getFilename()
+                    );
 
                     /** @var BankStatement $plainStatement */
-                    $plainStatement = $bankStatementParser->execute($statementFile->getFilename(), $statementFile->getpath().'/');
+                    $plainStatement = $bankStatementParser->execute(
+                        $statementFile->getFilename(),
+                        $statementFile->getpath().'/'
+                    );
 
                     $this->entityManager = $this->getDoctrine()->getManager();
 
@@ -112,7 +119,9 @@ class ImportNewStatementController extends AbstractController
 
                     $this->entityManager->flush();
 
-                    $this->addFlash('success', 'Le relevé a bien été importé. '.count($transactions) .' ajoutées');
+                    $this->addFlash(
+                        'success', 'Le relevé a bien été importé. '.count($transactions) .' ajoutées'
+                    );
                 } catch (\Exception $e) {
                     $this->addFlash('warning', $e->getMessage());
                 }
@@ -125,8 +134,12 @@ class ImportNewStatementController extends AbstractController
         ]);
     }
 
-    private function handleStatement(Source $account, BankStatement $bankStatement, string $filename, string $remoteFileName) : Statement
-    {
+    private function handleStatement(
+        Source $account,
+        BankStatement $bankStatement,
+        string $filename,
+        string $remoteFileName
+    ) : Statement {
         $statement = $this->entityManager->getRepository(Statement::class)->findOneBy(['name' => $filename]);
 
         if ($statement instanceof Statement) {
@@ -138,7 +151,9 @@ class ImportNewStatementController extends AbstractController
         $statement->setName($filename);
         $statement->setTotalDebit($bankStatement->getDebit());
         $statement->setTotalCredit($bankStatement->getCredit());
-        $statement->setStartingDate(\DateTimeImmutable::createFromFormat('d/m/Y', $bankStatement->getDateBegin()));
+        $statement->setStartingDate(
+            \DateTimeImmutable::createFromFormat('d/m/Y', $bankStatement->getDateBegin())
+        );
         $statement->setEndingDate(\DateTimeImmutable::createFromFormat('d/m/Y', $bankStatement->getDateEnd()));
         $statement->setStartingBalance($bankStatement->getSoldePrecedent());
         $statement->setEndingBalance($bankStatement->getNouveauSolde());
@@ -181,9 +196,13 @@ class ImportNewStatementController extends AbstractController
         $transaction->setDetails($operation->getDetails());
 
         if ($transaction->getId() === null) {
-            if ($statement->getSource() instanceof Source && $statement->getSource()->getDefaultBudget() instanceof Budget) {
+            if ($statement->getSource() instanceof Source
+                && $statement->getSource()->getDefaultBudget() instanceof Budget
+            ) {
                 /** @var DetailsToCategory[] $filters */
-                $filters = $this->entityManager->getRepository(DetailsToCategory::class)->findBy(['budget' => $statement->getSource()->getDefaultBudget()]);
+                $filters = $this->entityManager->getRepository(DetailsToCategory::class)->findBy(
+                    ['budget' => $statement->getSource()->getDefaultBudget()]
+                );
                 foreach ($filters as $filter) {
                     if (true === $this->categoryGuesser->execute($filter, $transaction)) {
                         $expense = $this->expenseFactory->fromTransaction($transaction, $filter);
