@@ -108,10 +108,12 @@ class TransactionCrudController extends AbstractCrudController
     {
         return $filters
             ->add(BooleanFilter::new('ignore', 'Afficher uniquement les transactions ignorées'))
-            ->add(TransactionNotFullFilledWithExpenseFilter::new(
-                'expenses',
-                'Afficher uniquement les transactions sans dépense liée'
-            ))
+            ->add(
+                TransactionNotFullFilledWithExpenseFilter::new(
+                    'expenses',
+                    'Afficher uniquement les transactions sans dépense liée'
+                )
+            )
             ->add(StatementFilter::new('statement', 'Relevé'));
     }
 
@@ -120,13 +122,15 @@ class TransactionCrudController extends AbstractCrudController
         $crudUrlGenerator = $this->get(CrudUrlGenerator::class);
 
         $createExpense = Action::new('transactionToExpense', 'transaction.createexpense')
-            ->linkToUrl(function (Transaction $entity) use ($crudUrlGenerator) {
-                return $crudUrlGenerator->build()
-                    ->setController(ExpenseCrudController::class)
-                    ->setAction('new')
-                    ->set('transaction', $entity->getId())
-                    ->generateUrl();
-            });
+            ->linkToUrl(
+                function (Transaction $entity) use ($crudUrlGenerator) {
+                    return $crudUrlGenerator->build()
+                        ->setController(ExpenseCrudController::class)
+                        ->setAction('new')
+                        ->set('transaction', $entity->getId())
+                        ->generateUrl();
+                }
+            );
 
         $toggleIgnore = Action::new('toggleIgnore', 'transaction.toggleIngore')
             ->linkToUrl(function (Transaction $entity) use ($crudUrlGenerator) {

@@ -82,9 +82,9 @@ class ImportNewStatementController extends AbstractController
                     $originalFilename = pathinfo($statementFile->getClientOriginalName(), PATHINFO_FILENAME);
                     // this is needed to safely include the file name as part of the URL
                     $safeFilename = transliterator_transliterate(
-                            'Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',
-                            $originalFilename
-                        );
+                        'Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',
+                        $originalFilename
+                    );
                     $safeFilename .= '.'.$statementFile->getClientOriginalExtension();
 
                     $remoteFileName = $this->uploader->execute(
