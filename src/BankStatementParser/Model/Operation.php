@@ -117,7 +117,8 @@ class Operation
         );
 
         if (false === empty($date) && preg_match('#^\d{2}/\d{2}/\d{4}$#', $date)) {
-            $this->date = (\DateTimeImmutable::createFromFormat('d/m/Y', $date))->setTime(0, 0, 0);
+            $this->date = (\DateTimeImmutable::createFromFormat('d/m/Y', $date))
+                ->setTime(0, 0, 0);
         }
     }
 
@@ -130,7 +131,8 @@ class Operation
         );
 
         if (false === empty($valeur)) {
-            $this->valeur = (\DateTimeImmutable::createFromFormat('d/m/Y', $valeur))->setTime(0, 0, 0);
+            $this->valeur = (\DateTimeImmutable::createFromFormat('d/m/Y', $valeur))
+                ->setTime(0, 0, 0);
         }
     }
 

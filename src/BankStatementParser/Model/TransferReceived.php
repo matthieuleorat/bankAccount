@@ -18,7 +18,13 @@ class TransferReceived extends AbstractType
     const ID_SUB_PATTERN = "\nID: ";
     const REASON_SUB_PATTERN = "\nMOTIF: ";
     const NAME = 'transfer_received';
-    const PATTERN = '/^VIR(?:EMENT)?\s+RECU\s?(.*)\nDE:\s+([\s\S]*?)('.self::REASON_SUB_PATTERN.'([\s\S]*?))?('.self::REF_SUB_PATTERN.'([\s\S]*?))?('.self::ID_SUB_PATTERN.'([\s\S]*?))?$/';
+    const PATTERN = '/^VIR(?:EMENT)?\s+RECU\s?(.*)\nDE:\s+([\s\S]*?)('.
+        self::REASON_SUB_PATTERN.
+        '([\s\S]*?))?('.
+        self::REF_SUB_PATTERN.
+        '([\s\S]*?))?('.
+        self::ID_SUB_PATTERN.
+        '([\s\S]*?))?$/';
 
     /**
      * @var string

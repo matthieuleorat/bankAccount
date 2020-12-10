@@ -38,7 +38,14 @@ class HomeLoan extends AbstractType
     const EXPECTED_END_DATE_KEY = "\nDATE PREVISIONNELLE DE FIN : ";
     const EXPECTED_END_DATE_SUB_PATTERN = "(".self::EXPECTED_END_DATE_KEY."(\d{1,2}\/\d{1,2}\/\d{4}))";
 
-    const PATTERN = '/^'.self::REF_LOAN_MATURITY_SUB_PATTERN.self::DEPRECIATED_CAPITAL_SUB_PATTERN.self::INTEREST_SUB_PATTERN.self::INSURANCE_SUB_PATTERN.self::REMAINING_CAPITAL_SUB_PATTERN.self::EXPECTED_END_DATE_SUB_PATTERN.'/';
+    const PATTERN = '/^'.
+        self::REF_LOAN_MATURITY_SUB_PATTERN.
+        self::DEPRECIATED_CAPITAL_SUB_PATTERN.
+        self::INTEREST_SUB_PATTERN.
+        self::INSURANCE_SUB_PATTERN.
+        self::REMAINING_CAPITAL_SUB_PATTERN.
+        self::EXPECTED_END_DATE_SUB_PATTERN.
+        '/';
 
     /**
      * @var string
@@ -73,10 +80,14 @@ class HomeLoan extends AbstractType
     {
         $obj = new self();
         $obj->loanNumber = $matches[2];
-        $obj->depreciatedCapital = AmoutFormatter::formatFloat($obj->tryToGuess(self::DEPRECIATED_CAPITAL_KEY, $matches));
+        $obj->depreciatedCapital = AmoutFormatter::formatFloat(
+            $obj->tryToGuess(self::DEPRECIATED_CAPITAL_KEY, $matches)
+        );
         $obj->interest = AmoutFormatter::formatFloat($obj->tryToGuess(self::INTEREST_KEY, $matches));
         $obj->insurance = AmoutFormatter::formatFloat($obj->tryToGuess(self::INSURANCE_KEY, $matches));
-        $obj->remainingCapital = AmoutFormatter::formatFloat($obj->tryToGuess(self::REMAINING_CAPITAL_KEY, $matches));
+        $obj->remainingCapital = AmoutFormatter::formatFloat(
+            $obj->tryToGuess(self::REMAINING_CAPITAL_KEY, $matches)
+        );
         $obj->expectedEndDate = $obj->tryToGuess(self::EXPECTED_END_DATE_KEY, $matches);
 
         return $obj;

@@ -37,13 +37,15 @@ class AbstractS3Client
 
     private function setClient()
     {
-        $this->client = new S3Client([
-            'version'  => self::AWS_VERSION,
-            'region'   => self::AWS_REGION,
-            'credentials' => [
-                'key'    => $this->aws_access_key_id,
-                'secret' => $this->aws_secret_access_key,
+        $this->client = new S3Client(
+            [
+                'version'  => self::AWS_VERSION,
+                'region'   => self::AWS_REGION,
+                'credentials' => [
+                    'key'    => $this->aws_access_key_id,
+                    'secret' => $this->aws_secret_access_key,
+                ]
             ]
-        ]);
+        );
     }
 }

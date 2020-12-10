@@ -37,7 +37,13 @@ class TransferSended extends AbstractType
     const TO_KEY = "\nCHEZ: ";
     const TO_SUB_PATTERN = "(".self::TO_KEY."(.*))?";
 
-    const PATTERN = '/^(\d+)\sVIR EUROPEEN EMIS LOGITEL'.self::FOR_SUB_PATTERN.'(\d{2} \d{2})?\sSG\s(\d+)\sCPT\s(\d+)'.self::REF_SUB_PATTERN.''.self::REASON_SUB_PATTERN.''.self::TO_SUB_PATTERN.'/';
+    const PATTERN = '/^(\d+)\sVIR EUROPEEN EMIS LOGITEL'.
+        self::FOR_SUB_PATTERN.
+        '(\d{2} \d{2})?\sSG\s(\d+)\sCPT\s(\d+)'.
+        self::REF_SUB_PATTERN.''.
+        self::REASON_SUB_PATTERN.
+        self::TO_SUB_PATTERN.
+        '/';
 
     /**
      * @var string

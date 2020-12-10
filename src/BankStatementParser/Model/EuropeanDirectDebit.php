@@ -31,7 +31,13 @@ class EuropeanDirectDebit extends AbstractType
     const WARRANT_KEY = "\nMANDAT\s";
     const WARRANT_SUB_PATTERN = "".self::WARRANT_KEY."(.*)";
 
-    const PATTERN = "/^PRELEVEMENT EUROPEEN\s(\d*)".self::FROM_SUB_PATTERN."".self::ID_SUB_PATTERN."".self::REASON_SUB_PATTERN."".self::REF_SUB_PATTERN."".self::WARRANT_SUB_PATTERN."$/sU";
+    const PATTERN = "/^PRELEVEMENT EUROPEEN\s(\d*)".
+        self::FROM_SUB_PATTERN.
+        self::ID_SUB_PATTERN.
+        self::REASON_SUB_PATTERN.
+        self::REF_SUB_PATTERN.
+        self::WARRANT_SUB_PATTERN.
+        "$/sU";
 
     /**
      * @var string

@@ -54,9 +54,8 @@ class ExpenseFactory
             return $detailsToCategory->getBudget();
         }
 
-        if (
-            $transaction->getStatement() instanceof Statement &&
-            $transaction->getStatement()->getSource() instanceof Source
+        if ($transaction->getStatement() instanceof Statement
+            && $transaction->getStatement()->getSource() instanceof Source
         ) {
             return $transaction->getStatement()->getSource()->getDefaultBudget();
         }
