@@ -48,15 +48,12 @@ class CategoryCrudController extends AbstractCrudController
         return $crud
             ->setSearchFields(['id', 'name'])
             ->overrideTemplate('crud/index', 'admin/category/list.html.twig')
-            ->addFormTheme('admin/field/category.html.twig')
-        ;
+            ->addFormTheme('admin/field/category.html.twig');
     }
 
     public function configureFilters(Filters $filters): Filters
     {
-        return $filters
-            ->add('budget')
-            ;
+        return $filters->add('budget');
     }
 
     public function configureFields(string $pageName): iterable
@@ -113,8 +110,7 @@ class CategoryCrudController extends AbstractCrudController
                     $queryBuilder->expr()->eq($rootAlias.'.budget', ':budgetId')
                 )
             )
-            ->setParameter('budgetId', $budgetId)
-        ;
+            ->setParameter('budgetId', $budgetId);
 
         return $queryBuilder;
     }
@@ -142,12 +138,16 @@ class CategoryCrudController extends AbstractCrudController
     private function setDynamicCategoryList(FormBuilderInterface $formBuilder) : FormBuilderInterface
     {
         $formModifier = function (FormInterface $form, Budget $budget) {
-            $form->add('parent', CategoryType::class, [
-                'query_builder' => static function (CategoryRepository $categoryRepository) use ($budget) {
-                    return $categoryRepository->getNodesHierarchyQueryBuilderByBudget($budget->getId());
-                },
-                'required' => false,
-            ]);
+            $form->add(
+                'parent',
+                CategoryType::class,
+                [
+                    'query_builder' => static function (CategoryRepository $categoryRepository) use ($budget) {
+                        return $categoryRepository->getNodesHierarchyQueryBuilderByBudget($budget->getId());
+                    },
+                    'required' => false,
+                ]
+            );
         };
 
         // Add category field if budget is defined

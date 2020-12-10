@@ -73,8 +73,7 @@ class ExpenseCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Expense')
             ->setSearchFields(['id', 'label', 'debit', 'credit', 'comment'])
             ->overrideTemplate('crud/index', 'admin/expense/list.html.twig')
-            ->addFormTheme('admin/field/category.html.twig')
-            ;
+            ->addFormTheme('admin/field/category.html.twig');
     }
 
     public function configureAssets(Assets $assets): Assets
@@ -139,8 +138,7 @@ class ExpenseCrudController extends AbstractCrudController
         return $filters
             ->add(CategoryFilter::new('category'))
             ->add('date')
-            ->add('label')
-        ;
+            ->add('label');
     }
 
     public function createNewFormBuilder(
@@ -196,14 +194,13 @@ class ExpenseCrudController extends AbstractCrudController
         return $formBuilder;
     }
 
-    private function fillExpenseWithTransaction(int $transactionId, Expense $entity)
+    private function fillExpenseWithTransaction(int $transactionId, Expense $entity) : Expense
     {
         $transaction = $this->getDoctrine()->getRepository(Transaction::class)->findOneBy(
             ['id' => $transactionId]
         );
 
         if ($transaction instanceof Transaction) {
-
             // Does other expense exist for this transaction
             $expenses = $this->getDoctrine()->getRepository(Expense::class)->findBy(
                 ['transaction' => $transactionId]

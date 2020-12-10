@@ -133,13 +133,15 @@ class TransactionCrudController extends AbstractCrudController
             );
 
         $toggleIgnore = Action::new('toggleIgnore', 'transaction.toggleIngore')
-            ->linkToUrl(function (Transaction $entity) use ($crudUrlGenerator) {
-                return $crudUrlGenerator->build()
-                    ->setController(TransactionCrudController::class)
-                    ->setAction('toggleIgnore')
-                    ->setEntityId($entity->getId())
-                    ->generateUrl();
-            })
+            ->linkToUrl(
+                function (Transaction $entity) use ($crudUrlGenerator) {
+                    return $crudUrlGenerator->build()
+                        ->setController(TransactionCrudController::class)
+                        ->setAction('toggleIgnore')
+                        ->setEntityId($entity->getId())
+                        ->generateUrl();
+                }
+            )
             ->setTemplatePath('admin/transaction/list/action/ignore_transaction.html.twig');
 
         return $actions
