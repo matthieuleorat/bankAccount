@@ -58,14 +58,14 @@ class ImportNewStatementController extends AbstractController
     }
 
     /**
-     * @Route("/import/new/statement", name="import_new_statement")
-     *
      * @param BankStatementParser $bankStatementParser
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws \Exception
+     *
+     * @Route("/import/new/statement", name="import_new_statement")
      */
     public function index(BankStatementParser $bankStatementParser, Request $request)
     {
@@ -84,9 +84,8 @@ class ImportNewStatementController extends AbstractController
                     $safeFilename = transliterator_transliterate(
                             'Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',
                             $originalFilename
-                        ).
-                        '.'.
-                        $statementFile->getClientOriginalExtension();
+                        );
+                    $safeFilename .= '.'.$statementFile->getClientOriginalExtension();
 
                     $remoteFileName = $this->uploader->execute(
                         $this->aws_remote_path,
