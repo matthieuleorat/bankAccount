@@ -56,7 +56,7 @@ class CategoryRepository extends NestedTreeRepository
     }
 
     /**
-     * Overwrite of Gedmo\Tree\Entity\Repository\NestedTreeRepository::getNodesHierarchyQuery to filter categories on budget
+     * Overwrite of Gedmo\Tree\Entity\Repository\NestedTreeRepository::getNodesHierarchyQuery
      *
      * @param object $node
      * @param bool $direct

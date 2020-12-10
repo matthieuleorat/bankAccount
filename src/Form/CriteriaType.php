@@ -79,19 +79,24 @@ class CriteriaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
-            ->add('field', ChoiceType::class, [
-                'choices' => self::AVAILABLE_FIELD,
-            ])
-            ->add('compareOperator', ChoiceType::class, [
-                'choices' => [
-                    'Est strictement égale' => 'equal',
-                    'Commence par' => 'startWith',
-                    'Se termine par' => 'endWith',
-                    'Contient' => 'contain',
-                ],
-            ])
-            ->add('value', TextType::class, [])
-        ;
+            ->add(
+                'field',
+                ChoiceType::class,
+                ['choices' => self::AVAILABLE_FIELD,]
+            )
+            ->add(
+                'compareOperator',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'Est strictement égale' => 'equal',
+                        'Commence par' => 'startWith',
+                        'Se termine par' => 'endWith',
+                        'Contient' => 'contain',
+                    ],
+                ]
+            )
+            ->add('value', TextType::class, []);
     }
 
     public function configureOptions(OptionsResolver $resolver) : void

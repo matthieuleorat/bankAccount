@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Form;
 
 use App\Entity\Category;
@@ -44,23 +43,17 @@ class CategoryType extends AbstractType
         );
     }
 
-    public function getParent()
+    public function getParent() : string
     {
         return EntityType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName() : string
     {
         return 'category_type';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix() : string
     {
         return 'category_type';
     }

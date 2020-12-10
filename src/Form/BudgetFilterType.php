@@ -14,7 +14,6 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
-use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -29,37 +28,46 @@ class BudgetFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('startingDate', DateType::class, [
-                'widget' => 'single_text',
-                'label' => "Date de début",
-            ])
-            ->add('endingDate', DateType::class, [
-                'widget' => 'single_text',
-                'label' => "Date de fin",
-            ])
-            ->add('categories', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'name',
-                'expanded' => true,
-                'multiple' => true,
-                'query_builder' => function (CategoryRepository $repo) use ($options) {
-                    return $repo->getNodesHierarchyQueryBuilderByBudget($options[self::OPTION_BUDGET_KEY]);
-                },
-                'choice_attr' => static function (Category $choice, $key, $value) {
-                    return [
-                        'attr_lvl' => $choice->getLvl(),
-                        'attr_children' => implode(',', array_map(static function (Category $category) {
-                            return $category->getId();
-                        }, $choice->getChildren()->toArray())),
-                    ];
-                },
-            ])
+            ->add(
+                'startingDate',
+                DateType::class,
+                ['widget' => 'single_text', 'label' => "Date de début",]
+            )
+            ->add(
+                'endingDate',
+                DateType::class,
+                ['widget' => 'single_text', 'label' => "Date de fin",]
+            )
+            ->add(
+                'categories',
+                EntityType::class,
+                [
+                    'class' => Category::class,
+                    'choice_label' => 'name',
+                    'expanded' => true,
+                    'multiple' => true,
+                    'query_builder' => function (CategoryRepository $repo) use ($options) {
+                        return $repo->getNodesHierarchyQueryBuilderByBudget($options[self::OPTION_BUDGET_KEY]);
+                    },
+                    'choice_attr' => static function (Category $choice, $key, $value) {
+                        return [
+                            'attr_lvl' => $choice->getLvl(),
+                            'attr_children' => implode(',', array_map(static function (Category $category) {
+                                return $category->getId();
+                            }, $choice->getChildren()->toArray())),
+                        ];
+                    },
+                ]
+            )
 
-            ->add('save', SubmitType::class, [
-                'label' => 'Filtrer',
-                'attr' => ['class' => 'btn btn-primary action-save']
-            ])
-        ;
+            ->add(
+                'save',
+                SubmitType::class,
+                [
+                    'label' => 'Filtrer',
+                    'attr' => ['class' => 'btn btn-primary action-save']
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
