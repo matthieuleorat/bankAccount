@@ -106,7 +106,7 @@ class ImportNewStatementController extends AbstractController
 
                     $statement = $this->handleStatement($account, $plainStatement, $safeFilename, $remoteFileName);
 
-                    $transactions = array_map(function(Operation $operation) use ($statement) {
+                    $transactions = array_map(function (Operation $operation) use ($statement) {
                         return $this->transformOperationIntoTransaction($operation, $statement);
                     }, $plainStatement->getOperations());
 

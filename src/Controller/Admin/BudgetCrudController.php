@@ -181,7 +181,6 @@ class BudgetCrudController extends AbstractCrudController
         DateTime $endingDate,
         string $granularity = 'monthly'
     ) : array {
-
         switch ($granularity) {
             default:
                 $interval = new \DateInterval('P1M');
