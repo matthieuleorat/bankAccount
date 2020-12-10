@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -21,30 +20,29 @@ use Symfony\Component\Validator\Constraints\File;
 
 class ImportStatementType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
-            ->add('statement', FileType::class, [
-                'multiple' => false,
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => [
-                            'application/pdf',
-                            'application/x-pdf',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid PDF document',
-                    ])
-                ],
-            ])
-
-            ->add('save', SubmitType::class, ['attr' => ['class' => 'btn btn-primary action-save']])
-        ;
+            ->add(
+                'statement',
+                FileType::class,
+                [
+                    'multiple' => false,
+                    'constraints' => [
+                        new File(
+                            [
+                                'mimeTypes' => ['application/pdf', 'application/x-pdf',],
+                                'mimeTypesMessage' => 'Please upload a valid PDF document',
+                            ]
+                        )
+                    ],
+                ]
+            )
+            ->add('save', SubmitType::class, ['attr' => ['class' => 'btn btn-primary action-save']]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
-        $resolver->setDefaults([
-            // Configure your form options here
-        ]);
+        $resolver->setDefaults([]);
     }
 }

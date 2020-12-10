@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Form;
 
 use App\Entity\Criteria;
@@ -101,8 +100,8 @@ class CriteriaType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver) : void
     {
-        $resolver->setDefaults([
-            'data_class' => Criteria::class
-        ]);
+        $resolver->setDefaults(
+            ['data_class' => Criteria::class]
+        );
     }
 }

@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Form;
 
 use App\Entity\Category;
@@ -52,9 +51,15 @@ class BudgetFilterType extends AbstractType
                     'choice_attr' => static function (Category $choice, $key, $value) {
                         return [
                             'attr_lvl' => $choice->getLvl(),
-                            'attr_children' => implode(',', array_map(static function (Category $category) {
-                                return $category->getId();
-                            }, $choice->getChildren()->toArray())),
+                            'attr_children' => implode(
+                                ',',
+                                array_map(
+                                    static function (Category $category) {
+                                        return $category->getId();
+                                    },
+                                    $choice->getChildren()->toArray()
+                                )
+                            ),
                         ];
                     },
                 ]
@@ -70,10 +75,10 @@ class BudgetFilterType extends AbstractType
             );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
-        $resolver->setDefaults([
-            self::OPTION_BUDGET_KEY => null,
-        ]);
+        $resolver->setDefaults(
+            [self::OPTION_BUDGET_KEY => null,]
+        );
     }
 }
