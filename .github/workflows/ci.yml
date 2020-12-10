@@ -34,7 +34,7 @@ jobs:
         run: phpstan analyse src
 
       - name: Run phpcs
-        run: phpcs -q --report=checkstyle src | cs2pr --graceful-warnings
+        run: phpcs -q --report=checkstyle src | cs2pr
 
       - name: Run Tests
         run: ./vendor/bin/simple-phpunit --coverage-clover=coverage.xml
