@@ -48,8 +48,7 @@ class UpdateUserCommand extends Command
         $this
             ->setDescription('Add a short description for your command')
             ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
+            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -72,10 +71,12 @@ class UpdateUserCommand extends Command
 
             $password = $helper->ask($input, $output, $question2);
 
-            $user->setPassword($this->passwordEncoder->encodePassword(
-                $user,
-                $password
-            ));
+            $user->setPassword(
+                $this->passwordEncoder->encodePassword(
+                    $user,
+                    $password
+                )
+            );
 
             $this->manager->flush();
         } else {
