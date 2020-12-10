@@ -25,10 +25,10 @@ class CategoryType extends AbstractType
             'class' => Category::class,
             'expanded' => true,
             'multiple' => false,
-            'choice_attr' => static function(Category $choice, $key, $value) {
+            'choice_attr' => static function (Category $choice, $key, $value) {
                 return [
                     'attr_lvl' => $choice->getLvl(),
-                    'attr_children' => implode(',', array_map(static function(Category $category) {
+                    'attr_children' => implode(',', array_map(static function (Category $category) {
                         return $category->getId();
                     }, $choice->getChildren()->toArray())),
                 ];

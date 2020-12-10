@@ -38,7 +38,7 @@ class TransactionRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('sdf');
 
         return $this->createQueryBuilder('t')
-            ->leftJoin(Expense::class,"e", 'with','t.id = e.transaction')
+            ->leftJoin(Expense::class, "e", 'with', 't.id = e.transaction')
             ->groupBy('t.id')
             ->having(
                 $qb->expr()->orX(

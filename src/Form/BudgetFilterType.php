@@ -45,10 +45,10 @@ class BudgetFilterType extends AbstractType
                 'query_builder' => function (CategoryRepository $repo) use ($options) {
                     return $repo->getNodesHierarchyQueryBuilderByBudget($options[self::OPTION_BUDGET_KEY]);
                 },
-                'choice_attr' => static function(Category $choice, $key, $value) {
+                'choice_attr' => static function (Category $choice, $key, $value) {
                     return [
                         'attr_lvl' => $choice->getLvl(),
-                        'attr_children' => implode(',', array_map(static function(Category $category) {
+                        'attr_children' => implode(',', array_map(static function (Category $category) {
                             return $category->getId();
                         }, $choice->getChildren()->toArray())),
                     ];

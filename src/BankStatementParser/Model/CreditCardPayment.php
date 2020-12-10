@@ -32,11 +32,13 @@ class CreditCardPayment extends AbstractType
      */
     private $merchant;
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     public static function create(array $matches) : TypeInterface
     {
-        list (, $cardId, $date, $merchant) = $matches;
+        list(, $cardId, $date, $merchant) = $matches;
         $obj = new self();
         $obj->cardId = $cardId;
         $obj->date = \DateTimeImmutable::createFromFormat('d/m', $date);

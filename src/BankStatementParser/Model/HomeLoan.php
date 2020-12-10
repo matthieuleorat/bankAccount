@@ -66,7 +66,8 @@ class HomeLoan extends AbstractType
     private $expectedEndDate;
 
     private function __construct()
-    {}
+    {
+    }
 
     public static function create(array $matches) : TypeInterface
     {

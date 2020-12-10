@@ -63,11 +63,13 @@ class EuropeanDirectDebit extends AbstractType
      */
     private $warrant;
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     public static function create(array $matches) : TypeInterface
     {
-        list (, $number, $from, $id, $reason, $ref, $warrant) = $matches;
+        list(, $number, $from, $id, $reason, $ref, $warrant) = $matches;
         $obj = new self();
         $obj->number = $number;
         $obj->from = $from;

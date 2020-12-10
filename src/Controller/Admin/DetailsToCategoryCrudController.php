@@ -86,10 +86,10 @@ class DetailsToCategoryCrudController extends AbstractCrudController
         $regex = TextField::new('regex');
         $budget = AssociationField::new('budget');
         $criteria = CollectionField::new('criteria')
-            ->setFormTypeOption('allow_add',true)
-            ->setFormTypeOption('allow_delete',true)
-            ->setFormTypeOption('by_reference',false)
-            ->setFormTypeOption('entry_type','App\Form\CriteriaType')
+            ->setFormTypeOption('allow_add', true)
+            ->setFormTypeOption('allow_delete', true)
+            ->setFormTypeOption('by_reference', false)
+            ->setFormTypeOption('entry_type', 'App\Form\CriteriaType')
         ;
         $panel2 = FormField::addPanel('Dépense');
         $label = ChoiceField::new('label')

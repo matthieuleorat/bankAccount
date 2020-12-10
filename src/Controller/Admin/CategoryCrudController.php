@@ -62,10 +62,11 @@ class CategoryCrudController extends AbstractCrudController
     }
 
     public function configureFields(string $pageName): iterable
-    {   $budget = null;
+    {
+        $budget = null;
         $name = TextField::new('name', 'category.name.label');
         $parent = AssociationField::new('parent', 'category.parent.label');
-        $budget = AssociationField::new('budget', 'category.budget.label')->setFormTypeOption('disabled','disabled');
+        $budget = AssociationField::new('budget', 'category.budget.label')->setFormTypeOption('disabled', 'disabled');
         $id = IntegerField::new('id', 'ID');
         $lft = IntegerField::new('lft');
         $lvl = IntegerField::new('lvl');

@@ -45,7 +45,9 @@ class TransferReceived extends AbstractType
      */
     private $id;
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     public static function create(array $matches) : TypeInterface
     {

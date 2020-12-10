@@ -37,11 +37,13 @@ class PermanentTransfert extends AbstractType
      */
     private $label;
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     public static function create(array $matches) : TypeInterface
     {
-        list (, $recepient, $reference, $reason, $label) = $matches;
+        list(, $recepient, $reference, $reason, $label) = $matches;
         $obj = new self();
         $obj->recepient = $recepient;
         $obj->reference = $reference;

@@ -178,7 +178,6 @@ class BankStatementParser
                 }
 
                 $operations[] = $operation;
-
             }
         }
 

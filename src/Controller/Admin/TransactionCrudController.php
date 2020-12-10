@@ -100,7 +100,7 @@ class TransactionCrudController extends AbstractCrudController
 
     public function configureFilters(Filters $filters): Filters
     {
-         return $filters
+        return $filters
             ->add(BooleanFilter::new('ignore', 'Afficher uniquement les transactions ignorées'))
             ->add(TransactionNotFullFilledWithExpenseFilter::new('expenses', 'Afficher uniquement les transactions sans dépense liée'))
             ->add(StatementFilter::new('statement', 'Relevé'))

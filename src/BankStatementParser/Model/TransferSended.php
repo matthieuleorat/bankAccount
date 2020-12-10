@@ -69,7 +69,8 @@ class TransferSended extends AbstractType
     private $to;
 
     private function __construct()
-    {}
+    {
+    }
 
     public static function create(array $matches) : TypeInterface
     {

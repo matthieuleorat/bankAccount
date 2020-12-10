@@ -78,7 +78,6 @@ class Operation
     public function isDebit() : bool
     {
         if ($this->positionMontant < $this->creditPosition) {
-
             return true;
         }
 
@@ -88,7 +87,6 @@ class Operation
     public function isCredit() : bool
     {
         if ($this->positionMontant < $this->creditPosition) {
-
             return false;
         }
 
@@ -119,7 +117,7 @@ class Operation
         );
 
         if (false === empty($date) && preg_match('#^\d{2}/\d{2}/\d{4}$#', $date)) {
-            $this->date = (\DateTimeImmutable::createFromFormat('d/m/Y', $date))->setTime(0,0,0);
+            $this->date = (\DateTimeImmutable::createFromFormat('d/m/Y', $date))->setTime(0, 0, 0);
         }
     }
 

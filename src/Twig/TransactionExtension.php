@@ -35,7 +35,7 @@ class TransactionExtension extends AbstractExtension
         $reflect = new \ReflectionClass($value);
         $props   = $reflect->getProperties();
         $datas = [];
-        foreach($props as $prop) {
+        foreach ($props as $prop) {
             $data = $value->{'get'.ucfirst($prop->getName())}();
             if ($data instanceof \DateTimeImmutable) {
                 $data = $data->format('d/m/Y');
@@ -44,6 +44,6 @@ class TransactionExtension extends AbstractExtension
             $datas[] = ucfirst($prop->getName()).': '.$data;
         }
 
-        return implode("\n",$datas);
+        return implode("\n", $datas);
     }
 }
