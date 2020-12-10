@@ -3,6 +3,7 @@
     <description>The coding standard for PHP_CodeSniffer itself.</description>
 
     <exclude-pattern>*/src/Migrations/*$</exclude-pattern>
+    <exclude-pattern>*/src/kernel.php$</exclude-pattern>
 
     <autoload>./vendor/autoload.php</autoload>
 

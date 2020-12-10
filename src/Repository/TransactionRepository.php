@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Repository;
 
 use App\Entity\Expense;
@@ -54,7 +53,6 @@ class TransactionRepository extends ServiceEntityRepository
             )
             // TODO Remove ignored transactions
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 }

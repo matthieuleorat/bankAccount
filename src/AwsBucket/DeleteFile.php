@@ -22,10 +22,12 @@ class DeleteFile extends AbstractS3Client
     public function execute(string $file)
     {
         try {
-            $this->client->deleteObject([
-                'Bucket' => $this->s3_bucket_name,
-                'Key'    => $file,
-            ]);
+            $this->client->deleteObject(
+                [
+                    'Bucket' => $this->s3_bucket_name,
+                    'Key'    => $file,
+                ]
+            );
         } catch (\Exception $e) {
             return $e->getMessage();
         }

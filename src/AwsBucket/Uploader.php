@@ -23,12 +23,14 @@ class Uploader extends AbstractS3Client
     {
         $filename = $remoteFolder.$this->generateFileName($extension);
 
-        $this->client->putObject([
-            'Bucket' => $this->s3_bucket_name,
-            'Key'    => $filename,
-            'Body'   => fopen($filePath, 'r'),
-            'ACL'    => 'private',
-        ]);
+        $this->client->putObject(
+            [
+                'Bucket' => $this->s3_bucket_name,
+                'Key'    => $filename,
+                'Body'   => fopen($filePath, 'r'),
+                'ACL'    => 'private',
+            ]
+        );
 
         return $filename;
     }

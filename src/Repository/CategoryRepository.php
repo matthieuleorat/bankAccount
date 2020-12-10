@@ -15,6 +15,7 @@ namespace App\Repository;
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
 /**
@@ -30,13 +31,6 @@ class CategoryRepository extends NestedTreeRepository
     public function __construct(EntityManagerInterface $registry)
     {
         parent::__construct($registry, $registry->getClassMetadata(Category::class));
-    }
-
-    public function getTreeByBudget($budgetId = null, $node = null, $direct = false, array $options = array(), $includeNode = false)
-    {
-        $this->budget = $budgetId;
-
-        return $this->childrenHierarchy($node, $direct, $options, $includeNode);
     }
 
     public function getRootNodesByBudget(int $budgetId, $sortByField = null, $direction = 'asc')
@@ -69,17 +63,26 @@ class CategoryRepository extends NestedTreeRepository
      * @param array $options
      * @param bool $includeNode
      *
-     * @return \Doctrine\ORM\Query
+     * @return Query
      */
-    public function getNodesHierarchyQuery($node = null, $direct = false, array $options = array(), $includeNode = false) : Query
-    {
+    public function getNodesHierarchyQuery(
+        $node = null,
+        $direct = false,
+        array $options = [],
+        $includeNode = false
+    ) : Query {
         $qb = $this->getNodesHierarchyQueryBuilderByBudget($this->budget, $node, $direct, $options, $includeNode);
 
         return $qb->getQuery();
     }
 
-    public function getNodesHierarchyQueryBuilderByBudget($budget = null, $node = null, $direct = false, array $options = array(), $includeNode = false)
-    {
+    public function getNodesHierarchyQueryBuilderByBudget(
+        $budget = null,
+        $node = null,
+        $direct = false,
+        array $options = [],
+        $includeNode = false
+    ) : QueryBuilder {
         $qb = $this->getNodesHierarchyQueryBuilder($node, $direct, $options, $includeNode);
 
         if (null !== $budget) {
