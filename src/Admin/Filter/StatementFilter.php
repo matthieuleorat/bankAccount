@@ -32,8 +32,7 @@ class StatementFilter implements FilterInterface
             ->setProperty($propertyName)
             ->setLabel($label)
             ->setFormType(EntityFilterType::class)
-            ->setFormTypeOption('translation_domain', 'EasyAdminBundle')
-        ;
+            ->setFormTypeOption('translation_domain', 'EasyAdminBundle');
     }
 
     public function apply(

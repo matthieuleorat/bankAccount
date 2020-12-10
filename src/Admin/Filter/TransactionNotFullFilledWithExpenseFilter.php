@@ -42,8 +42,7 @@ class TransactionNotFullFilledWithExpenseFilter implements FilterInterface
             $queryBuilder
                 ->andwhere(
                     sprintf('%s.%s', $filterDataDto->getEntityAlias(), $filterDataDto->getProperty()).' is empty'
-                )
-            ;
+                );
         }
     }
 }

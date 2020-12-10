@@ -91,8 +91,8 @@ class DetailsToCategoryCrudController extends AbstractCrudController
             ->setFormTypeOption('allow_add', true)
             ->setFormTypeOption('allow_delete', true)
             ->setFormTypeOption('by_reference', false)
-            ->setFormTypeOption('entry_type', 'App\Form\CriteriaType')
-        ;
+            ->setFormTypeOption('entry_type', 'App\Form\CriteriaType');
+
         $panel2 = FormField::addPanel('Dépense');
         $label = ChoiceField::new('label')
             ->setChoices(CriteriaType::AVAILABLE_FIELD)

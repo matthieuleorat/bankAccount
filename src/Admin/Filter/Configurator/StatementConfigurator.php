@@ -55,18 +55,22 @@ class StatementConfigurator implements FilterConfiguratorInterface
             'value_type_options.attr.data-widget',
             'select2'
         );
-        $filterDto->setFormTypeOption('value_type_options.query_builder', function (EntityRepository $er) {
-            return $er->createQueryBuilder('s')
-                ->orderBy('s.source', 'ASC')
-                ->addOrderBy('s.startingDate', 'ASC');
-        });
+        $filterDto->setFormTypeOption(
+            'value_type_options.query_builder',
+            function (EntityRepository $er) {
+                return $er->createQueryBuilder('s')
+                    ->orderBy('s.source', 'ASC')
+                    ->addOrderBy('s.startingDate', 'ASC');
+            }
+        );
         
         if ($entityDto->isToOneAssociation($propertyName)) {
             // don't show the 'empty value' placeholder when all join columns are required,
             // because an empty filter value would always returns no result
             $numberOfRequiredJoinColumns = \count(
                 array_filter(
-                    $doctrineMetadata->get('joinColumns'), static function (array $joinColumnMapping): bool {
+                    $doctrineMetadata->get('joinColumns'),
+                    static function (array $joinColumnMapping): bool {
                         return false === ($joinColumnMapping['nullable'] ?? false);
                     }
                 )
