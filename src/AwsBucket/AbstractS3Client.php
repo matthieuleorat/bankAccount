@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\AwsBucket;
 
 use Aws\S3\S3Client;

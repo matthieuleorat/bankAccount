@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Admin\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;

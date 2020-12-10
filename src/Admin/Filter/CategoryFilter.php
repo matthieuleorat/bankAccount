@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Admin\Filter;
 
 use App\Form\Filter\CategoryWithChildrenFilterType;

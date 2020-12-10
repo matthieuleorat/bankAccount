@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Form\Filter;
 
 use App\Entity\Category;
@@ -26,8 +25,8 @@ class CategoryWithChildrenFilterType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver) : void
     {
-        $resolver->setDefaults([
-            'class' => Category::class,
-        ]);
+        $resolver->setDefaults(
+            ['class' => Category::class,]
+        );
     }
 }

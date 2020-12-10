@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;

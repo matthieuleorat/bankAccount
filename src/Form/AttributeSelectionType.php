@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -18,14 +17,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AttributeSelectionType extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
-        $resolver->setDefaults([
-            'choices' => CriteriaType::AVAILABLE_FIELD
-        ]);
+        $resolver->setDefaults(
+            ['choices' => CriteriaType::AVAILABLE_FIELD]
+        );
     }
 
-    public function getParent()
+    public function getParent() : string
     {
         return ChoiceType::class;
     }

@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Form\Filter;
 
 use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\BooleanFilterType;
@@ -25,8 +24,6 @@ class TransactionNotFullFilledWithExpenseFilterType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver) : void
     {
-        $resolver->setDefaults([
-
-        ]);
+        $resolver->setDefaults([]);
     }
 }

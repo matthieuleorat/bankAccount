@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Form;
 
 use App\Entity\Budget;
@@ -21,20 +20,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BudgetSelectionType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
-            ->add('budget', EntityType::class, [
-                'class' => Budget::class,
-            ])
-            ->add('save', SubmitType::class)
-        ;
+            ->add(
+                'budget',
+                EntityType::class,
+                ['class' => Budget::class,]
+            )
+            ->add('save', SubmitType::class);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
-        $resolver->setDefaults([
-
-        ]);
+        $resolver->setDefaults([]);
     }
 }

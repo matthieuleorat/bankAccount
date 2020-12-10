@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\EventListener;
 
 use App\AwsBucket\DeleteFile;

@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Admin\Filter\Configurator;
 
 use App\Admin\Filter\StatementFilter;

@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace BankStatementParser\Model;
 
 abstract class AbstractType implements TypeInterface
