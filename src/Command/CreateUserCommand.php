@@ -13,7 +13,6 @@
 namespace App\Command;
 
 use App\Entity\User;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -36,8 +35,11 @@ class CreateUserCommand extends Command
      */
     private $manager;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $manager, string $name = null)
-    {
+    public function __construct(
+        UserPasswordEncoderInterface $passwordEncoder,
+        EntityManagerInterface $manager,
+        string $name = null
+    ) {
         parent::__construct($name);
         $this->passwordEncoder = $passwordEncoder;
         $this->manager = $manager;
@@ -48,8 +50,7 @@ class CreateUserCommand extends Command
         $this
             ->setDescription('Add a short description for your command')
             ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
+            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -70,10 +71,12 @@ class CreateUserCommand extends Command
         $user->setUsername($username);
         $user->setRoles(['ROLE_ADMIN']);
 
-        $user->setPassword($this->passwordEncoder->encodePassword(
-            $user,
-            $password
-        ));
+        $user->setPassword(
+            $this->passwordEncoder->encodePassword(
+                $user,
+                $password
+            )
+        );
 
         $this->manager->persist($user);
 

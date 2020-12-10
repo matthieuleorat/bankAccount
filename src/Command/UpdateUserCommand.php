@@ -13,7 +13,6 @@
 namespace App\Command;
 
 use App\Entity\User;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -36,8 +35,11 @@ class UpdateUserCommand extends Command
      */
     private $manager;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $manager, string $name = null)
-    {
+    public function __construct(
+        UserPasswordEncoderInterface $passwordEncoder,
+        EntityManagerInterface $manager,
+        string $name = null
+    ) {
         parent::__construct($name);
         $this->passwordEncoder = $passwordEncoder;
         $this->manager = $manager;

@@ -30,24 +30,12 @@ class ExpenseRepository extends ServiceEntityRepository
         parent::__construct($registry, Expense::class);
     }
 
-    public function getTotalsForCategory($category, \DateTime $startingDate, \DateTimeImmutable $endingDate)
-    {
-        return $this->createQueryBuilder('e')
-            ->select('SUM(e.debit) as totalDebit')
-            ->addSelect('SUM(e.credit) as totalCredit')
-            ->where('e.category = :val')
-            ->andWhere('e.date >= :startingDate')
-            ->andWhere('e.date <= :endingDate')
-            ->setParameter('val', $category)
-            ->setParameter('startingDate', $startingDate)
-            ->setParameter('endingDate', $endingDate)
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-    public function getTotalsForCategories(Budget $budget, array $categories, \DateTime $startingDate, \DateTime $endingDate)
-    {
+    public function getTotalsForCategories(
+        Budget $budget,
+        array $categories,
+        \DateTime $startingDate,
+        \DateTime $endingDate
+    ) {
         return $this->createQueryBuilder('e')
             ->select('SUM(e.debit) as totalDebit')
             ->addSelect('SUM(e.credit) as totalCredit')
@@ -60,7 +48,6 @@ class ExpenseRepository extends ServiceEntityRepository
             ->setParameter('endingDate', $endingDate)
             ->setParameter('budget', $budget)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 }
