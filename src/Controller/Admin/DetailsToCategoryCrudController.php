@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Controller\Admin;
 
 use App\Entity\Budget;
@@ -57,8 +56,11 @@ class DetailsToCategoryCrudController extends AbstractCrudController
      */
     private $applyFilter;
 
-    public function __construct(CategoryGuesser $categoryGuesser, AttributeExtractor $attributeExtractor, ApplyFilter $applyFilter)
-    {
+    public function __construct(
+        CategoryGuesser $categoryGuesser,
+        AttributeExtractor $attributeExtractor,
+        ApplyFilter $applyFilter
+    ) {
         $this->categoryGuesser = $categoryGuesser;
         $this->attributeExtractor = $attributeExtractor;
         $this->applyFilter = $applyFilter;
@@ -130,9 +132,18 @@ class DetailsToCategoryCrudController extends AbstractCrudController
         return [];
     }
 
-    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
-    {
-        $queryBuilder = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+    public function createIndexQueryBuilder(
+        SearchDto $searchDto,
+        EntityDto $entityDto,
+        FieldCollection $fields,
+        FilterCollection $filters
+    ): QueryBuilder {
+        $queryBuilder = $this->get(EntityRepository::class)->createQueryBuilder(
+            $searchDto,
+            $entityDto,
+            $fields,
+            $filters
+        );
 
         $session = $this->get('session');
         $budgetId = $session->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
@@ -144,8 +155,7 @@ class DetailsToCategoryCrudController extends AbstractCrudController
                     $queryBuilder->expr()->eq($rootAlias.'.budget', ':budgetId')
                 )
             )
-            ->setParameter('budgetId', $budgetId)
-        ;
+            ->setParameter('budgetId', $budgetId);
 
         return $queryBuilder;
     }
@@ -186,9 +196,7 @@ class DetailsToCategoryCrudController extends AbstractCrudController
 
     public function configureFilters(Filters $filters): Filters
     {
-        return $filters
-            ->add('budget')
-            ;
+        return $filters->add('budget');
     }
 
 

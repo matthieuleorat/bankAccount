@@ -72,10 +72,19 @@ class BudgetCrudController extends AbstractCrudController
             throw new InsufficientEntityPermissionException($context);
         }
 
-        $this->container->get('session')->set(BudgetExtension::BUDGET_ID_SESSION_KEY, $context->getEntity()->getPrimaryKeyValue());
+        $this->container->get('session')->set(
+            BudgetExtension::BUDGET_ID_SESSION_KEY,
+            $context->getEntity()->getPrimaryKeyValue()
+        );
 
-        $this->get(EntityFactory::class)->processFields($context->getEntity(), FieldCollection::new($this->configureFields(Crud::PAGE_DETAIL)));
-        $this->get(EntityFactory::class)->processActions($context->getEntity(), $context->getCrud()->getActionsConfig());
+        $this->get(EntityFactory::class)->processFields(
+            $context->getEntity(),
+            FieldCollection::new($this->configureFields(Crud::PAGE_DETAIL))
+        );
+        $this->get(EntityFactory::class)->processActions(
+            $context->getEntity(),
+            $context->getCrud()->getActionsConfig()
+        );
 
         /** @var Category[] $categories */
         $categories = $this->categoryRepository->getRootNodesByBudget($context->getEntity()->getPrimaryKeyValue());
@@ -190,9 +199,11 @@ class BudgetCrudController extends AbstractCrudController
 
         $p = [];
         foreach ($period as $key => $dt) {
+            $firstDayOf = new DateTime('first day of '.$dt->format('F Y'));
+            $lastDayOf = new DateTime('last day of '.$dt->format('F Y'));
             $p[] = [
-                $key == 0 ? $startingDate : new DateTime('first day of '.$dt->format('F Y')),
-                new DateTime('last day of '.$dt->format('F Y')) > $endingDate ? $endingDate : new DateTime('last day of '.$dt->format('F Y')),
+                $key == 0 ? $startingDate : $firstDayOf,
+                $lastDayOf > $endingDate ? $endingDate : $lastDayOf,
             ];
         }
 

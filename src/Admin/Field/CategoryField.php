@@ -25,7 +25,6 @@ class CategoryField implements FieldInterface
         return (new self())
             ->setProperty($propertyName)
             ->setLabel($label)
-            ->setFormType(CategoryType::class)
-            ;
+            ->setFormType(CategoryType::class);
     }
 }

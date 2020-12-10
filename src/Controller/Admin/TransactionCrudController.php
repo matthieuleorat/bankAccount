@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Controller\Admin;
 
 use App\Admin\Field\ObjectType;
@@ -28,7 +27,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
-use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -76,13 +74,21 @@ class TransactionCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $date = DateField::new('date', 'transaction.date');
-        $details = TextareaField::new('details', 'transaction.details')->setTemplatePath('admin/transaction/list/details.html.twig');
+        $details = TextareaField::new('details', 'transaction.details')->setTemplatePath(
+            'admin/transaction/list/details.html.twig'
+        );
         $debit = NumberField::new('debit', 'transaction.debit');
         $credit = NumberField::new('credit', 'transaction.credit');
         $createExpense = Field::new('createExpense', 'transaction.createexpense');
-        $amount = TextareaField::new('amount', 'transaction.amount')->setTemplatePath('admin/transaction/list/amount.html.twig');
-        $type = ObjectType::new('type', 'transaction.type')->setTemplatePath('admin/transaction/show/type.html.twig');
-        $expenses = AssociationField::new('expenses', 'transaction.expenses')->setTemplatePath('admin/transaction/list/expenses.html.twig');
+        $amount = TextareaField::new('amount', 'transaction.amount')->setTemplatePath(
+            'admin/transaction/list/amount.html.twig'
+        );
+        $type = ObjectType::new('type', 'transaction.type')->setTemplatePath(
+            'admin/transaction/show/type.html.twig'
+        );
+        $expenses = AssociationField::new('expenses', 'transaction.expenses')->setTemplatePath(
+            'admin/transaction/list/expenses.html.twig'
+        );
         $statement = AssociationField::new('statement');
 
         if (Crud::PAGE_INDEX === $pageName) {
@@ -102,9 +108,11 @@ class TransactionCrudController extends AbstractCrudController
     {
         return $filters
             ->add(BooleanFilter::new('ignore', 'Afficher uniquement les transactions ignorées'))
-            ->add(TransactionNotFullFilledWithExpenseFilter::new('expenses', 'Afficher uniquement les transactions sans dépense liée'))
-            ->add(StatementFilter::new('statement', 'Relevé'))
-         ;
+            ->add(TransactionNotFullFilledWithExpenseFilter::new(
+                'expenses',
+                'Afficher uniquement les transactions sans dépense liée'
+            ))
+            ->add(StatementFilter::new('statement', 'Relevé'));
     }
 
     public function configureActions(Actions $actions): Actions
@@ -118,8 +126,7 @@ class TransactionCrudController extends AbstractCrudController
                     ->setAction('new')
                     ->set('transaction', $entity->getId())
                     ->generateUrl();
-            })
-        ;
+            });
 
         $toggleIgnore = Action::new('toggleIgnore', 'transaction.toggleIngore')
             ->linkToUrl(function (Transaction $entity) use ($crudUrlGenerator) {
@@ -129,12 +136,10 @@ class TransactionCrudController extends AbstractCrudController
                     ->setEntityId($entity->getId())
                     ->generateUrl();
             })
-            ->setTemplatePath('admin/transaction/list/action/ignore_transaction.html.twig')
-        ;
+            ->setTemplatePath('admin/transaction/list/action/ignore_transaction.html.twig');
 
         return $actions
             ->add(Crud::PAGE_INDEX, $createExpense)
-            ->add(Crud::PAGE_INDEX, $toggleIgnore)
-            ;
+            ->add(Crud::PAGE_INDEX, $toggleIgnore);
     }
 }

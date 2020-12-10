@@ -42,7 +42,6 @@ use BankStatementParser\Model\CreditCardPayment;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Symfony\Component\Form\FormInterface;
 
 class ExpenseCrudController extends AbstractCrudController
@@ -81,21 +80,28 @@ class ExpenseCrudController extends AbstractCrudController
 
     public function configureAssets(Assets $assets): Assets
     {
-        return $assets
-            ->addJsFile('build/dynamic-category-list.js');
+        return $assets->addJsFile('build/dynamic-category-list.js');
     }
 
-    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
-    {
-        $queryBuilder = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+    public function createIndexQueryBuilder(
+        SearchDto $searchDto,
+        EntityDto $entityDto,
+        FieldCollection $fields,
+        FilterCollection $filters
+    ): QueryBuilder {
+        $queryBuilder = $this->get(EntityRepository::class)->createQueryBuilder(
+            $searchDto,
+            $entityDto,
+            $fields,
+            $filters
+        );
 
         $session = $this->get('session');
         $budgetId = $session->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
         $rootAlias = $queryBuilder->getRootAlias();
         $queryBuilder
             ->andWhere($rootAlias.'.budget = :budgetId')
-            ->setParameter('budgetId', $budgetId)
-        ;
+            ->setParameter('budgetId', $budgetId);
 
         return $queryBuilder;
     }
@@ -112,7 +118,9 @@ class ExpenseCrudController extends AbstractCrudController
         $transaction = AssociationField::new('transaction');
         $budget = AssociationField::new('budget');
         $debts = AssociationField::new('debts');
-        $amount = TextareaField::new('amount')->setTemplatePath('admin/transaction/list/amount.html.twig');
+        $amount = TextareaField::new('amount')->setTemplatePath(
+            'admin/transaction/list/amount.html.twig'
+        );
 
         if (Crud::PAGE_INDEX === $pageName) {
             return [$date, $label, $category, $amount, $budget];
@@ -136,15 +144,21 @@ class ExpenseCrudController extends AbstractCrudController
         ;
     }
 
-    public function createNewFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface
-    {
+    public function createNewFormBuilder(
+        EntityDto $entityDto,
+        KeyValueStore $formOptions,
+        AdminContext $context
+    ): FormBuilderInterface {
         $formBuilder = $this->get(FormFactory::class)->createNewFormBuilder($entityDto, $formOptions, $context);
 
         return $this->setDynamicCategoryList($formBuilder);
     }
 
-    public function createEditFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface
-    {
+    public function createEditFormBuilder(
+        EntityDto $entityDto,
+        KeyValueStore $formOptions,
+        AdminContext $context
+    ): FormBuilderInterface {
         $formBuilder = $this->get(FormFactory::class)->createEditFormBuilder($entityDto, $formOptions, $context);
 
         return $this->setDynamicCategoryList($formBuilder);
@@ -161,13 +175,16 @@ class ExpenseCrudController extends AbstractCrudController
         };
 
         // Add category field if budget is defined
-        $formBuilder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier) {
-            $form = $event->getForm();
-            $expense = $event->getData();
-            if ($expense->getBudget() instanceof Budget) {
-                $formModifier($form, $expense->getBudget());
+        $formBuilder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formModifier) {
+                $form = $event->getForm();
+                $expense = $event->getData();
+                if ($expense->getBudget() instanceof Budget) {
+                    $formModifier($form, $expense->getBudget());
+                }
             }
-        });
+        );
 
         $formBuilder->get('budget')->addEventListener(
             FormEvents::POST_SUBMIT,
@@ -182,12 +199,16 @@ class ExpenseCrudController extends AbstractCrudController
 
     private function fillExpenseWithTransaction(int $transactionId, Expense $entity)
     {
-        $transaction = $this->getDoctrine()->getRepository(Transaction::class)->findOneBy(['id' => $transactionId]);
+        $transaction = $this->getDoctrine()->getRepository(Transaction::class)->findOneBy(
+            ['id' => $transactionId]
+        );
 
         if ($transaction instanceof Transaction) {
 
             // Does other expense exist for this transaction
-            $expenses = $this->getDoctrine()->getRepository(Expense::class)->findBy(['transaction' => $transactionId]);
+            $expenses = $this->getDoctrine()->getRepository(Expense::class)->findBy(
+                ['transaction' => $transactionId]
+            );
 
             $credit = $transaction->getCredit();
             $debit = $transaction->getDebit();

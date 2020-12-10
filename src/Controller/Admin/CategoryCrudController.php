@@ -32,7 +32,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
-use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -66,7 +65,10 @@ class CategoryCrudController extends AbstractCrudController
         $budget = null;
         $name = TextField::new('name', 'category.name.label');
         $parent = AssociationField::new('parent', 'category.parent.label');
-        $budget = AssociationField::new('budget', 'category.budget.label')->setFormTypeOption('disabled', 'disabled');
+        $budget = AssociationField::new('budget', 'category.budget.label')->setFormTypeOption(
+            'disabled',
+            'disabled'
+        );
         $id = IntegerField::new('id', 'ID');
         $lft = IntegerField::new('lft');
         $lvl = IntegerField::new('lvl');
@@ -89,9 +91,18 @@ class CategoryCrudController extends AbstractCrudController
         return [];
     }
 
-    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
-    {
-        $queryBuilder = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+    public function createIndexQueryBuilder(
+        SearchDto $searchDto,
+        EntityDto $entityDto,
+        FieldCollection $fields,
+        FilterCollection $filters
+    ): QueryBuilder {
+        $queryBuilder = $this->get(EntityRepository::class)->createQueryBuilder(
+            $searchDto,
+            $entityDto,
+            $fields,
+            $filters
+        );
 
         $session = $this->get('session');
         $budgetId = $session->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
@@ -109,15 +120,21 @@ class CategoryCrudController extends AbstractCrudController
         return $queryBuilder;
     }
 
-    public function createNewFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface
-    {
+    public function createNewFormBuilder(
+        EntityDto $entityDto,
+        KeyValueStore $formOptions,
+        AdminContext $context
+    ): FormBuilderInterface {
         $formBuilder = $this->get(FormFactory::class)->createNewFormBuilder($entityDto, $formOptions, $context);
 
         return $this->setDynamicCategoryList($formBuilder);
     }
 
-    public function createEditFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface
-    {
+    public function createEditFormBuilder(
+        EntityDto $entityDto,
+        KeyValueStore $formOptions,
+        AdminContext $context
+    ): FormBuilderInterface {
         $formBuilder = $this->get(FormFactory::class)->createEditFormBuilder($entityDto, $formOptions, $context);
 
         return $this->setDynamicCategoryList($formBuilder);
@@ -135,13 +152,16 @@ class CategoryCrudController extends AbstractCrudController
         };
 
         // Add category field if budget is defined
-        $formBuilder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier) {
-            $form = $event->getForm();
-            $expense = $event->getData();
-            if ($expense->getBudget() instanceof Budget) {
-                $formModifier($form, $expense->getBudget());
+        $formBuilder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formModifier) {
+                $form = $event->getForm();
+                $expense = $event->getData();
+                if ($expense->getBudget() instanceof Budget) {
+                    $formModifier($form, $expense->getBudget());
+                }
             }
-        });
+        );
 
         $formBuilder->get('budget')->addEventListener(
             FormEvents::POST_SUBMIT,

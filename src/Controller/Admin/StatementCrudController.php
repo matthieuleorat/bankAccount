@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace App\Controller\Admin;
 
 use App\Entity\Statement;
@@ -36,7 +35,9 @@ class StatementCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Statement')
             ->setEntityLabelInPlural('Statement')
-            ->setSearchFields(['id', 'name', 'startingBalance', 'endingBalance', 'TotalDebit', 'totalCredit', 'remoteFile']);
+            ->setSearchFields(
+                ['id', 'name', 'startingBalance', 'endingBalance', 'TotalDebit', 'totalCredit', 'remoteFile']
+            );
     }
 
     public function configureFields(string $pageName): iterable
@@ -56,11 +57,44 @@ class StatementCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $name, $startingDate, $endingDate, $startingBalance, $endingBalance, $totalDebit];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $name, $startingDate, $endingDate, $startingBalance, $endingBalance, $totalDebit, $totalCredit, $remoteFile, $source, $transactions];
+            return [
+                $name,
+                $startingDate,
+                $endingDate,
+                $startingBalance,
+                $endingBalance,
+                $totalDebit,
+                $totalCredit,
+                $remoteFile,
+                $source,
+                $transactions
+            ];
         } elseif (Crud::PAGE_NEW === $pageName) {
-            return [$name, $startingDate, $endingDate, $startingBalance, $endingBalance, $totalDebit, $totalCredit, $remoteFile, $source, $transactions];
+            return [
+                $name,
+                $startingDate,
+                $endingDate,
+                $startingBalance,
+                $endingBalance,
+                $totalDebit,
+                $totalCredit,
+                $remoteFile,
+                $source,
+                $transactions
+            ];
         } elseif (Crud::PAGE_EDIT === $pageName) {
-            return [$name, $startingDate, $endingDate, $startingBalance, $endingBalance, $totalDebit, $totalCredit, $remoteFile, $source, $transactions];
+            return [
+                $name,
+                $startingDate,
+                $endingDate,
+                $startingBalance,
+                $endingBalance,
+                $totalDebit,
+                $totalCredit,
+                $remoteFile,
+                $source,
+                $transactions
+            ];
         }
 
         return [];
@@ -68,15 +102,11 @@ class StatementCrudController extends AbstractCrudController
 
     public function configureFilters(Filters $filters): Filters
     {
-        return $filters
-            ->add('source')
-            ;
+        return $filters->add('source');
     }
 
     public function configureActions(Actions $actions): Actions
     {
-        return $actions
-            ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ;
+        return $actions->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
 }

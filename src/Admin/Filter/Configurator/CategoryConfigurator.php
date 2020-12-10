@@ -32,21 +32,48 @@ class CategoryConfigurator implements FilterConfiguratorInterface
         $this->categoryRepository = $entityManager->getRepository(Category::class);
     }
 
-    public function supports(FilterDto $filterDto, ?FieldDto $fieldDto, EntityDto $entityDto, AdminContext $context): bool
-    {
+    public function supports(
+        FilterDto $filterDto,
+        ?FieldDto $fieldDto,
+        EntityDto $entityDto,
+        AdminContext $context
+    ): bool {
         return CategoryFilter::class === $filterDto->getFqcn();
     }
 
-    public function configure(FilterDto $filterDto, ?FieldDto $fieldDto, EntityDto $entityDto, AdminContext $context): void
-    {
-        $filterDto->setApplyCallable(function (QueryBuilder $queryBuilder, FilterDataDto $filterDataDto, ?FieldDto $fieldDto, EntityDto $entityDto) use ($filterDto) {
-            if (null === $queryBuilder->getParameter('categories')) {
-                $children = $this->categoryRepository->getChildren($filterDataDto->getValue(), false, null, 'asc', true);
-                $queryBuilder
-                    ->andWhere(sprintf('%s.%s IN (:categories)', $queryBuilder->getRootAliases()[0], $filterDataDto->getProperty()))
-                    ->setParameter('categories', $children);
-                $filterDto->apply($queryBuilder, $filterDataDto, $fieldDto, $entityDto);
+    public function configure(
+        FilterDto $filterDto,
+        ?FieldDto $fieldDto,
+        EntityDto $entityDto,
+        AdminContext $context
+    ): void {
+        $filterDto->setApplyCallable(
+            function (
+                QueryBuilder $queryBuilder,
+                FilterDataDto $filterDataDto,
+                ?FieldDto $fieldDto,
+                EntityDto $entityDto
+            ) use ($filterDto) {
+                if (null === $queryBuilder->getParameter('categories')) {
+                    $children = $this->categoryRepository->getChildren(
+                        $filterDataDto->getValue(),
+                        false,
+                        null,
+                        'asc',
+                        true
+                    );
+                    $queryBuilder
+                        ->andWhere(
+                            sprintf(
+                                '%s.%s IN (:categories)',
+                                $queryBuilder->getRootAliases()[0],
+                                $filterDataDto->getProperty()
+                            )
+                        )
+                        ->setParameter('categories', $children);
+                    $filterDto->apply($queryBuilder, $filterDataDto, $fieldDto, $entityDto);
+                }
             }
-        });
+        );
     }
 }
