@@ -26,6 +26,8 @@ class DashboardController extends AbstractDashboardController
 {
     /**
      * @Route("/admin", name="admin_dashboard")
+     *
+     * @return Response
      */
     public function index(): Response
     {
@@ -34,8 +36,7 @@ class DashboardController extends AbstractDashboardController
 
     public function configureDashboard(): Dashboard
     {
-        return Dashboard::new()
-            ->setTitle('Mon Budget');
+        return Dashboard::new()->setTitle('Mon Budget');
     }
 
     public function configureCrud(): Crud

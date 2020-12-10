@@ -110,14 +110,18 @@ class BudgetCrudController extends AbstractCrudController
 
         $datas = $this->formatDatas($startingDate, $endingDate, $categories, $context->getEntity()->getInstance());
 
-        $responseParameters = $this->configureResponseParameters(KeyValueStore::new([
-            'pageName' => Crud::PAGE_DETAIL,
-            'templateName' => 'crud/detail',
-            'entity' => $context->getEntity(),
-            'form' => $form->createView(),
-            'datasForGraph' => $datas['datasForGraph'],
-            'datas' => $datas['datas'],
-        ]));
+        $responseParameters = $this->configureResponseParameters(
+            KeyValueStore::new(
+                [
+                    'pageName' => Crud::PAGE_DETAIL,
+                    'templateName' => 'crud/detail',
+                    'entity' => $context->getEntity(),
+                    'form' => $form->createView(),
+                    'datasForGraph' => $datas['datasForGraph'],
+                    'datas' => $datas['datas'],
+                ]
+            )
+        );
 
         $event = new AfterCrudActionEvent($context, $responseParameters);
         $this->get('event_dispatcher')->dispatch($event);

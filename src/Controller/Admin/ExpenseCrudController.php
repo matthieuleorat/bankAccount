@@ -164,11 +164,15 @@ class ExpenseCrudController extends AbstractCrudController
     private function setDynamicCategoryList(FormBuilderInterface $formBuilder) : FormBuilderInterface
     {
         $formModifier = function (FormInterface $form, Budget $budget) {
-            $form->add('category', CategoryType::class, [
-                'query_builder' => static function (CategoryRepository $categoryRepository) use ($budget) {
-                    return $categoryRepository->getNodesHierarchyQueryBuilderByBudget($budget->getId());
-                },
-            ]);
+            $form->add(
+                'category',
+                CategoryType::class,
+                [
+                    'query_builder' => static function (CategoryRepository $categoryRepository) use ($budget) {
+                        return $categoryRepository->getNodesHierarchyQueryBuilderByBudget($budget->getId());
+                    },
+                ]
+            );
         };
 
         // Add category field if budget is defined

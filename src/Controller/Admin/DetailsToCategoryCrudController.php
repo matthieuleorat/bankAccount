@@ -99,9 +99,12 @@ class DetailsToCategoryCrudController extends AbstractCrudController
             ->autocomplete();
 
         $category = AssociationField::new('category')
-            ->setFormTypeOption('query_builder', function (CategoryRepository $er) use ($budgetId) {
-                return $er->getNodesHierarchyQueryBuilderByBudget($budgetId);
-            });
+            ->setFormTypeOption(
+                'query_builder',
+                function (CategoryRepository $er) use ($budgetId) {
+                    return $er->getNodesHierarchyQueryBuilderByBudget($budgetId);
+                }
+            );
 
         $debit = ChoiceField::new('debit')
             ->setChoices(CriteriaType::AVAILABLE_FIELD)
