@@ -31,27 +31,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ImportNewStatementController extends AbstractController
 {
-    /**
-     * @var \Doctrine\Persistence\ObjectManager
-     */
     private $entityManager;
 
-    /**
-     * @var CategoryGuesser
-     */
     private $categoryGuesser;
-    /**
-     * @var AttributeExtractor
-     */
+
     private $attributeExtractor;
-    /**
-     * @var Uploader
-     */
+
     private $uploader;
-    /**
-     * @var ExpenseFactory
-     */
+
     private $expenseFactory;
+
     private string $aws_remote_path;
 
     public function __construct(
@@ -70,9 +59,12 @@ class ImportNewStatementController extends AbstractController
 
     /**
      * @Route("/import/new/statement", name="import_new_statement")
+     *
      * @param BankStatementParser $bankStatementParser
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Exception
      */
     public function index(BankStatementParser $bankStatementParser, Request $request)
@@ -90,9 +82,11 @@ class ImportNewStatementController extends AbstractController
                     $originalFilename = pathinfo($statementFile->getClientOriginalName(), PATHINFO_FILENAME);
                     // this is needed to safely include the file name as part of the URL
                     $safeFilename = transliterator_transliterate(
-                        'Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',
-                        $originalFilename
-                        ).'.'.$statementFile->getClientOriginalExtension();
+                            'Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',
+                            $originalFilename
+                        ).
+                        '.'.
+                        $statementFile->getClientOriginalExtension();
 
                     $remoteFileName = $this->uploader->execute(
                         $this->aws_remote_path,
@@ -112,14 +106,18 @@ class ImportNewStatementController extends AbstractController
 
                     $statement = $this->handleStatement($account, $plainStatement, $safeFilename, $remoteFileName);
 
-                    $transactions = array_map(function (Operation $operation) use ($statement) {
-                        return $this->transformOperationIntoTransaction($operation, $statement);
-                    }, $plainStatement->getOperations());
+                    $transactions = array_map(
+                        function (Operation $operation) use ($statement) {
+                            return $this->transformOperationIntoTransaction($operation, $statement);
+                        },
+                        $plainStatement->getOperations()
+                    );
 
                     $this->entityManager->flush();
 
                     $this->addFlash(
-                        'success', 'Le relevé a bien été importé. '.count($transactions) .' ajoutées'
+                        'success',
+                        'Le relevé a bien été importé. '.count($transactions) .' ajoutées'
                     );
                 } catch (\Exception $e) {
                     $this->addFlash('warning', $e->getMessage());
@@ -127,10 +125,13 @@ class ImportNewStatementController extends AbstractController
             }
         }
 
-        return $this->render('admin/import_new_statement/index.html.twig', [
-            'controller_name' => 'ImportNewStatementController',
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'admin/import_new_statement/index.html.twig',
+            [
+                'controller_name' => 'ImportNewStatementController',
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     private function handleStatement(
@@ -177,7 +178,6 @@ class ImportNewStatementController extends AbstractController
             $transaction = new Transaction();
             $transaction->setDate($operation->getDate());
             $transaction->setStatement($statement);
-
 
             if ($operation->isDebit()) {
                 $transaction->setDebit($operation->getMontant());
