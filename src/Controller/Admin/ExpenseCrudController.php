@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the BankAccount project.
  *
  * (c) Matthieu Leorat <matthieu.leorat@pm.me>
