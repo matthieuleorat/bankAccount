@@ -1,13 +1,26 @@
 <?php declare(strict_types=1);
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Filtering;
 
 use App\Entity\DetailsToCategory;
 use App\Entity\Expense;
 use App\Entity\Transaction;
 use App\Factories\ExpenseFactory;
+use App\Repository\TransactionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class ApplyFilter
 {
     /**
@@ -40,7 +53,10 @@ class ApplyFilter
     public function execute(DetailsToCategory $detailsToCategory) : array
     {
         $this->detailsToCategory = $detailsToCategory;
-        $transactions = $this->em->getRepository(Transaction::class)->findTransactionWithoutExpense();
+
+        /** @var TransactionRepository $transactionRepository */
+        $transactionRepository = $this->em->getRepository(Transaction::class);
+        $transactions = $transactionRepository->findTransactionWithoutExpense();
 
         $expenses = array_map([$this, 'transactionToExpense'], $transactions);
 

@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Controller\Admin;
 
 use App\Entity\Budget;
@@ -13,10 +22,15 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class DashboardController extends AbstractDashboardController
 {
     /**
      * @Route("/admin", name="admin_dashboard")
+     *
+     * @return Response
      */
     public function index(): Response
     {
@@ -25,8 +39,7 @@ class DashboardController extends AbstractDashboardController
 
     public function configureDashboard(): Dashboard
     {
-        return Dashboard::new()
-            ->setTitle('Mon Budget');
+        return Dashboard::new()->setTitle('Mon Budget');
     }
 
     public function configureCrud(): Crud

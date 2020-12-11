@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Repository;
 
 use App\Entity\Budget;
@@ -12,6 +21,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Expense|null findOneBy(array $criteria, array $orderBy = null)
  * @method Expense[]    findAll()
  * @method Expense[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class ExpenseRepository extends ServiceEntityRepository
 {
@@ -20,24 +31,12 @@ class ExpenseRepository extends ServiceEntityRepository
         parent::__construct($registry, Expense::class);
     }
 
-    public function getTotalsForCategory($category, \DateTime $startingDate, \DateTimeImmutable $endingDate)
-    {
-        return $this->createQueryBuilder('e')
-            ->select('SUM(e.debit) as totalDebit')
-            ->addSelect('SUM(e.credit) as totalCredit')
-            ->where('e.category = :val')
-            ->andWhere('e.date >= :startingDate')
-            ->andWhere('e.date <= :endingDate')
-            ->setParameter('val', $category)
-            ->setParameter('startingDate', $startingDate)
-            ->setParameter('endingDate', $endingDate)
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-    public function getTotalsForCategories(Budget $budget, array $categories, \DateTime $startingDate, \DateTime $endingDate)
-    {
+    public function getTotalsForCategories(
+        Budget $budget,
+        array $categories,
+        \DateTime $startingDate,
+        \DateTime $endingDate
+    ) {
         return $this->createQueryBuilder('e')
             ->select('SUM(e.debit) as totalDebit')
             ->addSelect('SUM(e.credit) as totalCredit')
@@ -50,7 +49,6 @@ class ExpenseRepository extends ServiceEntityRepository
             ->setParameter('endingDate', $endingDate)
             ->setParameter('budget', $budget)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 }

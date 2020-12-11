@@ -1,11 +1,23 @@
 <?php declare(strict_types=1);
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Admin\Field;
 
 use App\Form\CategoryType;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class CategoryField implements FieldInterface
 {
     use FieldTrait;
@@ -15,7 +27,6 @@ class CategoryField implements FieldInterface
         return (new self())
             ->setProperty($propertyName)
             ->setLabel($label)
-            ->setFormType(CategoryType::class)
-            ;
+            ->setFormType(CategoryType::class);
     }
 }

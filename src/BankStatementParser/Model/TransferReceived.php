@@ -1,14 +1,32 @@
 <?php declare(strict_types=1);
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace BankStatementParser\Model;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class TransferReceived extends AbstractType
 {
     const REF_SUB_PATTERN = "\nREF: ";
     const ID_SUB_PATTERN = "\nID: ";
     const REASON_SUB_PATTERN = "\nMOTIF: ";
     const NAME = 'transfer_received';
-    const PATTERN = '/^VIR(?:EMENT)?\s+RECU\s?(.*)\nDE:\s+([\s\S]*?)('.self::REASON_SUB_PATTERN.'([\s\S]*?))?('.self::REF_SUB_PATTERN.'([\s\S]*?))?('.self::ID_SUB_PATTERN.'([\s\S]*?))?$/';
+    const PATTERN = '/^VIR(?:EMENT)?\s+RECU\s?(.*)\nDE:\s+([\s\S]*?)('.
+        self::REASON_SUB_PATTERN.
+        '([\s\S]*?))?('.
+        self::REF_SUB_PATTERN.
+        '([\s\S]*?))?('.
+        self::ID_SUB_PATTERN.
+        '([\s\S]*?))?$/';
 
     /**
      * @var string
@@ -35,7 +53,9 @@ class TransferReceived extends AbstractType
      */
     private $id;
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     public static function create(array $matches) : TypeInterface
     {

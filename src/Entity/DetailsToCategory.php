@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DetailsToCategoryRepository")
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class DetailsToCategory
 {
@@ -61,7 +72,7 @@ class DetailsToCategory
 
     /**
      * @ORM\ManyToOne(targetEntity=Budget::class, inversedBy="detailsToCategories")
-     * @ORM\JoinColumn(name="budget_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="budget_id",          referencedColumnName="id", nullable=true)
      */
     private $budget;
 

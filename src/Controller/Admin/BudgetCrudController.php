@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Controller\Admin;
 
 use App\Entity\Budget;
@@ -7,6 +16,8 @@ use App\Entity\Category;
 use App\Entity\Expense;
 use App\Form\BudgetFilterType;
 use App\Form\BudgetSelectionType;
+use App\Repository\CategoryRepository;
+use App\Repository\ExpenseRepository;
 use App\Twig\BudgetExtension;
 use DateTime;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -27,12 +38,20 @@ use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use stdClass;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class BudgetCrudController extends AbstractCrudController
 {
     /**
-     * @var \Doctrine\Persistence\ObjectRepository
+     * @var CategoryRepository
      */
-    private $repo;
+    private CategoryRepository $categoryRepository;
+
+    public function __construct(CategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
 
     public static function getEntityFqcn(): string
     {
@@ -55,14 +74,22 @@ class BudgetCrudController extends AbstractCrudController
             throw new InsufficientEntityPermissionException($context);
         }
 
-        $this->container->get('session')->set(BudgetExtension::BUDGET_ID_SESSION_KEY, $context->getEntity()->getPrimaryKeyValue());
+        $this->container->get('session')->set(
+            BudgetExtension::BUDGET_ID_SESSION_KEY,
+            $context->getEntity()->getPrimaryKeyValue()
+        );
 
-        $this->get(EntityFactory::class)->processFields($context->getEntity(), FieldCollection::new($this->configureFields(Crud::PAGE_DETAIL)));
-        $this->get(EntityFactory::class)->processActions($context->getEntity(), $context->getCrud()->getActionsConfig());
+        $this->get(EntityFactory::class)->processFields(
+            $context->getEntity(),
+            FieldCollection::new($this->configureFields(Crud::PAGE_DETAIL))
+        );
+        $this->get(EntityFactory::class)->processActions(
+            $context->getEntity(),
+            $context->getCrud()->getActionsConfig()
+        );
 
-        $this->repo = $this->getDoctrine()->getRepository(Category::class);
         /** @var Category[] $categories */
-        $categories = $this->repo->getRootNodesByBudget($context->getEntity()->getPrimaryKeyValue());
+        $categories = $this->categoryRepository->getRootNodesByBudget($context->getEntity()->getPrimaryKeyValue());
 
         $startingDate = new DateTime('first day of January');
         $endingDate = new DateTime('now');
@@ -86,14 +113,18 @@ class BudgetCrudController extends AbstractCrudController
 
         $datas = $this->formatDatas($startingDate, $endingDate, $categories, $context->getEntity()->getInstance());
 
-        $responseParameters = $this->configureResponseParameters(KeyValueStore::new([
-            'pageName' => Crud::PAGE_DETAIL,
-            'templateName' => 'crud/detail',
-            'entity' => $context->getEntity(),
-            'form' => $form->createView(),
-            'datasForGraph' => $datas['datasForGraph'],
-            'datas' => $datas['datas'],
-        ]));
+        $responseParameters = $this->configureResponseParameters(
+            KeyValueStore::new(
+                [
+                    'pageName' => Crud::PAGE_DETAIL,
+                    'templateName' => 'crud/detail',
+                    'entity' => $context->getEntity(),
+                    'form' => $form->createView(),
+                    'datasForGraph' => $datas['datasForGraph'],
+                    'datas' => $datas['datas'],
+                ]
+            )
+        );
 
         $event = new AfterCrudActionEvent($context, $responseParameters);
         $this->get('event_dispatcher')->dispatch($event);
@@ -104,7 +135,7 @@ class BudgetCrudController extends AbstractCrudController
         return $responseParameters;
     }
 
-    public function selection(AdminContext $context) : RedirectResponse
+    public function selection() : RedirectResponse
     {
         $form = $this->createForm(BudgetSelectionType::class);
 
@@ -156,6 +187,8 @@ class BudgetCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$name, $expenses, $categories, $detailsToCategories];
         }
+
+        return [];
     }
 
     private function generatePeriodArray(
@@ -163,8 +196,8 @@ class BudgetCrudController extends AbstractCrudController
         DateTime $endingDate,
         string $granularity = 'monthly'
     ) : array {
-
         switch ($granularity) {
+            case 'monthly':
             default:
                 $interval = new \DateInterval('P1M');
         }
@@ -173,9 +206,11 @@ class BudgetCrudController extends AbstractCrudController
 
         $p = [];
         foreach ($period as $key => $dt) {
+            $firstDayOf = new DateTime('first day of '.$dt->format('F Y'));
+            $lastDayOf = new DateTime('last day of '.$dt->format('F Y'));
             $p[] = [
-                $key == 0 ? $startingDate : new DateTime('first day of '.$dt->format('F Y')),
-                new DateTime('last day of '.$dt->format('F Y')) > $endingDate ? $endingDate : new DateTime('last day of '.$dt->format('F Y')),
+                $key == 0 ? $startingDate : $firstDayOf,
+                $lastDayOf > $endingDate ? $endingDate : $lastDayOf,
             ];
         }
 
@@ -192,6 +227,10 @@ class BudgetCrudController extends AbstractCrudController
         $datas->totals = [];
 
         $datasForGraph = [];
+
+        /** @var ExpenseRepository $expenseRepository */
+        $expenseRepository = $this->getDoctrine()->getRepository(Expense::class);
+
         foreach ($p as $periode) {
             $obj = new stdClass();
             $obj->x = [];
@@ -207,9 +246,9 @@ class BudgetCrudController extends AbstractCrudController
 
             foreach ($categories as $i => $category) {
                 $obj->x[] = $category->getName();
-                $ids = $this->repo->getChildren($category);
+                $ids = $this->categoryRepository->getChildren($category);
                 $ids[] = $category;
-                $values = $this->getDoctrine()->getRepository(Expense::class)->getTotalsForCategories($budget, $ids, $periode[0], $periode[1])[0];
+                $values = $expenseRepository->getTotalsForCategories($budget, $ids, $periode[0], $periode[1])[0];
                 $value = $values['totalCredit'] - $values['totalDebit'];
                 if (false === array_key_exists($i, $datas->totals)) {
                     $datas->totals[$i] = 0;

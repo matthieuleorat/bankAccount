@@ -1,8 +1,16 @@
 <?php
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Controller\Admin;
 
-use App\Admin\Filter\TransactionNotFullFilledWithExpenseFilter;
 use App\Entity\Budget;
 use App\Entity\DetailsToCategory;
 use App\Filtering\ApplyFilter;
@@ -29,11 +37,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class DetailsToCategoryCrudController extends AbstractCrudController
 {
     /**
@@ -49,8 +59,11 @@ class DetailsToCategoryCrudController extends AbstractCrudController
      */
     private $applyFilter;
 
-    public function __construct(CategoryGuesser $categoryGuesser, AttributeExtractor $attributeExtractor, ApplyFilter $applyFilter)
-    {
+    public function __construct(
+        CategoryGuesser $categoryGuesser,
+        AttributeExtractor $attributeExtractor,
+        ApplyFilter $applyFilter
+    ) {
         $this->categoryGuesser = $categoryGuesser;
         $this->attributeExtractor = $attributeExtractor;
         $this->applyFilter = $applyFilter;
@@ -78,20 +91,23 @@ class DetailsToCategoryCrudController extends AbstractCrudController
         $regex = TextField::new('regex');
         $budget = AssociationField::new('budget');
         $criteria = CollectionField::new('criteria')
-            ->setFormTypeOption('allow_add',true)
-            ->setFormTypeOption('allow_delete',true)
-            ->setFormTypeOption('by_reference',false)
-            ->setFormTypeOption('entry_type','App\Form\CriteriaType')
-        ;
+            ->setFormTypeOption('allow_add', true)
+            ->setFormTypeOption('allow_delete', true)
+            ->setFormTypeOption('by_reference', false)
+            ->setFormTypeOption('entry_type', 'App\Form\CriteriaType');
+
         $panel2 = FormField::addPanel('Dépense');
         $label = ChoiceField::new('label')
             ->setChoices(CriteriaType::AVAILABLE_FIELD)
             ->autocomplete();
 
         $category = AssociationField::new('category')
-            ->setFormTypeOption('query_builder', function (CategoryRepository $er) use ($budgetId) {
-                return $er->getNodesHierarchyQueryBuilderByBudget($budgetId);
-            });
+            ->setFormTypeOption(
+                'query_builder',
+                function (CategoryRepository $er) use ($budgetId) {
+                    return $er->getNodesHierarchyQueryBuilderByBudget($budgetId);
+                }
+            );
 
         $debit = ChoiceField::new('debit')
             ->setChoices(CriteriaType::AVAILABLE_FIELD)
@@ -118,11 +134,22 @@ class DetailsToCategoryCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$panel1, $regex, $budget, $criteria, $panel2, $label, $category, $debit, $credit, $date, $comment];
         }
+
+        return [];
     }
 
-    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
-    {
-        $queryBuilder = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+    public function createIndexQueryBuilder(
+        SearchDto $searchDto,
+        EntityDto $entityDto,
+        FieldCollection $fields,
+        FilterCollection $filters
+    ): QueryBuilder {
+        $queryBuilder = $this->get(EntityRepository::class)->createQueryBuilder(
+            $searchDto,
+            $entityDto,
+            $fields,
+            $filters
+        );
 
         $session = $this->get('session');
         $budgetId = $session->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
@@ -134,8 +161,7 @@ class DetailsToCategoryCrudController extends AbstractCrudController
                     $queryBuilder->expr()->eq($rootAlias.'.budget', ':budgetId')
                 )
             )
-            ->setParameter('budgetId', $budgetId)
-        ;
+            ->setParameter('budgetId', $budgetId);
 
         return $queryBuilder;
     }
@@ -176,9 +202,7 @@ class DetailsToCategoryCrudController extends AbstractCrudController
 
     public function configureFilters(Filters $filters): Filters
     {
-        return $filters
-            ->add('budget')
-            ;
+        return $filters->add('budget');
     }
 
 

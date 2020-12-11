@@ -1,9 +1,21 @@
 <?php declare(strict_types=1);
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\AwsBucket;
 
 use Aws\S3\S3Client;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class AbstractS3Client
 {
     const AWS_VERSION = '2006-03-01';
@@ -27,13 +39,15 @@ class AbstractS3Client
 
     private function setClient()
     {
-        $this->client = new S3Client([
-            'version'  => self::AWS_VERSION,
-            'region'   => self::AWS_REGION,
-            'credentials' => [
-                'key'    => $this->aws_access_key_id,
-                'secret' => $this->aws_secret_access_key,
+        $this->client = new S3Client(
+            [
+                'version'  => self::AWS_VERSION,
+                'region'   => self::AWS_REGION,
+                'credentials' => [
+                    'key'    => $this->aws_access_key_id,
+                    'secret' => $this->aws_secret_access_key,
+                ]
             ]
-        ]);
+        );
     }
 }

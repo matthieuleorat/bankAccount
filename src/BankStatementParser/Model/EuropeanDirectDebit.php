@@ -1,7 +1,19 @@
 <?php  declare(strict_types=1);
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace BankStatementParser\Model;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class EuropeanDirectDebit extends AbstractType
 {
     const NAME = 'european_direct_debit';
@@ -21,7 +33,13 @@ class EuropeanDirectDebit extends AbstractType
     const WARRANT_KEY = "\nMANDAT\s";
     const WARRANT_SUB_PATTERN = "".self::WARRANT_KEY."(.*)";
 
-    const PATTERN = "/^PRELEVEMENT EUROPEEN\s(\d*)".self::FROM_SUB_PATTERN."".self::ID_SUB_PATTERN."".self::REASON_SUB_PATTERN."".self::REF_SUB_PATTERN."".self::WARRANT_SUB_PATTERN."$/sU";
+    const PATTERN = "/^PRELEVEMENT EUROPEEN\s(\d*)".
+        self::FROM_SUB_PATTERN.
+        self::ID_SUB_PATTERN.
+        self::REASON_SUB_PATTERN.
+        self::REF_SUB_PATTERN.
+        self::WARRANT_SUB_PATTERN.
+        "$/sU";
 
     /**
      * @var string
@@ -53,11 +71,13 @@ class EuropeanDirectDebit extends AbstractType
      */
     private $warrant;
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     public static function create(array $matches) : TypeInterface
     {
-        list (, $number, $from, $id, $reason, $ref, $warrant) = $matches;
+        list(, $number, $from, $id, $reason, $ref, $warrant) = $matches;
         $obj = new self();
         $obj->number = $number;
         $obj->from = $from;

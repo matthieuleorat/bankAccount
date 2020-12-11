@@ -1,9 +1,21 @@
 <?php declare(strict_types=1);
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace BankStatementParser\Model;
 
 use BankStatementParser\AmoutFormatter;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class HomeLoan extends AbstractType
 {
     const NAME = 'home_loan';
@@ -28,7 +40,14 @@ class HomeLoan extends AbstractType
     const EXPECTED_END_DATE_KEY = "\nDATE PREVISIONNELLE DE FIN : ";
     const EXPECTED_END_DATE_SUB_PATTERN = "(".self::EXPECTED_END_DATE_KEY."(\d{1,2}\/\d{1,2}\/\d{4}))";
 
-    const PATTERN = '/^'.self::REF_LOAN_MATURITY_SUB_PATTERN.self::DEPRECIATED_CAPITAL_SUB_PATTERN.self::INTEREST_SUB_PATTERN.self::INSURANCE_SUB_PATTERN.self::REMAINING_CAPITAL_SUB_PATTERN.self::EXPECTED_END_DATE_SUB_PATTERN.'/';
+    const PATTERN = '/^'.
+        self::REF_LOAN_MATURITY_SUB_PATTERN.
+        self::DEPRECIATED_CAPITAL_SUB_PATTERN.
+        self::INTEREST_SUB_PATTERN.
+        self::INSURANCE_SUB_PATTERN.
+        self::REMAINING_CAPITAL_SUB_PATTERN.
+        self::EXPECTED_END_DATE_SUB_PATTERN.
+        '/';
 
     /**
      * @var string
@@ -56,16 +75,21 @@ class HomeLoan extends AbstractType
     private $expectedEndDate;
 
     private function __construct()
-    {}
+    {
+    }
 
     public static function create(array $matches) : TypeInterface
     {
         $obj = new self();
         $obj->loanNumber = $matches[2];
-        $obj->depreciatedCapital = AmoutFormatter::formatFloat($obj->tryToGuess(self::DEPRECIATED_CAPITAL_KEY, $matches));
+        $obj->depreciatedCapital = AmoutFormatter::formatFloat(
+            $obj->tryToGuess(self::DEPRECIATED_CAPITAL_KEY, $matches)
+        );
         $obj->interest = AmoutFormatter::formatFloat($obj->tryToGuess(self::INTEREST_KEY, $matches));
         $obj->insurance = AmoutFormatter::formatFloat($obj->tryToGuess(self::INSURANCE_KEY, $matches));
-        $obj->remainingCapital = AmoutFormatter::formatFloat($obj->tryToGuess(self::REMAINING_CAPITAL_KEY, $matches));
+        $obj->remainingCapital = AmoutFormatter::formatFloat(
+            $obj->tryToGuess(self::REMAINING_CAPITAL_KEY, $matches)
+        );
         $obj->expectedEndDate = $obj->tryToGuess(self::EXPECTED_END_DATE_KEY, $matches);
 
         return $obj;

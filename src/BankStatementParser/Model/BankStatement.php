@@ -1,9 +1,21 @@
 <?php
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace BankStatementParser\Model;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 final class BankStatement
 {
     /**
@@ -63,8 +75,13 @@ final class BankStatement
         return $obj;
     }
 
-    public function setMetaInformations(string $dateBegin, string $dateEnd, string $accountNumber, float $soldePrecedent, float $nouveauSolde)
-    {
+    public function setMetaInformations(
+        string $dateBegin,
+        string $dateEnd,
+        string $accountNumber,
+        float $soldePrecedent,
+        float $nouveauSolde
+    ) : void {
         $this->dateBegin = $dateBegin;
         $this->dateEnd = $dateEnd;
         $this->accountNumber = $accountNumber;
@@ -78,81 +95,51 @@ final class BankStatement
         $this->debit = $dedit;
     }
 
-    /**
-     * @param Operation[] $operations
-     */
     public function setOperations(array $operations) : void
     {
         $this->operations = $operations;
     }
 
-    /**
-     * @return Operation[]
-     */
     public function getOperations() : array
     {
         return $this->operations;
     }
 
-    /**
-     * @return float
-     */
     public function getDebit(): float
     {
         return $this->debit;
     }
 
-    /**
-     * @return float
-     */
     public function getCredit(): float
     {
         return $this->credit;
     }
 
-    /**
-     * @return string
-     */
     public function getFilename(): string
     {
         return $this->filename;
     }
 
-    /**
-     * @return string
-     */
     public function getAccountNumber(): string
     {
         return $this->accountNumber;
     }
 
-    /**
-     * @return string
-     */
     public function getDateBegin(): string
     {
         return $this->dateBegin;
     }
 
-    /**
-     * @return string
-     */
     public function getDateEnd(): string
     {
         return $this->dateEnd;
     }
 
-    /**
-     * @return float
-     */
     public function getSoldePrecedent(): float
     {
         return $this->soldePrecedent;
     }
 
-    /**
-     * @return float
-     */
     public function getNouveauSolde(): float
     {
         return $this->nouveauSolde;

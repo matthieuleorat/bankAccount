@@ -1,10 +1,22 @@
 <?php declare(strict_types=1);
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace BankStatementParser;
 
 use BankStatementParser\Model\BankStatement;
 use BankStatementParser\Model\Operation;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class BankStatementParser
 {
     /**
@@ -168,7 +180,6 @@ class BankStatementParser
                 }
 
                 $operations[] = $operation;
-
             }
         }
 
@@ -189,7 +200,8 @@ class BankStatementParser
 
     private function findDateRange(string $row) : bool
     {
-        preg_match('/VOS CONTACTS\s+du (\d{1,2}\/\d{1,2}\/\d{4}) au (\d{1,2}\/\d{1,2}\/\d{4})$/', $row, $matches);
+        $pattern = '/VOS CONTACTS\s+du (\d{1,2}\/\d{1,2}\/\d{4}) au (\d{1,2}\/\d{1,2}\/\d{4})$/';
+        preg_match($pattern, $row, $matches);
         if (count($matches)) {
             $this->dateBegin = $matches[1];
             $this->dateEnd = $matches[2];
@@ -238,7 +250,8 @@ class BankStatementParser
 
     private function findNewSolde(string $row) : bool
     {
-        preg_match('/\s+NOUVEAU SOLDE AU \d{1,2}\/\d{1,2}\/\d{4}\s+(\+|-) ((\d{1,3}\.)?\d{1,3},\d{2})$/', $row, $matches);
+        $pattern = '/\s+NOUVEAU SOLDE AU \d{1,2}\/\d{1,2}\/\d{4}\s+(\+|-) ((\d{1,3}\.)?\d{1,3},\d{2})$/';
+        preg_match($pattern, $row, $matches);
         if (count($matches)) {
             $this->nouveauSolde = static::formatAmount($matches[2]);
 
@@ -250,7 +263,8 @@ class BankStatementParser
 
     private function findPreviousSolde(string $row) : bool
     {
-        preg_match('/\s+SOLDE PRÉCÉDENT AU \d{1,2}\/\d{1,2}\/\d{4}\s+((\d{1,3}\.)?\d{1,3},\d{2})$/', $row, $matches);
+        $pattern = '/\s+SOLDE PRÉCÉDENT AU \d{1,2}\/\d{1,2}\/\d{4}\s+((\d{1,3}\.)?\d{1,3},\d{2})$/';
+        preg_match($pattern, $row, $matches);
         if (count($matches)) {
             $this->soldePrecedent = static::formatAmount($matches[1]);
 

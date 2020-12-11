@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Controller\Admin;
 
 use App\Entity\Budget;
@@ -22,12 +31,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
-use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class CategoryCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
@@ -40,22 +51,23 @@ class CategoryCrudController extends AbstractCrudController
         return $crud
             ->setSearchFields(['id', 'name'])
             ->overrideTemplate('crud/index', 'admin/category/list.html.twig')
-            ->addFormTheme('admin/field/category.html.twig')
-        ;
+            ->addFormTheme('admin/field/category.html.twig');
     }
 
     public function configureFilters(Filters $filters): Filters
     {
-        return $filters
-            ->add('budget')
-            ;
+        return $filters->add('budget');
     }
 
     public function configureFields(string $pageName): iterable
-    {   $budget = null;
+    {
+        $budget = null;
         $name = TextField::new('name', 'category.name.label');
         $parent = AssociationField::new('parent', 'category.parent.label');
-        $budget = AssociationField::new('budget', 'category.budget.label')->setFormTypeOption('disabled','disabled');
+        $budget = AssociationField::new('budget', 'category.budget.label')->setFormTypeOption(
+            'disabled',
+            'disabled'
+        );
         $id = IntegerField::new('id', 'ID');
         $lft = IntegerField::new('lft');
         $lvl = IntegerField::new('lvl');
@@ -74,11 +86,22 @@ class CategoryCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$name, $parent, $budget];
         }
+
+        return [];
     }
 
-    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
-    {
-        $queryBuilder = $this->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+    public function createIndexQueryBuilder(
+        SearchDto $searchDto,
+        EntityDto $entityDto,
+        FieldCollection $fields,
+        FilterCollection $filters
+    ): QueryBuilder {
+        $queryBuilder = $this->get(EntityRepository::class)->createQueryBuilder(
+            $searchDto,
+            $entityDto,
+            $fields,
+            $filters
+        );
 
         $session = $this->get('session');
         $budgetId = $session->get(BudgetExtension::BUDGET_ID_SESSION_KEY);
@@ -90,21 +113,26 @@ class CategoryCrudController extends AbstractCrudController
                     $queryBuilder->expr()->eq($rootAlias.'.budget', ':budgetId')
                 )
             )
-            ->setParameter('budgetId', $budgetId)
-        ;
+            ->setParameter('budgetId', $budgetId);
 
         return $queryBuilder;
     }
 
-    public function createNewFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface
-    {
+    public function createNewFormBuilder(
+        EntityDto $entityDto,
+        KeyValueStore $formOptions,
+        AdminContext $context
+    ): FormBuilderInterface {
         $formBuilder = $this->get(FormFactory::class)->createNewFormBuilder($entityDto, $formOptions, $context);
 
         return $this->setDynamicCategoryList($formBuilder);
     }
 
-    public function createEditFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface
-    {
+    public function createEditFormBuilder(
+        EntityDto $entityDto,
+        KeyValueStore $formOptions,
+        AdminContext $context
+    ): FormBuilderInterface {
         $formBuilder = $this->get(FormFactory::class)->createEditFormBuilder($entityDto, $formOptions, $context);
 
         return $this->setDynamicCategoryList($formBuilder);
@@ -113,22 +141,29 @@ class CategoryCrudController extends AbstractCrudController
     private function setDynamicCategoryList(FormBuilderInterface $formBuilder) : FormBuilderInterface
     {
         $formModifier = function (FormInterface $form, Budget $budget) {
-            $form->add('parent', CategoryType::class, [
-                'query_builder' => static function (NestedTreeRepository $er) use ($budget) {
-                    return $er->getNodesHierarchyQueryBuilderByBudget($budget->getId());
-                },
-                'required' => false,
-            ]);
+            $form->add(
+                'parent',
+                CategoryType::class,
+                [
+                    'query_builder' => static function (CategoryRepository $categoryRepository) use ($budget) {
+                        return $categoryRepository->getNodesHierarchyQueryBuilderByBudget($budget->getId());
+                    },
+                    'required' => false,
+                ]
+            );
         };
 
         // Add category field if budget is defined
-        $formBuilder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier) {
-            $form = $event->getForm();
-            $expense = $event->getData();
-            if ($expense->getBudget() instanceof Budget) {
-                $formModifier($form, $expense->getBudget());
+        $formBuilder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formModifier) {
+                $form = $event->getForm();
+                $expense = $event->getData();
+                if ($expense->getBudget() instanceof Budget) {
+                    $formModifier($form, $expense->getBudget());
+                }
             }
-        });
+        );
 
         $formBuilder->get('budget')->addEventListener(
             FormEvents::POST_SUBMIT,

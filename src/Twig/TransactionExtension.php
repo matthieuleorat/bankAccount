@@ -1,10 +1,22 @@
 <?php
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class TransactionExtension extends AbstractExtension
 {
     public function getFilters(): array
@@ -25,7 +37,7 @@ class TransactionExtension extends AbstractExtension
         $reflect = new \ReflectionClass($value);
         $props   = $reflect->getProperties();
         $datas = [];
-        foreach($props as $prop) {
+        foreach ($props as $prop) {
             $data = $value->{'get'.ucfirst($prop->getName())}();
             if ($data instanceof \DateTimeImmutable) {
                 $data = $data->format('d/m/Y');
@@ -34,6 +46,6 @@ class TransactionExtension extends AbstractExtension
             $datas[] = ucfirst($prop->getName()).': '.$data;
         }
 
-        return implode("\n",$datas);
+        return implode("\n", $datas);
     }
 }

@@ -46,5 +46,11 @@ her_bash:
 her_logs:
 	heroku logs --tail --app ${HEROKU_APP_NAME}
 
-run_test:
+phpunit:
 	 docker-compose exec -u www-data php  ./vendor/bin/simple-phpunit  --coverage-html='/var/www/html/report'
+
+cs-fixer:
+	 docker run --user $(id -u):$(id -g) --rm -v ${PWD}:/data cytopia/php-cs-fixer fix  ./src
+
+phpcs:
+	docker run --rm -v ${PWD}:/data cytopia/phpcs ./src -n -p -s

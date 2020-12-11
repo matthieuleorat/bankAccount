@@ -1,5 +1,14 @@
 <?php declare(strict_types=1);
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Admin\Filter;
 
 use App\Form\Filter\TransactionNotFullFilledWithExpenseFilterType;
@@ -10,6 +19,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\FilterDataDto;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\FilterTrait;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class TransactionNotFullFilledWithExpenseFilter implements FilterInterface
 {
     use FilterTrait;
@@ -23,15 +35,17 @@ class TransactionNotFullFilledWithExpenseFilter implements FilterInterface
             ->setFormType(TransactionNotFullFilledWithExpenseFilterType::class);
     }
 
-    public function apply(QueryBuilder $queryBuilder, FilterDataDto $filterDataDto, ?FieldDto $fieldDto, EntityDto $entityDto): void
-    {
+    public function apply(
+        QueryBuilder $queryBuilder,
+        FilterDataDto $filterDataDto,
+        ?FieldDto $fieldDto,
+        EntityDto $entityDto
+    ): void {
         if (true === $filterDataDto->getValue()) {
             $queryBuilder
                 ->andwhere(
-                        sprintf('%s.%s', $filterDataDto->getEntityAlias(), $filterDataDto->getProperty()).' is empty'
-
-                )
-            ;
+                    sprintf('%s.%s', $filterDataDto->getEntityAlias(), $filterDataDto->getProperty()).' is empty'
+                );
         }
     }
 }

@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Repository;
 
 use App\Entity\Expense;
@@ -12,6 +21,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Transaction|null findOneBy(array $criteria, array $orderBy = null)
  * @method Transaction[]    findAll()
  * @method Transaction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class TransactionRepository extends ServiceEntityRepository
 {
@@ -28,7 +39,7 @@ class TransactionRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('sdf');
 
         return $this->createQueryBuilder('t')
-            ->leftJoin(Expense::class,"e", 'with','t.id = e.transaction')
+            ->leftJoin(Expense::class, "e", 'with', 't.id = e.transaction')
             ->groupBy('t.id')
             ->having(
                 $qb->expr()->orX(
@@ -44,7 +55,6 @@ class TransactionRepository extends ServiceEntityRepository
             )
             // TODO Remove ignored transactions
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 }

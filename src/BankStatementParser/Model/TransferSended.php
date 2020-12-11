@@ -1,7 +1,19 @@
 <?php declare(strict_types=1);
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace BankStatementParser\Model;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class TransferSended extends AbstractType
 {
     /**
@@ -27,7 +39,13 @@ class TransferSended extends AbstractType
     const TO_KEY = "\nCHEZ: ";
     const TO_SUB_PATTERN = "(".self::TO_KEY."(.*))?";
 
-    const PATTERN = '/^(\d+)\sVIR EUROPEEN EMIS LOGITEL'.self::FOR_SUB_PATTERN.'(\d{2} \d{2})?\sSG\s(\d+)\sCPT\s(\d+)'.self::REF_SUB_PATTERN.''.self::REASON_SUB_PATTERN.''.self::TO_SUB_PATTERN.'/';
+    const PATTERN = '/^(\d+)\sVIR EUROPEEN EMIS LOGITEL'.
+        self::FOR_SUB_PATTERN.
+        '(\d{2} \d{2})?\sSG\s(\d+)\sCPT\s(\d+)'.
+        self::REF_SUB_PATTERN.''.
+        self::REASON_SUB_PATTERN.
+        self::TO_SUB_PATTERN.
+        '/';
 
     /**
      * @var string
@@ -59,7 +77,8 @@ class TransferSended extends AbstractType
     private $to;
 
     private function __construct()
-    {}
+    {
+    }
 
     public static function create(array $matches) : TypeInterface
     {

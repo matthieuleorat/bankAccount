@@ -1,9 +1,21 @@
 <?php declare(strict_types=1);
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace BankStatementParser\Model;
 
 use BankStatementParser\AmoutFormatter;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class Operation
 {
     private const DATE_STARTING_POSITION = 0;
@@ -68,7 +80,6 @@ class Operation
     public function isDebit() : bool
     {
         if ($this->positionMontant < $this->creditPosition) {
-
             return true;
         }
 
@@ -78,7 +89,6 @@ class Operation
     public function isCredit() : bool
     {
         if ($this->positionMontant < $this->creditPosition) {
-
             return false;
         }
 
@@ -109,7 +119,8 @@ class Operation
         );
 
         if (false === empty($date) && preg_match('#^\d{2}/\d{2}/\d{4}$#', $date)) {
-            $this->date = (\DateTimeImmutable::createFromFormat('d/m/Y', $date))->setTime(0,0,0);
+            $this->date = (\DateTimeImmutable::createFromFormat('d/m/Y', $date))
+                ->setTime(0, 0, 0);
         }
     }
 
@@ -122,7 +133,8 @@ class Operation
         );
 
         if (false === empty($valeur)) {
-            $this->valeur = (\DateTimeImmutable::createFromFormat('d/m/Y', $valeur))->setTime(0, 0, 0);
+            $this->valeur = (\DateTimeImmutable::createFromFormat('d/m/Y', $valeur))
+                ->setTime(0, 0, 0);
         }
     }
 

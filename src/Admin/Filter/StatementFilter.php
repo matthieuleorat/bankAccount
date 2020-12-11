@@ -1,5 +1,14 @@
 <?php declare(strict_types=1);
 
+/**
+ * This file is part of the BankAccount project.
+ *
+ * (c) Matthieu Leorat <matthieu.leorat@pm.me>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Admin\Filter;
 
 use Doctrine\ORM\Query\Expr\Orx;
@@ -12,6 +21,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\FilterTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\EntityFilterType;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Type\ComparisonType;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class StatementFilter implements FilterInterface
 {
     use FilterTrait;
@@ -23,12 +35,15 @@ class StatementFilter implements FilterInterface
             ->setProperty($propertyName)
             ->setLabel($label)
             ->setFormType(EntityFilterType::class)
-            ->setFormTypeOption('translation_domain', 'EasyAdminBundle')
-        ;
+            ->setFormTypeOption('translation_domain', 'EasyAdminBundle');
     }
 
-    public function apply(QueryBuilder $queryBuilder, FilterDataDto $filterDataDto, ?FieldDto $fieldDto, EntityDto $entityDto): void
-    {
+    public function apply(
+        QueryBuilder $queryBuilder,
+        FilterDataDto $filterDataDto,
+        ?FieldDto $fieldDto,
+        EntityDto $entityDto
+    ): void {
         $alias = $filterDataDto->getEntityAlias();
         $property = $filterDataDto->getProperty();
         $comparison = $filterDataDto->getComparison();
