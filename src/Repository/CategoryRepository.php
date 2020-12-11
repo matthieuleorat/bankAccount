@@ -22,6 +22,8 @@ use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
  * @method Category|null findOneBy(array $criteria, array $orderBy = null)
  * @method Category[]    findAll()
  * @method Category[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class CategoryRepository extends NestedTreeRepository
 {

@@ -38,6 +38,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use stdClass;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class BudgetCrudController extends AbstractCrudController
 {
     /**

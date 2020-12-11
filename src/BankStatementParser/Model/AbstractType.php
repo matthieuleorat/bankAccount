@@ -11,6 +11,9 @@
 
 namespace BankStatementParser\Model;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 abstract class AbstractType implements TypeInterface
 {
     const PATTERN = 'SHOULD BE IMPLEMENTED BY CHILD CLASS';

@@ -16,10 +16,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-// @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
 /**
  * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class Category
 {

@@ -41,6 +41,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class DetailsToCategoryCrudController extends AbstractCrudController
 {
     /**

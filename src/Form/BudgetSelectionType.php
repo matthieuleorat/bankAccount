@@ -18,6 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class BudgetSelectionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options) : void

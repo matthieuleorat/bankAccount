@@ -15,6 +15,9 @@ use App\Entity\DetailsToCategory;
 use App\Entity\Criteria;
 use App\Entity\Transaction;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class CategoryGuesser
 {
     /**

@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class SecurityController extends AbstractController
 {
     /**

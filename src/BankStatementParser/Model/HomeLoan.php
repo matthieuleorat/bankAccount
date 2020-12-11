@@ -13,6 +13,9 @@ namespace BankStatementParser\Model;
 
 use BankStatementParser\AmoutFormatter;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class HomeLoan extends AbstractType
 {
     const NAME = 'home_loan';

@@ -16,6 +16,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class CategoryWithChildrenFilterType extends AbstractType
 {
     public function getParent() : string

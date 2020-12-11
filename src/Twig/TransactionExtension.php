@@ -14,6 +14,9 @@ namespace App\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class TransactionExtension extends AbstractExtension
 {
     public function getFilters(): array

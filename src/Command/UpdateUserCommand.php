@@ -22,6 +22,9 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class UpdateUserCommand extends Command
 {
     protected static $defaultName = 'app:update-user';

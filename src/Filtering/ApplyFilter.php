@@ -18,6 +18,9 @@ use App\Factories\ExpenseFactory;
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class ApplyFilter
 {
     /**

@@ -18,6 +18,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class ImportStatementType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options) : void

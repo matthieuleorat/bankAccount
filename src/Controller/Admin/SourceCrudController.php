@@ -18,6 +18,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class SourceCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

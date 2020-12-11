@@ -11,6 +11,9 @@
 
 namespace BankStatementParser\Model;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class TransferReceived extends AbstractType
 {
     const REF_SUB_PATTERN = "\nREF: ";

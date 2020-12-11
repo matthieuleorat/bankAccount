@@ -43,6 +43,9 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class ExpenseCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

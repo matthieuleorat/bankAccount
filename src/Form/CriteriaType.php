@@ -18,6 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class CriteriaType extends AbstractType
 {
     public const STATEMENT_DETAILS_FIELD = 'details';

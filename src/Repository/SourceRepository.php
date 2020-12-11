@@ -20,6 +20,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Source|null findOneBy(array $criteria, array $orderBy = null)
  * @method Source[]    findAll()
  * @method Source[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class SourceRepository extends ServiceEntityRepository
 {
@@ -27,33 +29,4 @@ class SourceRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Source::class);
     }
-
-    // /**
-    //  * @return Account[] Returns an array of Account objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Account
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -17,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StatementRepository")
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class Statement
 {

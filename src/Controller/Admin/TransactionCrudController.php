@@ -30,6 +30,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class TransactionCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

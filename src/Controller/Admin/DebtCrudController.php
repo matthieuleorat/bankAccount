@@ -21,6 +21,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class DebtCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

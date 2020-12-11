@@ -15,6 +15,9 @@ use App\Form\CategoryType;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class CategoryField implements FieldInterface
 {
     use FieldTrait;

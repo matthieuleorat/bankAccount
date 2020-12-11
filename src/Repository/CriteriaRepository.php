@@ -20,6 +20,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Criteria|null findOneBy(array $criteria, array $orderBy = null)
  * @method Criteria[]    findAll()
  * @method Criteria[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class CriteriaRepository extends ServiceEntityRepository
 {

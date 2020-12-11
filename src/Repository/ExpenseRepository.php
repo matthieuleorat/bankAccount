@@ -21,6 +21,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Expense|null findOneBy(array $criteria, array $orderBy = null)
  * @method Expense[]    findAll()
  * @method Expense[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class ExpenseRepository extends ServiceEntityRepository
 {

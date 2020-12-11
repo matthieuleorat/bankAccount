@@ -22,6 +22,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\FilterDataDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\FilterDto;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class CategoryConfigurator implements FilterConfiguratorInterface
 {
     public $categoryRepository;

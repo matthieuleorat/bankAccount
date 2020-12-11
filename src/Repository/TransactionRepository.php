@@ -21,6 +21,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Transaction|null findOneBy(array $criteria, array $orderBy = null)
  * @method Transaction[]    findAll()
  * @method Transaction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class TransactionRepository extends ServiceEntityRepository
 {

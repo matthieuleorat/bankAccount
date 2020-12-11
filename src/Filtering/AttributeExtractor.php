@@ -11,6 +11,9 @@
 
 namespace App\Filtering;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class AttributeExtractor
 {
     /**

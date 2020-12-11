@@ -21,6 +21,8 @@ use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
  * Class FixPostgreSQLDefaultSchemaListener
  *
  * Fix a bug with doctrine migration: https://gist.github.com/vudaltsov/ec01012d3fe27c9eed59aa7fd9089cf7
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 final class FixPostgreSQLDefaultSchemaListener
 {

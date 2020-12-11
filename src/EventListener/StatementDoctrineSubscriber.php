@@ -17,6 +17,9 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class StatementDoctrineSubscriber implements EventSubscriber
 {
     /**

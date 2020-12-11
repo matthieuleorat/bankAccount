@@ -13,6 +13,9 @@ namespace BankStatementParser\Model;
 
 use BankStatementParser\AmoutFormatter;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class Operation
 {
     private const DATE_STARTING_POSITION = 0;

@@ -20,6 +20,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Debt|null findOneBy(array $criteria, array $orderBy = null)
  * @method Debt[]    findAll()
  * @method Debt[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class DebtRepository extends ServiceEntityRepository
 {

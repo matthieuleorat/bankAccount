@@ -19,6 +19,9 @@ use App\Entity\Statement;
 use App\Entity\Transaction;
 use App\Filtering\AttributeExtractor;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class ExpenseFactory
 {
     /**

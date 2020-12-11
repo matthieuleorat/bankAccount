@@ -11,6 +11,9 @@
 
 namespace BankStatementParser\Model;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class CreditCardPayment extends AbstractType
 {
     const NAME = 'credit_card_payement';

@@ -9,11 +9,13 @@
  * file that was distributed with this source code.
  */
 
-
 declare(strict_types=1);
 
 namespace BankStatementParser\Model;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 final class BankStatement
 {
     /**

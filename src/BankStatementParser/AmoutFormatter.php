@@ -11,6 +11,9 @@
 
 namespace BankStatementParser;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class AmoutFormatter
 {
     public static function formatFloat($amout) : float

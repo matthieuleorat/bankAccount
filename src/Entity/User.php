@@ -19,6 +19,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="app_user")
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class User implements UserInterface
 {

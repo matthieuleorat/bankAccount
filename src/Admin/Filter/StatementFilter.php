@@ -21,6 +21,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\FilterTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\EntityFilterType;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Type\ComparisonType;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class StatementFilter implements FilterInterface
 {
     use FilterTrait;

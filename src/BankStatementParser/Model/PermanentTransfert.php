@@ -11,6 +11,9 @@
 
 namespace BankStatementParser\Model;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class PermanentTransfert extends AbstractType
 {
     const NAME = 'permanent_transfert';

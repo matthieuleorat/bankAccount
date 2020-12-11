@@ -15,6 +15,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class ObjectType implements FieldInterface
 {
     use FieldTrait;

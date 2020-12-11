@@ -20,6 +20,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Budget|null findOneBy(array $criteria, array $orderBy = null)
  * @method Budget[]    findAll()
  * @method Budget[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class BudgetRepository extends ServiceEntityRepository
 {
@@ -27,33 +29,4 @@ class BudgetRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Budget::class);
     }
-
-    // /**
-    //  * @return Budget[] Returns an array of Budget objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Budget
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

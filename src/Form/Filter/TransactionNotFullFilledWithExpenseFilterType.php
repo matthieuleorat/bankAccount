@@ -15,6 +15,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\BooleanFilterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class TransactionNotFullFilledWithExpenseFilterType extends AbstractType
 {
     public function getParent() : string

@@ -22,6 +22,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class DashboardController extends AbstractDashboardController
 {
     /**

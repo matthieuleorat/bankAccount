@@ -19,6 +19,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class BudgetExtension extends AbstractExtension
 {
     const BUDGET_ID_SESSION_KEY = 'budget_id';

@@ -11,6 +11,9 @@
 
 namespace App\AwsBucket;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class Uploader extends AbstractS3Client
 {
     public function __construct(string $s3_bucket_name, string $aws_access_key_id, string $aws_secret_access_key)

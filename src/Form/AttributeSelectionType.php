@@ -15,6 +15,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class AttributeSelectionType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver) : void

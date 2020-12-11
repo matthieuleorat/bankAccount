@@ -19,6 +19,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\FilterDto;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class StatementConfigurator implements FilterConfiguratorInterface
 {
     public function supports(

@@ -13,6 +13,9 @@ namespace App\AwsBucket;
 
 use Aws\S3\S3Client;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class AbstractS3Client
 {
     const AWS_VERSION = '2006-03-01';

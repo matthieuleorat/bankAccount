@@ -16,6 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  *
  * @ORM\Entity(repositoryClass="App\Repository\CriteriaRepository")
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class Criteria
 {

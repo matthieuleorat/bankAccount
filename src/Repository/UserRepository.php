@@ -23,6 +23,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {

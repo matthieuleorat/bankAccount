@@ -14,6 +14,9 @@ namespace BankStatementParser;
 use BankStatementParser\Model\BankStatement;
 use BankStatementParser\Model\Operation;
 
+/**
+ * @author Matthieu Leorat <matthieu.leorat@pm.me>
+ */
 class BankStatementParser
 {
     /**
