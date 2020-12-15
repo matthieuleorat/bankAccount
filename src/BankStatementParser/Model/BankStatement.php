@@ -31,12 +31,12 @@ final class BankStatement
     /**
      * @var float
      */
-    private $debit;
+    private $debit = 0;
 
     /**
      * @var float
      */
-    private $credit;
+    private $credit = 0;
 
     /**
      * @var string
