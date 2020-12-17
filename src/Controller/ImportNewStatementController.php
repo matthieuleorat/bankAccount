@@ -12,7 +12,6 @@
 namespace App\Controller;
 
 use App\Entity\Budget;
-use App\AwsBucket\Uploader;
 use App\Factories\ExpenseFactory;
 use App\Filtering\AttributeExtractor;
 use App\Filtering\CategoryGuesser;
@@ -40,24 +39,16 @@ class ImportNewStatementController extends AbstractController
 
     private $attributeExtractor;
 
-    private $uploader;
-
     private $expenseFactory;
-
-    private string $aws_remote_path;
 
     public function __construct(
         CategoryGuesser $categoryGuesser,
         AttributeExtractor $attributeExtractor,
-        Uploader $uploader,
-        ExpenseFactory $expenseFactory,
-        string $aws_remote_path
+        ExpenseFactory $expenseFactory
     ) {
         $this->categoryGuesser = $categoryGuesser;
         $this->attributeExtractor = $attributeExtractor;
-        $this->uploader = $uploader;
         $this->expenseFactory = $expenseFactory;
-        $this->aws_remote_path = $aws_remote_path;
     }
 
     /**
@@ -90,12 +81,6 @@ class ImportNewStatementController extends AbstractController
                     );
                     $safeFilename .= '.'.$statementFile->getClientOriginalExtension();
 
-                    $remoteFileName = $this->uploader->execute(
-                        $this->aws_remote_path,
-                        $statementFile->getClientOriginalExtension(),
-                        $statementFile->getpath().'/'.$statementFile->getFilename()
-                    );
-
                     /** @var BankStatement $plainStatement */
                     $plainStatement = $bankStatementParser->execute(
                         $statementFile->getFilename(),
@@ -106,7 +91,7 @@ class ImportNewStatementController extends AbstractController
 
                     $account = $this->handleAccount($plainStatement->getAccountNumber());
 
-                    $statement = $this->handleStatement($account, $plainStatement, $safeFilename, $remoteFileName);
+                    $statement = $this->handleStatement($account, $plainStatement, $safeFilename);
 
                     $transactions = array_map(
                         function (Operation $operation) use ($statement) {
@@ -139,8 +124,7 @@ class ImportNewStatementController extends AbstractController
     private function handleStatement(
         Source $account,
         BankStatement $bankStatement,
-        string $filename,
-        string $remoteFileName
+        string $filename
     ) : Statement {
         $statement = $this->entityManager->getRepository(Statement::class)->findOneBy(['name' => $filename]);
 
@@ -159,7 +143,6 @@ class ImportNewStatementController extends AbstractController
         $statement->setEndingDate(\DateTimeImmutable::createFromFormat('d/m/Y', $bankStatement->getDateEnd()));
         $statement->setStartingBalance($bankStatement->getSoldePrecedent());
         $statement->setEndingBalance($bankStatement->getNouveauSolde());
-        $statement->setRemoteFile($remoteFileName);
         $this->entityManager->persist($statement);
 
         return $statement;
