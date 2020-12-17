@@ -8,12 +8,17 @@
  * file that was distributed with this source code.
  */
 
-namespace App\BankStatementParser\Application;
+namespace App\BankStatementParser\Domain\SocieteGenerale;
+
+use BankStatementParser\PdfReader;
 
 /**
  * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
-class Statement implements StatementInterface
+class SocieteGeneraleParser
 {
+    public function read(string $filename, string $path)
+    {
 
+    }
 }

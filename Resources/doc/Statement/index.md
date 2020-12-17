@@ -1,7 +1,7 @@
 # Statement
 
-![Schema d'application du design pattern Factory Method][StatementDesignApplication]
-![Schema d'application du design pattern Factory Method][StatementDesignTheory]
+## Create a new Statement
+To create a new statement, we follow the design pattern "Factory Method"
 
-[StatementDesignApplication]: ./../../assets/StatementDesignApplication.png "Schema d'application du design pattern Factory Method"
-[StatementDesignTheory]: ./../../assets/StatementDesignTheory.png "Schema théorique du design pattern Factory Method"
+![Design pattern Factory Method - Theorical schema](./../../assets/StatementDesignApplication.png)
+![Design pattern Factory Method - Application](./../../assets/StatementDesignTheory.png)

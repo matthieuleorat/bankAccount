@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of the BankAccount project.
  *
@@ -8,12 +8,17 @@
  * file that was distributed with this source code.
  */
 
-namespace App\BankStatementParser\Application;
+namespace App\BankStatementParser\Domain\SocieteGenerale;
+
+use DateTimeImmutable;
 
 /**
  * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
-interface StatementInterface
+class OperationCurrentAccount1
 {
-
+    private DateTimeImmutable $valeur;
+    private DateTimeImmutable $date;
+    private string $details;
+    private float $montant;
 }

@@ -8,14 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace App\BankStatementParser\Application\SocieteGenerale;
+namespace App\BankStatementParser\Domain\SocieteGenerale;
 
+use App\BankStatementParser\Domain\StatementInterface;
 use \DateTimeImmutable;
 
 /**
  * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
-class CurrentAccount1 implements SgStatementInterface
+class CurrentAccount1 implements StatementInterface
 {
     private \DateTimeImmutable $startingDate;
     private \DateTimeImmutable $endingDate;
