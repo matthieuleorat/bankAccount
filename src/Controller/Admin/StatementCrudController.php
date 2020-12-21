@@ -39,7 +39,7 @@ class StatementCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Statement')
             ->setEntityLabelInPlural('Statement')
             ->setSearchFields(
-                ['id', 'name', 'startingBalance', 'endingBalance', 'TotalDebit', 'totalCredit', 'remoteFile']
+                ['id', 'name', 'startingBalance', 'endingBalance', 'TotalDebit', 'totalCredit']
             );
     }
 
@@ -52,7 +52,6 @@ class StatementCrudController extends AbstractCrudController
         $endingBalance = NumberField::new('endingBalance');
         $totalDebit = NumberField::new('TotalDebit');
         $totalCredit = NumberField::new('totalCredit');
-        $remoteFile = TextField::new('remoteFile');
         $source = AssociationField::new('source');
         $transactions = AssociationField::new('transactions');
         $id = IntegerField::new('id', 'ID');
@@ -68,7 +67,6 @@ class StatementCrudController extends AbstractCrudController
                 $endingBalance,
                 $totalDebit,
                 $totalCredit,
-                $remoteFile,
                 $source,
                 $transactions
             ];
@@ -81,7 +79,6 @@ class StatementCrudController extends AbstractCrudController
                 $endingBalance,
                 $totalDebit,
                 $totalCredit,
-                $remoteFile,
                 $source,
                 $transactions
             ];
@@ -94,7 +91,6 @@ class StatementCrudController extends AbstractCrudController
                 $endingBalance,
                 $totalDebit,
                 $totalCredit,
-                $remoteFile,
                 $source,
                 $transactions
             ];
