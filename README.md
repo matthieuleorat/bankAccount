@@ -1,3 +1,4 @@
+![CI](https://github.com/matthieuleorat/bankAccount/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/matthieuleorat/bankAccount/branch/master/graph/badge.svg?token=8WLNNUR8X2)](https://codecov.io/gh/matthieuleorat/bankAccount)
 [![PHPStan](https://img.shields.io/badge/PHPStan-Level%205-brightgreen.svg?style=flat&logo=php)](https://shields.io/#/)
 # Mon budget

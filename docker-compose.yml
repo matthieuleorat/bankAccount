@@ -1,17 +1,6 @@
 version: "3.4"
 
 services:
-
-  mysql:
-    image: mysql:5.7
-    ports:
-      - ${DOCKER_MYSQL_PORT}:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    volumes:
-      - ${MYSQL_HOST_VOLUME_PATH}:/var/lib/mysql
-      - ./backups:/backups
-
   postgre:
     image: postgres:12.2
     restart: always
@@ -32,15 +21,7 @@ services:
       - ${DOCKER_MOUNT_POINT}:/var/www/html:rw,delegated
       - ./.composer:/var/www/.composer
       - ./docker/php-ubuntu-7.4/7.4/entrypoint.sh:/var/www/entrypoint.sh
-      # Avoid heavy I/O workloads on bind-mounted volumes
-#      - /var/www/html/var/cache
-#      - /var/www/html/var/log
-      # Custom configuration
-      #- ./docker/php/conf.d/custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
-      # SSH keys
-      - ~/.ssh:/root/.ssh:ro
     tty: true
-
     env_file:
       - .env
     entrypoint: /var/www/entrypoint.sh
@@ -49,7 +30,6 @@ services:
     build: docker/nginx
     ports:
       - ${DOCKER_NGINX_HTTPS_PORT}:443
-     # - 80:80
     volumes:
       - ${DOCKER_MOUNT_POINT}:/var/www/html:rw,delegated
       - ./docker/nginx/conf.d/symfony.conf:/etc/nginx/conf.d/symfony.conf:ro
@@ -58,25 +38,3 @@ services:
     tty: true
     links:
       - php
-
-
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-    volumes:
-      - ${POSTGRE_HOST_VOLUME_PATH}:/root/.pgadmin
-    ports:
-      - "5050:80"
-    restart: unless-stopped
-
-#  nuxt:
-#    build:
-#      context: ./webapp
-#      dockerfile: Dockerfile
-#    ports:
-#      - 3000:3000
-#    volumes:
-#      -  ./webapp:/app
