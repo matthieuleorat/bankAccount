@@ -13,6 +13,7 @@ namespace App\Controller;
 
 use App\Entity\Budget;
 use App\Factories\ExpenseFactory;
+use App\Factories\StatementFactory;
 use App\Filtering\AttributeExtractor;
 use App\Filtering\CategoryGuesser;
 use App\Entity\Source;
@@ -41,14 +42,18 @@ class ImportNewStatementController extends AbstractController
 
     private $expenseFactory;
 
+    private StatementFactory $statementFactory;
+
     public function __construct(
         CategoryGuesser $categoryGuesser,
         AttributeExtractor $attributeExtractor,
-        ExpenseFactory $expenseFactory
+        ExpenseFactory $expenseFactory,
+        StatementFactory $statementFactory
     ) {
         $this->categoryGuesser = $categoryGuesser;
         $this->attributeExtractor = $attributeExtractor;
         $this->expenseFactory = $expenseFactory;
+        $this->statementFactory = $statementFactory;
     }
 
     /**
@@ -70,6 +75,7 @@ class ImportNewStatementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $statementFile */
             $statementFile = $form->get('statement')->getData();
+            $account = $form->get('account')->getData();
 
             if ($statementFile instanceof UploadedFile) {
                 try {
@@ -88,8 +94,6 @@ class ImportNewStatementController extends AbstractController
                     );
 
                     $this->entityManager = $this->getDoctrine()->getManager();
-
-                    $account = $this->handleAccount($plainStatement->getAccountNumber());
 
                     $statement = $this->handleStatement($account, $plainStatement, $safeFilename);
 
@@ -126,23 +130,18 @@ class ImportNewStatementController extends AbstractController
         BankStatement $bankStatement,
         string $filename
     ) : Statement {
+
+        if ($bankStatement->getAccountNumber() !== $account->getNumber()) {
+            throw new \Exception('kapout '.$bankStatement->getAccountNumber() .'!=='. $account->getNumber());
+        }
+
         $statement = $this->entityManager->getRepository(Statement::class)->findOneBy(['name' => $filename]);
 
         if ($statement instanceof Statement) {
             return $statement;
         }
 
-        $statement = new Statement();
-        $statement->setSource($account);
-        $statement->setName($filename);
-        $statement->setTotalDebit($bankStatement->getDebit());
-        $statement->setTotalCredit($bankStatement->getCredit());
-        $statement->setStartingDate(
-            \DateTimeImmutable::createFromFormat('d/m/Y', $bankStatement->getDateBegin())
-        );
-        $statement->setEndingDate(\DateTimeImmutable::createFromFormat('d/m/Y', $bankStatement->getDateEnd()));
-        $statement->setStartingBalance($bankStatement->getSoldePrecedent());
-        $statement->setEndingBalance($bankStatement->getNouveauSolde());
+        $statement = $this->statementFactory->createFromBankStatement($account, $bankStatement);
         $this->entityManager->persist($statement);
 
         return $statement;
@@ -199,19 +198,5 @@ class ImportNewStatementController extends AbstractController
         $this->entityManager->persist($transaction);
 
         return $transaction;
-    }
-
-    private function handleAccount(string $accountNumber) : Source
-    {
-        $account = $this->entityManager->getRepository(Source::class)->findOneBy(['number' => $accountNumber]);
-
-        if (null === $account) {
-            $account = new Source();
-            $account->setName($accountNumber);
-            $account->setNumber($accountNumber);
-            $this->entityManager->persist($account);
-        }
-
-        return $account;
     }
 }

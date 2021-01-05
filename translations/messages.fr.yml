@@ -90,3 +90,14 @@ page:
     end-debt: Solder
   end_debts:
     title: Solder les dettes
+
+import_file:
+  page_title: Importer un nouveau relevé de compte
+  error:
+    wrong_mime_type: Seuls les fichiers PDF sont autorisés
+  account:
+    label: Compte
+  file:
+    label: Relevé (pdf uniquement)
+  submit:
+    label: Importer

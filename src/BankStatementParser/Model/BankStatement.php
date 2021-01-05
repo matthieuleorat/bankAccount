@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace BankStatementParser\Model;
 
+use DateTimeImmutable;
+
 /**
  * @author Matthieu Leorat <matthieu.leorat@pm.me>
  */
@@ -43,15 +45,9 @@ final class BankStatement
      */
     private $accountNumber;
 
-    /**
-     * @var string
-     */
-    private $dateBegin;
+    private DateTimeImmutable $dateBegin;
 
-    /**
-     * @var string
-     */
-    private $dateEnd;
+    private DateTimeImmutable $dateEnd;
 
     /**
      * @var float
@@ -82,8 +78,8 @@ final class BankStatement
         float $soldePrecedent,
         float $nouveauSolde
     ) : void {
-        $this->dateBegin = $dateBegin;
-        $this->dateEnd = $dateEnd;
+        $this->dateBegin = DateTimeImmutable::createFromFormat('d/m/Y', $dateBegin);
+        $this->dateEnd = DateTimeImmutable::createFromFormat('d/m/Y', $dateEnd);
         $this->accountNumber = $accountNumber;
         $this->soldePrecedent = $soldePrecedent;
         $this->nouveauSolde = $nouveauSolde;
@@ -125,12 +121,12 @@ final class BankStatement
         return $this->accountNumber;
     }
 
-    public function getDateBegin(): string
+    public function getDateBegin(): DateTimeImmutable
     {
         return $this->dateBegin;
     }
 
-    public function getDateEnd(): string
+    public function getDateEnd(): DateTimeImmutable
     {
         return $this->dateEnd;
     }

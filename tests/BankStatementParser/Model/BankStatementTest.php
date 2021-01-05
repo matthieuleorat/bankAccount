@@ -13,14 +13,16 @@ class BankStatementTest extends TestCase
         $bankStatement = BankStatement::create('public/testfile.pdf');
         $this->assertEquals('public/testfile.pdf', $bankStatement->getFilename());
 
-        $dateBegin = '01/12';
-        $dateEnd = '31/12';
+        $dateBegin = '01/12/2020';
+        $dateEnd = '31/12/2020';
         $accountNumber = '654321';
         $soldePrecedent = 45.12;
         $nouveauSolde = 654;
         $bankStatement->setMetaInformations($dateBegin, $dateEnd, $accountNumber, $soldePrecedent, $nouveauSolde);
-        $this->assertEquals($dateBegin, $bankStatement->getDateBegin());
-        $this->assertEquals($dateEnd, $bankStatement->getDateEnd());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $bankStatement->getDateBegin());
+        $this->assertEquals($dateBegin, $bankStatement->getDateBegin()->format('d/m/Y'));
+        $this->assertInstanceOf(\DateTimeImmutable::class, $bankStatement->getDateEnd());
+        $this->assertEquals($dateEnd, $bankStatement->getDateEnd()->format('d/m/Y'));
         $this->assertEquals($accountNumber, $bankStatement->getAccountNumber());
         $this->assertEquals($soldePrecedent, $bankStatement->getSoldePrecedent());
         $this->assertEquals($nouveauSolde, $bankStatement->getNouveauSolde());
