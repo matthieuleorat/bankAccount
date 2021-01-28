@@ -7,8 +7,9 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-openssl": "*",
+        "cweagans/composer-patches": "^1.7",
         "easycorp/easyadmin-bundle": "^3.0",
-        "gedmo/doctrine-extensions": "^2.4",
+        "gedmo/doctrine-extensions": "^3.0",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "5.2.*",
         "symfony/console": "5.2.*",
@@ -22,7 +23,7 @@
         "symfony/mailer": "5.2.*",
         "symfony/monolog-bundle": "^3.1",
         "symfony/notifier": "5.2.*",
-        "symfony/orm-pack": "1.0.*",
+        "symfony/orm-pack": "2.1.*",
         "symfony/process": "5.2.*",
         "symfony/security-bundle": "5.2.*",
         "symfony/serializer-pack": "1.0.*",
@@ -35,15 +36,16 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "symfony/browser-kit": "5.2.*",
+        "symfony/css-selector": "5.2.*",
         "symfony/debug-pack": "1.0.*",
         "symfony/maker-bundle": "^1.0",
+        "symfony/phpunit-bridge": "^5.2",
         "symfony/profiler-pack": "1.0.*",
         "symfony/test-pack": "1.0.*"
     },
     "config": {
-        "preferred-install": {
-            "*": "dist"
-        },
+        "preferred-install": "source",
         "sort-packages": true
     },
     "autoload": {
@@ -89,6 +91,12 @@
         "symfony": {
             "allow-contrib": false,
             "require": "5.2.*"
+        },
+        "enable-patching": true,
+        "patches": {
+            "easycorp/easyadmin-bundle": {
+                "Fix non stoppale event" : "https://github.com/EasyCorp/EasyAdminBundle/commit/85c904e95292570376dad94325f6d1a46c4d643e.patch"
+            }
         }
     }
 }

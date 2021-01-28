@@ -2,6 +2,9 @@
     "behat/transliterator": {
         "version": "v1.3.0"
     },
+    "cweagans/composer-patches": {
+        "version": "1.7.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -112,8 +115,17 @@
     "egulias/email-validator": {
         "version": "2.1.14"
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.3"
+    },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.39"
+    },
+    "laminas/laminas-code": {
+        "version": "4.0.0"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.3.0"
     },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.0.3"
@@ -408,6 +420,9 @@
     },
     "symfony/property-info": {
         "version": "v5.0.2"
+    },
+    "symfony/proxy-manager-bridge": {
+        "version": "v5.2.2"
     },
     "symfony/routing": {
         "version": "4.2",

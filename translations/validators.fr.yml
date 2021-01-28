@@ -1,0 +1,3 @@
+import_file:
+  error:
+    wrong_mime_type: Seuls les fichiers PDF sont autorisés

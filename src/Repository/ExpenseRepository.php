@@ -14,7 +14,7 @@ namespace App\Repository;
 use App\Entity\Budget;
 use App\Entity\Expense;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Expense|null find($id, $lockMode = null, $lockVersion = null)

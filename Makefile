@@ -12,8 +12,11 @@ reset:
 php:
 	docker-compose exec -u www-data php bash
 
-database:
+database-shell:
 	docker-compose exec postgre bash
+
+database:
+	docker-compose exec postgre psql db_name postgres
 
 load_backup:
 ifdef file

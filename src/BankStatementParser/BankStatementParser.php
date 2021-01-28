@@ -69,17 +69,17 @@ class BankStatementParser
 
     /**
      * @param string $filename
-     * @param string $path
+     * @param string $pathname
      *
      * @return BankStatement
      *
      * @throws \Exception
      */
-    public function execute(string $filename, string $path) : BankStatement
+    public function execute(string $filename, $pathname) : BankStatement
     {
         $this->bankStatement = BankStatement::create($filename);
 
-        $bankStatementAsArray = $this->pdfReader->execute($path.$filename);
+        $bankStatementAsArray = $this->pdfReader->execute($pathname);
 
         $operations = $this->filterTransaction($bankStatementAsArray);
 

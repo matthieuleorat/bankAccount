@@ -11,6 +11,7 @@
 
 namespace App\Entity;
 
+use BankStatementParser\Model\Operation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -232,5 +233,10 @@ class Transaction
     public function setIgnore(bool $ignore): void
     {
         $this->ignore = $ignore;
+    }
+
+    public function updateFromOperation(Operation $operation) : void
+    {
+        $this->setType($operation->getType());
     }
 }
