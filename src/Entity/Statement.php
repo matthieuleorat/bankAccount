@@ -237,4 +237,9 @@ class Statement
 
         return $this;
     }
+
+    public function getDefaultBudget() : ? Budget
+    {
+        return $this->source ? $this->source->getDefaultBudget() : null;
+    }
 }

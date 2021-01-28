@@ -95,6 +95,8 @@ import_file:
   page_title: Importer un nouveau relevé de compte
   error:
     wrong_mime_type: Seuls les fichiers PDF sont autorisés
+    account_number_mismatch: Le compte sélectionné ({expected}) ne correspond pas à celui trouvé dans le fichier ({founded})
+
   account:
     label: Compte
   file:

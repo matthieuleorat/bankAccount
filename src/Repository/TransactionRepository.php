@@ -13,8 +13,9 @@ namespace App\Repository;
 
 use App\Entity\Expense;
 use App\Entity\Transaction;
+use BankStatementParser\Model\Operation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Transaction|null find($id, $lockMode = null, $lockVersion = null)
@@ -29,6 +30,29 @@ class TransactionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Transaction::class);
+    }
+
+    public function findFromOperation(Operation $operation, string $accountNumber) : ? Transaction
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->join('t.statement', 'statement')
+            ->join('statement.source', 'source')
+            ->where('t.date = :date')
+            ->andWhere('t.debit = :debit')
+            ->andWhere('t.credit = :credit')
+            ->andWhere('source.number = :accountNumber')
+            ->setParameter('date', $operation->getDate())
+            ->setParameter('credit', $operation->isCredit() === true ? $operation->getMontant() : null)
+            ->setParameter('debit', $operation->isDebit() === true ? $operation->getMontant() : null)
+            ->setParameter('accountNumber', $accountNumber);
+
+        $result = $qb->getQuery()->getResult();
+
+        if (empty($result)) {
+            return null;
+        }
+
+        return $result;
     }
 
     /**

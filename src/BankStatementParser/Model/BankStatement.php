@@ -31,7 +31,7 @@ final class BankStatement
     private $operations;
 
     /**
-     * @var float
+     * @var float|null
      */
     private $debit;
 
