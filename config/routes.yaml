@@ -2,5 +2,12 @@ index:
   path: /
   controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
   defaults:
-    path: '/admin'
+    path: '/fr/admin'
+    permanent: true
+
+index_fr:
+  path: /fr
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+  defaults:
+    path: '/fr/admin'
     permanent: true

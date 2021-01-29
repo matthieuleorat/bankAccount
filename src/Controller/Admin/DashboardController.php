@@ -28,7 +28,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class DashboardController extends AbstractDashboardController
 {
     /**
-     * @Route("/admin", name="admin_dashboard")
+     * @Route(
+     *     "/{_locale}/admin",
+     *     name="admin_dashboard",
+     *     requirements={
+     *         "_locale": "%app.supported_locales%",
+     *     }
+     * )
      *
      * @return Response
      */
