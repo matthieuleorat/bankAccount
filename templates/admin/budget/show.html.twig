@@ -93,7 +93,7 @@
         <tbody>
         {% for row in datas.rows %}
             <tr>
-                <td>{{ row.period[0]|date('F Y') }}</td>
+                <td>{{ row.period[0]|format_date(pattern="LLLL yy", locale=app.request.locale)|title }}</td>
                 {% for value in row.values %}
                     <td>
                         {% set url = ea_url()
