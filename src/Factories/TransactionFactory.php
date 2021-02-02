@@ -22,8 +22,8 @@ class TransactionFactory
     {
         $transaction = new Transaction();
         $transaction->setDate($operation->getDate());
-        $transaction->setDebit($operation->getMontant());
-        $transaction->setCredit($operation->getMontant());
+        $transaction->setDebit($operation->getDebit());
+        $transaction->setCredit($operation->getCredit());
         $transaction->setDetails($operation->getDetails());
         $transaction->setType($operation->getType());
 
