@@ -36,6 +36,7 @@ class TransactionRepository extends ServiceEntityRepository
     /**
      * @param Operation $operation
      * @param string $accountNumber
+     *
      * @return Transaction|null
      *
      * @throws NonUniqueResultException
