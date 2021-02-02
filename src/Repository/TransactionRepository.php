@@ -40,8 +40,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->where('t.date = :date')
             ->andWhere('source.number = :accountNumber')
             ->setParameter('date', $operation->getDate())
-            ->setParameter('accountNumber', $accountNumber)
-            ;
+            ->setParameter('accountNumber', $accountNumber);
 
         if (true === $operation->isDebit()) {
             $qb->andWhere('t.debit = :debit')
