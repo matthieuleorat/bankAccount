@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6040664f5368cbe9c47bec36dda1f42",
+    "content-hash": "1c802be01ff7a40f4933bc2492a8f1b9",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1498,16 +1498,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v3.2.2",
+            "version": "v3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "5e9705606b9da59ee6ce37b876735fd712d2b416"
+                "reference": "3a7a27475ed780de94b6c74d09458b70b9eb9880"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/5e9705606b9da59ee6ce37b876735fd712d2b416",
-                "reference": "5e9705606b9da59ee6ce37b876735fd712d2b416",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/3a7a27475ed780de94b6c74d09458b70b9eb9880",
+                "reference": "3a7a27475ed780de94b6c74d09458b70b9eb9880",
                 "shasum": ""
             },
             "require": {
@@ -1523,6 +1523,7 @@
                 "symfony/cache": "^4.4|^5.0",
                 "symfony/config": "^4.4|^5.0",
                 "symfony/dependency-injection": "^4.4|^5.0",
+                "symfony/deprecation-contracts": "^2.0",
                 "symfony/event-dispatcher": "^4.4|^5.0",
                 "symfony/filesystem": "^4.4|^5.0",
                 "symfony/form": "^4.4|^5.0",
@@ -1580,7 +1581,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v3.2.2"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v3.2.3"
             },
             "funding": [
                 {
@@ -1588,7 +1589,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-01-21T18:51:43+00:00"
+            "time": "2021-01-30T18:09:44+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -9019,7 +9020,8 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-intl": "*",
-        "ext-openssl": "*"
+        "ext-openssl": "*",
+        "ext-json": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"

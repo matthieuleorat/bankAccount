@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-openssl": "*",
+        "ext-json": "*",
         "cweagans/composer-patches": "^1.7",
         "easycorp/easyadmin-bundle": "^3.0",
         "gedmo/doctrine-extensions": "^3.0",
@@ -93,11 +94,6 @@
             "allow-contrib": false,
             "require": "5.2.*"
         },
-        "enable-patching": true,
-        "patches": {
-            "easycorp/easyadmin-bundle": {
-                "Fix non stoppale event" : "https://github.com/EasyCorp/EasyAdminBundle/commit/85c904e95292570376dad94325f6d1a46c4d643e.patch"
-            }
-        }
+        "enable-patching": true
     }
 }

@@ -15,8 +15,10 @@ use App\Entity\DetailsToCategory;
 use App\Entity\Expense;
 use App\Entity\Transaction;
 use App\Factories\ExpenseFactory;
+use App\Filtering\Exception\PhpIncompleteClassException;
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author Matthieu Leorat <matthieu.leorat@pm.me>
@@ -39,15 +41,21 @@ class ApplyFilter
      * @var ExpenseFactory
      */
     private $expenseFactory;
+    /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
 
     public function __construct(
         EntityManagerInterface $em,
         CategoryGuesser $categoryGuesser,
-        ExpenseFactory $expenseFactory
+        ExpenseFactory $expenseFactory,
+        LoggerInterface $logger
     ) {
         $this->em = $em;
         $this->categoryGuesser = $categoryGuesser;
         $this->expenseFactory = $expenseFactory;
+        $this->logger = $logger;
     }
 
     public function execute(DetailsToCategory $detailsToCategory) : array
@@ -67,11 +75,17 @@ class ApplyFilter
 
     private function transactionToExpense(Transaction $transaction) : ? Expense
     {
-        if (true === $this->categoryGuesser->execute($this->detailsToCategory, $transaction)) {
-            $expense = $this->expenseFactory->fromTransaction($transaction, $this->detailsToCategory);
-            $this->em->persist($expense);
+        try {
+            if (true === $this->categoryGuesser->execute($this->detailsToCategory, $transaction)) {
+                $expense = $this->expenseFactory->fromTransaction($transaction, $this->detailsToCategory);
+                $this->em->persist($expense);
 
-            return $expense;
+                return $expense;
+            }
+        } catch (PhpIncompleteClassException $exception) {
+            $transaction = $exception->getTransaction();
+
+            $this->logger->warning('PhpIncompleteClassException for transaction '.$transaction->getId().' on '.$exception->getAttribute());
         }
 
         return null;
