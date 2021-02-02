@@ -15,6 +15,7 @@ use App\Entity\Expense;
 use App\Entity\Transaction;
 use BankStatementParser\Model\Operation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -32,6 +33,13 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
+    /**
+     * @param Operation $operation
+     * @param string $accountNumber
+     * @return Transaction|null
+     *
+     * @throws NonUniqueResultException
+     */
     public function findFromOperation(Operation $operation, string $accountNumber) : ? Transaction
     {
         $qb = $this->createQueryBuilder('t')
@@ -39,6 +47,8 @@ class TransactionRepository extends ServiceEntityRepository
             ->join('statement.source', 'source')
             ->where('t.date = :date')
             ->andWhere('source.number = :accountNumber')
+            ->andWhere('t.details = :details')
+            ->setParameter('details', $operation->getDetails())
             ->setParameter('date', $operation->getDate())
             ->setParameter('accountNumber', $accountNumber);
 
