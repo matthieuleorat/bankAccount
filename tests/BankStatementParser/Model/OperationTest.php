@@ -28,7 +28,8 @@ class OperationTest extends TestCase
         $this->assertEquals(false, $operation->isComplementaryInformations());
         $this->assertInstanceOf(\DateTimeImmutable::class, $operation->getValeur());
         $this->assertEquals('17/03/2020', $operation->getValeur()->format('d/m/Y'));
-        $this->assertEquals(8.80, $operation->getMontant());
+        $this->assertEquals(8.80, $operation->getDebit());
+        $this->assertNull($operation->getCredit());
     }
 
     public function testCreateCredit() : void
@@ -40,7 +41,8 @@ class OperationTest extends TestCase
 
         $this->assertEquals(false, $operation->isDebit());
         $this->assertEquals(true, $operation->isCredit());
-        $this->assertEquals(9.60, $operation->getMontant());
+        $this->assertEquals(9.60, $operation->getCredit());
+        $this->assertNull($operation->getDebit());
     }
 
     public function testIsComplementaryInformations() : void

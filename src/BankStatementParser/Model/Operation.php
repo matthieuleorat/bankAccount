@@ -86,6 +86,15 @@ class Operation
         return false;
     }
 
+    public function getDebit() : ? float
+    {
+        if (true === $this->isDebit()) {
+            return $this->montant;
+        }
+
+        return null;
+    }
+
     public function isCredit() : bool
     {
         if ($this->positionMontant < $this->creditPosition) {
@@ -93,6 +102,15 @@ class Operation
         }
 
         return true;
+    }
+
+    public function getCredit() : ? float
+    {
+        if (true === $this->isCredit()) {
+            return $this->montant;
+        }
+
+        return null;
     }
 
 

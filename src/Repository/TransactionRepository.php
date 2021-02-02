@@ -38,21 +38,24 @@ class TransactionRepository extends ServiceEntityRepository
             ->join('t.statement', 'statement')
             ->join('statement.source', 'source')
             ->where('t.date = :date')
-            ->andWhere('t.debit = :debit')
-            ->andWhere('t.credit = :credit')
             ->andWhere('source.number = :accountNumber')
             ->setParameter('date', $operation->getDate())
-            ->setParameter('credit', $operation->isCredit() === true ? $operation->getMontant() : null)
-            ->setParameter('debit', $operation->isDebit() === true ? $operation->getMontant() : null)
-            ->setParameter('accountNumber', $accountNumber);
+            ->setParameter('accountNumber', $accountNumber)
+            ;
 
-        $result = $qb->getQuery()->getResult();
-
-        if (empty($result)) {
-            return null;
+        if (true === $operation->isDebit()) {
+            $qb->andWhere('t.debit = :debit')
+                ->setParameter('debit', $operation->getDebit())
+                ->andWhere('t.credit is NULL');
         }
 
-        return $result;
+        if (true === $operation->isCredit()) {
+            $qb->andWhere('t.credit = :credit')
+                ->setParameter('credit', $operation->getCredit())
+                ->andWhere('t.debit is NULL');
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**
