@@ -85,7 +85,10 @@ class ApplyFilter
         } catch (PhpIncompleteClassException $exception) {
             $transaction = $exception->getTransaction();
 
-            $this->logger->warning('PhpIncompleteClassException for transaction '.$transaction->getId().' on '.$exception->getAttribute());
+            $this->logger->warning(
+                'PhpIncompleteClassException for transaction '. $transaction->getId().
+                ' on '.$exception->getAttribute()
+            );
         }
 
         return null;
