@@ -62,4 +62,4 @@ cs-fixer:
 	 docker run --user $(id -u):$(id -g) --rm -v ${PWD}:/data cytopia/php-cs-fixer fix  ./src
 
 phpcs:
-	docker run --rm -v ${PWD}:/data cytopia/phpcs ./src -n -p -s
+	docker run --init -it --rm -v "$(pwd):/project" -v "$(pwd)/tmp-phpqa:/tmp" -w /project jakzal/phpqa:1.52.0-alpine phpcs ./src -n -p -s
