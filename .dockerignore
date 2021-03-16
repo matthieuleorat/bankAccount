@@ -1,0 +1,6 @@
+.composer
+.github
+backups
+docker/database/data
+heroku
+report

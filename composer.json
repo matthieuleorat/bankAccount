@@ -1,8 +1,10 @@
 {
     "type": "project",
     "license": "proprietary",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "require": {
-        "php": "~7.4.0",
+        "php": "~8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-intl": "*",
@@ -46,7 +48,10 @@
         "symfony/test-pack": "1.0.*"
     },
     "config": {
-        "preferred-install": "source",
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
         "sort-packages": true
     },
     "autoload": {
@@ -91,13 +96,8 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "5.2.*"
-        },
-        "enable-patching": true,
-        "patches": {
-            "easycorp/easyadmin-bundle": {
-                "Fix non stoppale event" : "https://github.com/EasyCorp/EasyAdminBundle/commit/85c904e95292570376dad94325f6d1a46c4d643e.patch"
-            }
+            "require": "5.2.*",
+            "docker": true
         }
     }
 }

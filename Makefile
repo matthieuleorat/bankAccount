@@ -10,17 +10,32 @@ reset:
 	make down && make up
 
 php:
-	docker-compose exec -u www-data php bash
+	docker-compose exec php sh
 
 database-shell:
-	docker-compose exec postgre bash
+	docker-compose exec database sh
 
 database:
-	docker-compose exec postgre psql db_name postgres
+	docker-compose exec database psql ${POSTGRES_DB} ${POSTGRES_USER}
+
+debug:
+	docker-compose -f docker-compose.yml -f docker-compose.debug.yml up
+
+debug-build:
+	docker-compose -f docker-compose.yml -f docker-compose.debug.yml up --build
+
+dev:
+	docker-compose up -d
+
+build_prod:
+	docker-compose -f docker-compose.yml -f docker-compose.debug.yml build
+
+run_prod:
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 load_backup:
 ifdef file
-		docker-compose exec postgre pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d db_name /data/backups/$(file)
+		docker-compose exec database pg_restore --verbose --clean --no-acl --no-owner -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB} /data/backups/$(file)
 else
 		@echo 'Missing file argument. Usage: make file=latest.dump load_backup'
 endif
@@ -32,16 +47,7 @@ backup_remote:
 	heroku pg:backups:download --app ${HEROKU_APP_NAME} -o=./backups/latest.dump
 
 load_lastest_backup:
-	docker-compose exec postgre pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d db_name /data/backups/latest.dump
-
-
-create_nuxtjs_project:
-	docker run --rm -it \
-		-v "${PWD}:/$(basename `pwd`)" \
-		--workdir "$(basename `pwd`)" \
-		-w "/$(basename `pwd`)" \
-		node:11.1-alpine  \
-		sh -c "yarn create nuxt-app webapp"
+	docker-compose exec database pg_restore --verbose --clean --no-acl --no-owner -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB} /data/backups/latest.dump
 
 her_bash:
 	heroku ps:exec --app ${HEROKU_APP_NAME}
