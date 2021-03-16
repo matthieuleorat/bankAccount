@@ -10,7 +10,7 @@ jobs:
       - name: Setup PHP with intl
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.0'
           extensions: intl-66.1
           tools: composer:v1, cs2pr, phpcs, phpstan
           coverage: xdebug
