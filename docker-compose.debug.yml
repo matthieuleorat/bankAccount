@@ -17,5 +17,7 @@ services:
       - "host.docker.internal:host-gateway"
 
   database:
+    volumes:
+      - ./backups:/data/backups
     ports:
     - 5432:5432

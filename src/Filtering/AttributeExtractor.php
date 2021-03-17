@@ -33,7 +33,7 @@ class AttributeExtractor
 
         $methodName = $this->constructGetter($tmp[0]);
 
-        if (false === method_exists($object, $methodName)) {
+        if (null === $object || false === method_exists($object, $methodName)) {
             return null;
         }
 

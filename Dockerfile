@@ -12,6 +12,7 @@ RUN apk add --no-cache \
 		gettext \
 		git \
 		jq \
+		poppler-utils \
 	;
 
 ARG APCU_VERSION=5.1.19
